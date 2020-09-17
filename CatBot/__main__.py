@@ -9,7 +9,7 @@ from settings import Settings
 
 
 def log(prefix: str, text: str):
-    """Just prettying print function"""
+    """Just prettying print (acting as logging) function"""
     while len(prefix) < 6:
         prefix += ' '
     prefix = f'[{prefix}]'
