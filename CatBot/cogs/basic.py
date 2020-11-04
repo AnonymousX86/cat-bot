@@ -4,7 +4,8 @@ from urllib.parse import quote_plus
 
 import praw
 import requests
-from discord.ext.commands import Cog, command
+from discord import Message
+from discord.ext.commands import Cog, command, Context
 
 from CatBot.templates.basic import *
 from CatBot.templates.errors import *
@@ -88,6 +89,12 @@ class Basic(Cog):
                 text: str = loads(response.content.decode('UTF-8'))['data']['translations'][0][0]['translatedText']
 
         await ctx.send(embed=catfact_em(text))
+
+    @Cog.listener('on_message')
+    async def plus_adder(self, message: Message = None):
+        if message.channel.id == 773548753428152390:
+            await message.add_reaction('👍')
+            await message.add_reaction('👎')
 
 
 def setup(bot):
