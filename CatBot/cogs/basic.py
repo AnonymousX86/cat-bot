@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from discord import Message
-from discord.ext.commands import Cog, command
+from discord.ext.commands import Cog, command, Context
 
 from CatBot.embeds.basic import *
 
@@ -12,7 +12,7 @@ class Basic(Cog):
     @command(
         name='info'
     )
-    async def info(self, ctx):
+    async def info(self, ctx: Context):
         await ctx.send(embed=info_em())
 
     @Cog.listener('on_message')
@@ -25,8 +25,15 @@ class Basic(Cog):
         name='minecraft',
         aliases=['mc']
     )
-    async def minecraft(self, ctx):
+    async def minecraft(self, ctx: Context):
         await ctx.send(embed=mc_embed())
+
+    @command(
+        name='archiwa',
+        aliases=['archives', 'arch']
+    )
+    async def archiwa(self, ctx: Context):
+        await ctx.send(embed=archives_embed())
 
 
 def setup(bot):

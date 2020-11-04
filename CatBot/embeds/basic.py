@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from discord import Embed, Color
 
+from CatBot.data import archives
 from settings import Settings
 
 
@@ -31,3 +32,16 @@ def mc_embed():
         value='```\nWersja 1, by: Mixiu\n```'
               '[Pobierz](https://drive.google.com/folderview?id=1JKbpJaInv_dUCbUxD7Wj8oqrdSYnLl6q)'
     )
+
+
+def archives_embed():
+    em = Embed(
+        title=':inbox_tray: Archiwa',
+        color=Color.blurple()
+    )
+    for a in archives:
+        em.add_field(
+            name=f'{a.name}',
+            value=f'[Pobierz]({a.link}) - {a.size}'
+        )
+    return em
