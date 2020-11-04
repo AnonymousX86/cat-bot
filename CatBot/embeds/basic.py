@@ -20,11 +20,14 @@ def mc_embed():
         color=Color.blurple()
     ).add_field(
         name='Adres',
-        value='`kociaki.tasrv.com`'
+        value='```\nkociaki.tasrv.com\n```W razie problemów, napisz do Anona.',
+        inline=False
     ).add_field(
-        name='Wersja',
-        value='1.12.2 Forge - [pobierz]()'
+        name='Silnik',
+        value='```\nForge 1.12.2 14.23.5.2854\n```'
+              '[Pobierz](http://www.mediafire.com/file/tazj0l79mbtudq5/forge-1.12.2-14.23.5.2854-installer.jar/file)'
     ).add_field(
         name='Paczka modów',
-        value='[Pobierz]()'
+        value='```\nWersja 1, by: Mixiu\n```'
+              '[Pobierz](https://drive.google.com/folderview?id=1JKbpJaInv_dUCbUxD7Wj8oqrdSYnLl6q)'
     )
