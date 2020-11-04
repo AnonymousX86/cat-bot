@@ -2,7 +2,7 @@
 from discord import Message
 from discord.ext.commands import Cog, command
 
-from CatBot.templates.basic import *
+from CatBot.embeds.basic import *
 
 
 class Basic(Cog):
@@ -20,6 +20,13 @@ class Basic(Cog):
         if message.channel.id in [773548753428152390]:
             await message.add_reaction('👍')
             await message.add_reaction('👎')
+
+    @command(
+        name='minecraft',
+        aliases=['mc']
+    )
+    async def minecraft(self, ctx):
+        await ctx.send(embed=mc_embed())
 
 
 def setup(bot):
