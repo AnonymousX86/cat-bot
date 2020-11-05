@@ -3,3 +3,4 @@ python-dotenv
 nest-asyncio
 praw
 requests
+mcstatus

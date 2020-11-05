@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from discord import Embed, Color
 
-from CatBot.data import archives
+from CatBot.data import archives, server_status
 from settings import Settings
 
 
-def info_em():
+def info_em() -> Embed:
     return Embed(
         title=':information_source: Informacje',
         color=Color.blurple()
@@ -15,8 +15,9 @@ def info_em():
     )
 
 
-def mc_embed():
-    return Embed(
+def mc_embed() -> Embed:
+    status = server_status()
+    em = Embed(
         title=':pick: Minecraft',
         color=Color.blurple()
     ).add_field(
@@ -31,15 +32,28 @@ def mc_embed():
         name='Paczka modów',
         value='```\nWersja 1, by: Mixiu\n```'
               '[Pobierz](https://drive.google.com/folderview?id=1JKbpJaInv_dUCbUxD7Wj8oqrdSYnLl6q)'
+    ).add_field(
+        name='Status',
+        value='Online' if status else 'Offline',
+        inline=False
     )
+    if status:
+        em.add_field(
+            name='Gracze online',
+            value='{0.online}/{0.max}'.format(status.players)
+        ).add_field(
+            name='Ping',
+            value=f'{int(round(status.latency, 0))}ms'
+        )
+    return em
 
 
-def archives_embed():
+def archives_embed() -> Embed:
     em = Embed(
         title=':inbox_tray: Archiwa',
         color=Color.blurple()
     )
-    for a in archives:
+    for a in archives():
         em.add_field(
             name=f'{a.name}',
             value=f'[Pobierz]({a.link}) - {a.size}'
