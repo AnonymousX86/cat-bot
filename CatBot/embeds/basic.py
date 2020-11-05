@@ -33,7 +33,7 @@ def mc_embed() -> Embed:
         inline=False
     ).add_field(
         name='Silnik',
-        value='```\nForge 1.12.2 14.23.5.2854\n```'
+        value='```\nForge  1.12.2  14.23.5.2854\n```'
               '[Pobierz](http://www.mediafire.com/file/tazj0l79mbtudq5/forge-1.12.2-14.23.5.2854-installer.jar/file)'
     ).add_field(
         name='Paczka modów',
@@ -43,15 +43,13 @@ def mc_embed() -> Embed:
         name='Status',
         value='Online' if status else f'Offline \u2015 {error}',
         inline=False
+    ).add_field(
+        name='Gracze online',
+        value='{0.online}/{0.max}'.format(status.players) if status else '\u2013'
+    ).add_field(
+        name='Ping',
+        value='{}ms'.format(int(round(status.latency, 0)) if status else "\u2013 ")
     )
-    if status:
-        em.add_field(
-            name='Gracze online',
-            value='{0.online}/{0.max}'.format(status.players)
-        ).add_field(
-            name='Ping',
-            value=f'{int(round(status.latency, 0))}ms'
-        )
     return em
 
 
