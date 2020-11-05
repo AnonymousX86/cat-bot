@@ -5,6 +5,13 @@ from CatBot.data import archives, server_status
 from settings import Settings
 
 
+def please_wait_em() -> Embed:
+    return Embed(
+        title=':hourglass_flowing_sand: Daj mi chwilę...',
+        color=Color.blurple()
+    )
+
+
 def info_em() -> Embed:
     return Embed(
         title=':information_source: Informacje',
@@ -16,7 +23,7 @@ def info_em() -> Embed:
 
 
 def mc_embed() -> Embed:
-    status = server_status()
+    status, error = server_status()
     em = Embed(
         title=':pick: Minecraft',
         color=Color.blurple()

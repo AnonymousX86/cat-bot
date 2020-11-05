@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from socket import timeout
-from typing import Optional
+from typing import Optional, Tuple
 
 from mcstatus import MinecraftServer
 from mcstatus.pinger import PingResponse
@@ -23,8 +23,8 @@ def archives():
     ]
 
 
-def server_status() -> Optional[PingResponse]:
+def server_status() -> Tuple[Optional[PingResponse], Optional[BaseException]]:
     try:
-        return MinecraftServer.lookup('kociaki.tasrv.com').status()
-    except timeout:
-        return None
+        return MinecraftServer.lookup('kociaki.tasrv.com').status(), None
+    except BaseException as e:
+        return None, e

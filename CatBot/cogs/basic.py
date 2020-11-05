@@ -26,7 +26,9 @@ class Basic(Cog):
         aliases=['mc']
     )
     async def minecraft(self, ctx: Context):
+        msg = await ctx.send(embed=please_wait_em())
         await ctx.send(embed=mc_embed())
+        await msg.delete()
 
     @command(
         name='archiwa',
