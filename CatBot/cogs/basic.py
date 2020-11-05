@@ -37,6 +37,12 @@ class Basic(Cog):
     async def archiwa(self, ctx: Context):
         await ctx.send(embed=archives_embed())
 
+    @command(
+        name='ip'
+    )
+    async def ip(self, ctx: Context):
+        await ctx.send(embed=ip_em())
+
 
 def setup(bot):
     bot.add_cog(Basic(bot))

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from socket import gethostname, gethostbyname
+
 from discord import Embed, Color
 
 from CatBot.data import archives, server_status
@@ -64,3 +66,10 @@ def archives_embed() -> Embed:
             value=f'[Pobierz]({a.link}) - {a.size}'
         )
     return em
+
+
+def ip_em() -> Embed:
+    return Embed(
+        title=f':information_source: {gethostbyname(gethostname())}',
+        color=Color.blurple()
+    )
