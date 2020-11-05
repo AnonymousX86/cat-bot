@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from socket import timeout
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List
 
 from mcstatus import MinecraftServer
 from mcstatus.pinger import PingResponse
@@ -13,7 +12,7 @@ class Archive:
         self.size = size
 
 
-def archives():
+def archives() -> List[Archive]:
     return [
         Archive(
             'Upgraded Survival 1.16.3',
