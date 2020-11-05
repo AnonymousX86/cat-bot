@@ -41,7 +41,7 @@ def mc_embed() -> Embed:
               '[Pobierz](https://drive.google.com/folderview?id=1JKbpJaInv_dUCbUxD7Wj8oqrdSYnLl6q)'
     ).add_field(
         name='Status',
-        value='Online' if status else 'Offline',
+        value='Online' if status else f'Offline \u2015 {error}',
         inline=False
     )
     if status:
