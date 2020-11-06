@@ -24,6 +24,6 @@ def archives() -> List[Archive]:
 
 def server_status() -> Tuple[Optional[PingResponse], Optional[BaseException]]:
     try:
-        return MinecraftServer.lookup('kociaki.tasrv.com').status(), None
+        return MinecraftServer.lookup('vmi472388.contaboserver.net').status(), None
     except BaseException as e:
         return None, e
