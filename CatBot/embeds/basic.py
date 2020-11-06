@@ -31,7 +31,7 @@ def mc_embed() -> Embed:
         color=Color.blurple()
     ).add_field(
         name='Adres',
-        value='```\nkociaki.tasrv.com\n```W razie problemów, napisz do Anona.',
+        value='```\nvmi472388.contaboserver.net\n```W razie problemów, napisz do Anona.',
         inline=False
     ).add_field(
         name='Status',
@@ -51,9 +51,7 @@ def mc_embed() -> Embed:
         inline=False
     ).add_field(
         name='Paczki modów (by: Mixiu)',
-        value='**v1** \u2015'
-              ' [Pobierz](https://drive.google.com/folderview?id=1JKbpJaInv_dUCbUxD7Wj8oqrdSYnLl6q "Google Drive")\n'
-              '**v2** \u2015'
+        value='**v2** \u2015'
               ' [Pobierz](https://mega.nz/file/IUMxQQYb#tSwPOmNV72v_CC2vMP0BT7qXWY_ijCvLbxly-m_Wpn4 "MEGA"),'
               ' [Crystal Launcher](https://mega.nz/file/pYdHkapa#hNPERAJITNkGNtQ-TqzNFlDnNff-y3IhBWzFn2ktq6Q "MEGA")\n'
               '**v2 lite** \u2015'
