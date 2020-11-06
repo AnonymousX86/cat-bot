@@ -34,23 +34,31 @@ def mc_embed() -> Embed:
         value='```\nkociaki.tasrv.com\n```W razie problemów, napisz do Anona.',
         inline=False
     ).add_field(
-        name='Silnik',
-        value='```\nForge  1.12.2  14.23.5.2854\n```'
-              '[Pobierz](http://www.mediafire.com/file/tazj0l79mbtudq5/forge-1.12.2-14.23.5.2854-installer.jar/file)'
-    ).add_field(
-        name='Paczka modów',
-        value='```\nWersja 1, by: Mixiu\n```'
-              '[Pobierz](https://drive.google.com/folderview?id=1JKbpJaInv_dUCbUxD7Wj8oqrdSYnLl6q)'
-    ).add_field(
         name='Status',
-        value='Online' if status else f'Offline \u2015 {error}',
-        inline=False
+        value='Online' if status else f'Offline \u2015 {error}'
     ).add_field(
         name='Gracze online',
         value='{0.online}/{0.max}'.format(status.players) if status else '\u2013'
     ).add_field(
         name='Ping',
         value='{}ms'.format(int(round(status.latency, 0)) if status else "\u2013 ")
+    ).add_field(
+        name='Silnik',
+        value='```\nForge  1.12.2  14.23.5.2854\n```'
+              '[Pobierz](https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.12.2-14.23.5.2854/'
+              'forge-1.12.2-14.23.5.2854-installer.jar "Minecraft Forge"), [mirror]'
+              '(https://mega.nz/file/oEVnnKzD#8RpVgeTXuFa7H-WxwTAzUlIF_qjAQ385c4bDMvpzjag  "MEGA")',
+        inline=False
+    ).add_field(
+        name='Paczki modów (by: Mixiu)',
+        value='**v1** \u2015'
+              ' [Pobierz](https://drive.google.com/folderview?id=1JKbpJaInv_dUCbUxD7Wj8oqrdSYnLl6q "Google Drive")\n'
+              '**v2** \u2015'
+              ' [Pobierz](https://mega.nz/file/IUMxQQYb#tSwPOmNV72v_CC2vMP0BT7qXWY_ijCvLbxly-m_Wpn4 "MEGA"),'
+              ' [Crystal Launcher](https://mega.nz/file/pYdHkapa#hNPERAJITNkGNtQ-TqzNFlDnNff-y3IhBWzFn2ktq6Q "MEGA")\n'
+              '**v2 lite** \u2015'
+              ' [Pobierz](https://mega.nz/file/5FdxEYID#oZK_Vyen6xcDE_KfikHjhSLVr1p_DYma8PYEHs-zKE0 "MEGA"),'
+              ' [Crystal Launcher](https://mega.nz/file/scFBAaTa#Mxo1QljM6UZA-UPw382s6vhysYF9D6H2tAJ9NE2udBk "MEGA")'
     )
     return em
 
