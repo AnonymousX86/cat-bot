@@ -58,12 +58,12 @@ def mc_embed() -> Embed:
               ' [Pobierz](https://mega.nz/file/5FdxEYID#oZK_Vyen6xcDE_KfikHjhSLVr1p_DYma8PYEHs-zKE0 "MEGA"),'
               ' [Crystal Launcher](https://mega.nz/file/scFBAaTa#Mxo1QljM6UZA-UPw382s6vhysYF9D6H2tAJ9NE2udBk "MEGA")\n'
               '**v1.1** \u2015'
-              ' [Pobierz](https://mega.nz/file/pFUxVKRC#TomZzsHqSctnYjNaW3DPKz-TtpqhwdcfNDsuKEjbwgs "MEGA")',
+              ' [Pobierz]( "MEGA")',
         inline=False
     ).add_field(
         name='Aktualizacje',
-        value='**v1.1** \u2015'
-              ' [Pobierz](https://mega.nz/file/EBVXzKrJ#WRci9_Hd_CkoB1k0W8gKiIwhYcloJjFNEIxrQcO7Uus "MEGA")',
+        value='**v1.0**  :arrow_right:  **v1.1** \u2015'
+              ' [Pobierz](https://mega.nz/file/MEMjwSjI#DisOfmyKlSmmgqR_1RctnU3-mjcA9yVv1sl91SWXlEI "MEGA")',
         inline=False
     )
     return em
