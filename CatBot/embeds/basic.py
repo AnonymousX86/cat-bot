@@ -53,17 +53,21 @@ def mc_embed() -> Embed:
         name='Paczki modów (by: Mixiu)',
         value='**v1.0** \u2015'
               ' [Pobierz](https://mega.nz/file/IUMxQQYb#tSwPOmNV72v_CC2vMP0BT7qXWY_ijCvLbxly-m_Wpn4 "MEGA"),'
-              ' [Crystal Launcher](https://mega.nz/file/pYdHkapa#hNPERAJITNkGNtQ-TqzNFlDnNff-y3IhBWzFn2ktq6Q "MEGA")\n'
+              ' [Crystal Launcher](https://mega.nz/file/pYdHkapa#hNPERAJITNkGNtQ-TqzNFlDnNff-y3IhBWzFn2ktq6Q "MEGA")'
+              ' 268MB\n'
               '**v1.0 lite** \u2015'
               ' [Pobierz](https://mega.nz/file/5FdxEYID#oZK_Vyen6xcDE_KfikHjhSLVr1p_DYma8PYEHs-zKE0 "MEGA"),'
-              ' [Crystal Launcher](https://mega.nz/file/scFBAaTa#Mxo1QljM6UZA-UPw382s6vhysYF9D6H2tAJ9NE2udBk "MEGA")\n'
+              ' [Crystal Launcher](https://mega.nz/file/scFBAaTa#Mxo1QljM6UZA-UPw382s6vhysYF9D6H2tAJ9NE2udBk "MEGA")'
+              ' 254MB\n'
               '**v1.1** \u2015'
-              ' [Pobierz](https://mega.nz/file/5ZcHzSAK#5_jYKwcR574iBOmyu8aTlPAMdARKNRjY8hhy-ugWBpk "MEGA")',
+              ' [Pobierz](https://mega.nz/file/5ZcHzSAK#5_jYKwcR574iBOmyu8aTlPAMdARKNRjY8hhy-ugWBpk "MEGA")'
+              ' 273MB',
         inline=False
     ).add_field(
         name='Aktualizacje',
         value='**v1.0**  :arrow_right:  **v1.1** \u2015'
-              ' [Pobierz](https://mega.nz/file/MEMjwSjI#DisOfmyKlSmmgqR_1RctnU3-mjcA9yVv1sl91SWXlEI "MEGA")',
+              ' [Pobierz](https://mega.nz/file/MEMjwSjI#DisOfmyKlSmmgqR_1RctnU3-mjcA9yVv1sl91SWXlEI "MEGA")'
+              ' 5MB',
         inline=False
     )
     return em
