@@ -51,10 +51,10 @@ def mc_embed() -> Embed:
         inline=False
     ).add_field(
         name='Paczki modów (by: Mixiu)',
-        value='**v2** \u2015'
+        value='**v1.1** \u2015'
               ' [Pobierz](https://mega.nz/file/IUMxQQYb#tSwPOmNV72v_CC2vMP0BT7qXWY_ijCvLbxly-m_Wpn4 "MEGA"),'
               ' [Crystal Launcher](https://mega.nz/file/pYdHkapa#hNPERAJITNkGNtQ-TqzNFlDnNff-y3IhBWzFn2ktq6Q "MEGA")\n'
-              '**v2 lite** \u2015'
+              '**v1.1 lite** \u2015'
               ' [Pobierz](https://mega.nz/file/5FdxEYID#oZK_Vyen6xcDE_KfikHjhSLVr1p_DYma8PYEHs-zKE0 "MEGA"),'
               ' [Crystal Launcher](https://mega.nz/file/scFBAaTa#Mxo1QljM6UZA-UPw382s6vhysYF9D6H2tAJ9NE2udBk "MEGA")'
     )
