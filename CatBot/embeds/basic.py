@@ -31,7 +31,11 @@ def mc_embed() -> Embed:
         color=Color.blurple()
     ).add_field(
         name='Adres',
-        value='```\nvmi472388.contaboserver.net\n```W razie problemów, napisz do Anona.',
+        value='```md\n'
+              ' vmi472388.contaboserver.net\n'
+              '-----------------------------\n'
+              '```W razie problemów, napisz do Anona.\n'
+              'Zobacz też [stronę internetową](https://vmi472388.contaboserver.net/ "Qba Server").',
         inline=False
     ).add_field(
         name='Status',
@@ -43,32 +47,18 @@ def mc_embed() -> Embed:
         name='Ping',
         value='{}ms'.format(int(round(status.latency, 0)) if status else "\u2013 ")
     ).add_field(
-        name='Silnik',
-        value='```\nForge  1.12.2  14.23.5.2854\n```'
+        name='Forge 1.12',
+        value='Wersja: 14.23.5.2854\n'
               '[Pobierz](https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.12.2-14.23.5.2854/'
-              'forge-1.12.2-14.23.5.2854-installer.jar "Minecraft Forge"), [mirror]'
-              '(https://mega.nz/file/oEVnnKzD#8RpVgeTXuFa7H-WxwTAzUlIF_qjAQ385c4bDMvpzjag  "MEGA")',
-        inline=False
+              'forge-1.12.2-14.23.5.2854-installer.jar "Minecraft Forge") 4 MB\n'
+              ' [mirror](https://mega.nz/file/oEVnnKzD#8RpVgeTXuFa7H-WxwTAzUlIF_qjAQ385c4bDMvpzjag  "MEGA")'
     ).add_field(
-        name='Paczki modów (by: Mixiu)',
-        value='**v1.0** \u2015'
-              ' [Pobierz](https://mega.nz/file/IUMxQQYb#tSwPOmNV72v_CC2vMP0BT7qXWY_ijCvLbxly-m_Wpn4 "MEGA"),'
-              ' [Crystal Launcher](https://mega.nz/file/pYdHkapa#hNPERAJITNkGNtQ-TqzNFlDnNff-y3IhBWzFn2ktq6Q "MEGA")'
-              ' 268MB\n'
-              '**v1.0 lite** \u2015'
-              ' [Pobierz](https://mega.nz/file/5FdxEYID#oZK_Vyen6xcDE_KfikHjhSLVr1p_DYma8PYEHs-zKE0 "MEGA"),'
-              ' [Crystal Launcher](https://mega.nz/file/scFBAaTa#Mxo1QljM6UZA-UPw382s6vhysYF9D6H2tAJ9NE2udBk "MEGA")'
-              ' 254MB\n'
-              '**v1.1** \u2015'
-              ' [Pobierz](https://mega.nz/file/5ZcHzSAK#5_jYKwcR574iBOmyu8aTlPAMdARKNRjY8hhy-ugWBpk "MEGA")'
-              ' 273MB',
-        inline=False
-    ).add_field(
-        name='Aktualizacje',
-        value='**v1.0**  :arrow_right:  **v1.1** \u2015'
-              ' [Pobierz](https://mega.nz/file/MEMjwSjI#DisOfmyKlSmmgqR_1RctnU3-mjcA9yVv1sl91SWXlEI "MEGA")'
-              ' 5MB',
-        inline=False
+        name='Paczka modów',
+        value='Wersja: 1.2.0\n'
+              ' [Pobierz](https://mega.nz/file/BZ102RaS#7NcEyBu345DxwUg0NUHqbJVemLgvEsRAMKQ1LIR79CM "MEGA") 215 MB\n'
+              ' [Crystal Launcher](https://mega.nz/file/0Isk1TwB#tsUq80zNtANXSKpKluxLHAyPFn_O19L0JHKLgQf3jwI "MEGA")'
+              ' 236 MB\n'
+              'Paczkę stworzył <@221306966834806785>. :hugging:\n'
     )
     return em
 
