@@ -47,16 +47,22 @@ def mc_embed() -> Embed:
         name='Ping',
         value='{}ms'.format(int(round(status.latency, 0)) if status else "\u2013 ")
     ).add_field(
+        name='Pobieranie',
+        value='Wszystkie pliki sa dostępne na'
+              ' [stronie internetowej](https://vmi472388.contaboserver.net/ "Qba Server").',
+        inline=False
+    ).add_field(
         name='Forge 1.12',
         value='Wersja: 14.23.5.2854\n'
               '[Pobierz](https://files.minecraftforge.net/maven/net/minecraftforge/forge/1.12.2-14.23.5.2854/'
               'forge-1.12.2-14.23.5.2854-installer.jar "Minecraft Forge") 4 MB\n'
-              ' [mirror](https://mega.nz/file/oEVnnKzD#8RpVgeTXuFa7H-WxwTAzUlIF_qjAQ385c4bDMvpzjag  "MEGA")'
+              ' [mirror](https://vmi472388.contaboserver.net/downloads/forge-1.12.2-14.23.5.2854-installer.jar'
+              ' "Qba Server")'
     ).add_field(
         name='Paczka modów',
         value='Wersja: 1.2.0\n'
-              ' [Pobierz](https://mega.nz/file/BZ102RaS#7NcEyBu345DxwUg0NUHqbJVemLgvEsRAMKQ1LIR79CM "MEGA") 215 MB\n'
-              ' [Crystal Launcher](https://mega.nz/file/0Isk1TwB#tsUq80zNtANXSKpKluxLHAyPFn_O19L0JHKLgQf3jwI "MEGA")'
+              ' [Pobierz](https://vmi472388.contaboserver.net/downloads/Mody_v1.2.7z "Qba Server") 215 MB\n'
+              ' [Crystal Launcher](https://vmi472388.contaboserver.net/downloads/Mody_v1.2_CL.clpkg "Qba Server")'
               ' 236 MB\n'
               'Paczkę stworzył <@221306966834806785>. :hugging:\n'
     )
