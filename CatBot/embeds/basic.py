@@ -65,6 +65,10 @@ def mc_embed() -> Embed:
               '[Crystal Launcher](https://vmi472388.contaboserver.net/downloads/Mody_v1.2_CL.clpkg "Qba Server")'
               ' 236 MB\n'
               'Paczkę stworzył <@221306966834806785>. :hugging:\n'
+    ).add_field(
+        name='Aktualizacja paczki',
+        value='`1.2.0` :arrow_right: `1.2.1`\n'
+              '[Pobierz](https://vmi472388.contaboserver.net/downloads/Update_v1.2.0_v1.2.1.7z "Qba Server") 28MB'
     )
     return em
 
