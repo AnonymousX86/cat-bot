@@ -68,7 +68,7 @@ def mc_embed() -> Embed:
     ).add_field(
         name='Aktualizacja paczki',
         value='`1.2.0` :arrow_right: `1.2.2`\n'
-              '[Pobierz](https://vmi472388.contaboserver.net/downloads/Update_v1.2.0_v1.2.2.7z "Qba Server") 24MB'
+              '[Pobierz](https://vmi472388.contaboserver.net/downloads/Update_v1.2.0_v1.2.2.7z "Qba Server") 24 MB'
     )
     return em
 
