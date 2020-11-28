@@ -14,6 +14,21 @@ def please_wait_em() -> Embed:
     )
 
 
+def done_em(description: str = '') -> Embed:
+    return Embed(
+        title=':white_check_mark: Gotowe',
+        description=description,
+        color=Color.blurple()
+    )
+
+
+def missing_perms_em() -> Embed:
+    return Embed(
+        title=':x: Nie możesz tego zrobić.',
+        color=Color.blurple()
+    )
+
+
 def info_em() -> Embed:
     return Embed(
         title=':information_source: Informacje',
