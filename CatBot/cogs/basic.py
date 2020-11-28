@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-from discord import Message
+from asyncio import sleep
+from typing import Optional
+
+from discord import Message, HTTPException, Member, Forbidden
 from discord.ext.commands import Cog, command, Context
 
 from CatBot.embeds.basic import *
