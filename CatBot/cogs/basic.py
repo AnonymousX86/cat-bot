@@ -13,7 +13,8 @@ class Basic(Cog):
         self.bot = bot
 
     @command(
-        name='info'
+        name='info',
+        breif='Podstawowe informacje na temat bota'
     )
     async def info(self, ctx: Context):
         await ctx.send(embed=info_em())
@@ -26,6 +27,7 @@ class Basic(Cog):
 
     @command(
         name='minecraft',
+        bref='Informacje na temat serwera Minecraft',
         aliases=['mc']
     )
     async def minecraft(self, ctx: Context):
@@ -35,19 +37,23 @@ class Basic(Cog):
 
     @command(
         name='archiwa',
+        brief='Dostępne pliki powiązane z naszym Discordem',
         aliases=['archives', 'arch']
     )
     async def archiwa(self, ctx: Context):
         await ctx.send(embed=archives_embed())
 
     @command(
-        name='ip'
+        name='ip',
+        brief='IP bota'
     )
     async def ip(self, ctx: Context):
         await ctx.send(embed=ip_em())
 
     @command(
         name='autorole',
+        biref='Aktualizacja ról',
+        description='Dostępne tylko dla Anona.',
         hidden=True
     )
     async def autorole(self, ctx: Context):
@@ -73,7 +79,8 @@ class Basic(Cog):
             await msg.delete()
 
     @command(
-        name='spierdalaj'
+        name='spierdalaj',
+        biref='Każe komuś... Spierdalać'
     )
     async def spierdalaj(self, ctx: Context, user: Optional[Member]):
         if user:
@@ -82,20 +89,22 @@ class Basic(Cog):
             await ctx.send('Sam spierdalaj.')
 
     @command(
-        name='ziomek'
+        name='ziomek',
+        brief='Że kto?'
     )
     async def ziomek(self, ctx: Context):
         await ctx.send('Ty przecież kolegów nie masz.')
 
     @command(
-        name='kurwo'
+        name='kurwo',
+        brief='Chyba Ty'
     )
     async def kurwo(self, ctx: Context):
         await ctx.send('Ej chuju.')
 
     @command(
         name='kurwa',
-        description='Wysyła wszystkie synonimy i wyrazy podobne'
+        brief='Synonimy i wyrazy podobne'
     )
     async def kurwa(self, ctx: Context):
         await ctx.send('No dobra...')
@@ -120,13 +129,15 @@ class Basic(Cog):
             await sleep(0.5)
 
     @command(
-        name='skryba'
+        name='skryba',
+        brief='Monolog skryby'
     )
     async def skryba(self, ctx: Context):
         await ctx.send(embed=skryba_em())
 
     @command(
-        name='delet'
+        name='delet',
+        brief='Delet dis now!!1!'
     )
     async def delet(self, ctx: Context, member: Optional[Member]):
         if member:
@@ -141,6 +152,7 @@ class Basic(Cog):
 
     @command(
         name='2137',
+        biref='Śpiewa barkę',
         aliases=['janpawel', 'janpaweł', 'JanPawel', 'JanPaweł']
     )
     async def cmd_2137(self, ctx: Context):
