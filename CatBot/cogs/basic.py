@@ -161,7 +161,8 @@ class Basic(Cog):
             'Szukał ludzi gotowych pójść za Nim;',
             'By łowić serca',
             'Słów Bożych prawdą.',
-            'Ref.: O Panie, to Ty na mnie spojrzałeś,',
+            '\\*inhales\\*',
+            'O Panie, to Ty na mnie spojrzałeś,',
             'Twoje usta dziś wyrzekły me imię.',
             'Swoją barkę pozostawiam na brzegu,',
             'Razem z Tobą nowy zacznę dziś łów.'
