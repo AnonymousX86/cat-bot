@@ -44,6 +44,32 @@ class Basic(Cog):
         await ctx.send(embed=ip_em())
 
     @command(
+        name='autorole',
+        hidden=True
+    )
+    async def autorole(self, ctx: Context):
+        if ctx.author.id != 309270832683679745:
+            await ctx.send(embed=missing_perms_em())
+        else:
+            msg = await ctx.send(embed=please_wait_em())
+            added = 0
+            for member in ctx.guild.members:
+                if not member.bot:
+                    for role in map(lambda x: ctx.guild.get_role(x), [718576689302470795, 720650395977777294]):
+                        try:
+                            await member.add_roles(role, reason='Automatyzacja ról.')
+                        except Forbidden:
+                            await ctx.send(
+                                f'Nie mogę dać roli `{role}` użytkownikowi {member.display_name}'
+                            )
+                        except HTTPException:
+                            pass
+                        else:
+                            added += 1
+            await ctx.send(embed=done_em(f'Zaktualizowana ilość ról: {added}.'))
+            await msg.delete()
+
+    @command(
         name='spierdalaj'
     )
     async def spierdalaj(self, ctx: Context, user: Optional[Member]):
