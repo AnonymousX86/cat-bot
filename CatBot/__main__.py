@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from logging import basicConfig, INFO
 
+from discord import Intents
 from discord.ext.commands import Bot, ExtensionNotFound, ExtensionAlreadyLoaded, NoEntryPointError
 from nest_asyncio import apply as async_apply
 
@@ -19,9 +20,14 @@ if __name__ == '__main__':
     async_apply()
     basicConfig(level=INFO)
     bot = Bot(
-        command_prefix='ej ',
+        command_prefix=['ej ', 'Ej '],
         description='Private bot.',
-        owner_id=309270832683679745
+        owner_id=309270832683679745,
+        intents=Intents(
+            guilds=True,
+            members=True,
+            guild_messages=True
+        )
     )
 
 
