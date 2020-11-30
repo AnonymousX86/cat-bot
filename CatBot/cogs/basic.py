@@ -6,6 +6,7 @@ from discord import Message, HTTPException, Forbidden
 from discord.ext.commands import Cog, command, Context
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
+from youtubesearchpython import SearchVideos
 
 from CatBot.embeds.basic import *
 
