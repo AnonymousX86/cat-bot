@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from socket import gethostname, gethostbyname
+from typing import Dict
 
-from discord import Embed, Color
+from discord import Embed, Color, Member
 
 from CatBot.data import archives, server_status
 from settings import Settings
@@ -122,4 +123,25 @@ def skryba_em() -> Embed:
                     ' że dzisiaj na przykład buduję maszyny, a jutro... kto wie, dlaczego by nie, oddam się pracy'
                     ' społecznej i będę ot, choćby sadzić... znaczy... marchew.*',
         color=Color.blurple()
+    )
+
+
+def spotify_em(track: Dict, yt: str, member: Member) -> Embed:
+    name = track['name']
+    artists = map(lambda x: x['name'], track['artists'])
+    return Embed(
+        title=name,
+        description=', '.join(artists),
+        color=Color.green()
+    ).add_field(
+        name='Spotify',
+        value=track['external_urls']['spotify']
+    ).add_field(
+        name='YouTube',
+        value=yt
+    ).set_image(
+        url=track['album']['images'][0]['url']
+    ).set_author(
+        name=f'{member.display_name} udostępnił(a):',
+        icon_url=member.avatar_url
     )

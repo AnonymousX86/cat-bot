@@ -30,3 +30,7 @@ class Settings:
     @property
     def rapidapi_key(self):
         return getenv('RAPIDAPI_KEY')
+
+    @property
+    def spotify_secret(self):
+        return getenv('SPOTIFY_SECRET')

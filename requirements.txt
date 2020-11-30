@@ -1,6 +1,8 @@
 discord.py
-python-dotenv
+python-dotenv~=0.15.0
 nest-asyncio
 praw
 requests
-mcstatus
+mcstatus~=4.1.0
+spotipy~=2.16.1
+youtube-search-python

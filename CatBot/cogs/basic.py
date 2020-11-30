@@ -2,8 +2,10 @@
 from asyncio import sleep
 from typing import Optional
 
-from discord import Message, HTTPException, Member, Forbidden
+from discord import Message, HTTPException, Forbidden
 from discord.ext.commands import Cog, command, Context
+from spotipy import Spotify
+from spotipy.oauth2 import SpotifyClientCredentials
 
 from CatBot.embeds.basic import *
 
@@ -24,6 +26,28 @@ class Basic(Cog):
         if message.channel.id in [773548753428152390]:
             await message.add_reaction('👍')
             await message.add_reaction('👎')
+
+    @Cog.listener('on_message')
+    async def spotify_to_youtube(self, message: Message):
+        if message.content.startswith('https://open.spotify.com/track/'):
+            sp = Spotify(
+                auth_manager=SpotifyClientCredentials(
+                    client_id='11fb31af174d46218d05049e75d0a8a8',
+                    client_secret=Settings().spotify_secret
+                )
+            )
+            result = sp.track(message.content.split('/')[-1])
+            yt = SearchVideos(
+                '{} {}'.format(result['name'], ' '.join(map(lambda x: x['name'], result['artists']))),
+                mode='dict',
+                max_results=1
+            ).result()['search_result'][0]['link']
+            await message.channel.send(embed=spotify_em(result, yt, message.author))
+            await message.channel.send(yt)
+            try:
+                await message.delete()
+            except Forbidden or HTTPException:
+                pass
 
     @command(
         name='minecraft',
