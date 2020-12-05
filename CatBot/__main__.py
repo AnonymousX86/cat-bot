@@ -1,24 +1,22 @@
 # -*- coding: utf-8 -*-
-from logging import basicConfig, INFO
+from logging import basicConfig, getLogger
 
 from discord import Intents
 from discord.ext.commands import Bot, ExtensionNotFound, ExtensionAlreadyLoaded, NoEntryPointError
 from nest_asyncio import apply as async_apply
+from rich.logging import RichHandler
 
 from settings import Settings
 
-
-def log(prefix: str, text: str):
-    """Just prettying print (acting as logging) function"""
-    while len(prefix) < 6:
-        prefix += ' '
-    prefix = f'[{prefix}]'
-    print(f'{prefix} {text}')
-
-
 if __name__ == '__main__':
     async_apply()
-    basicConfig(level=INFO)
+    basicConfig(
+        level='INFO',
+        format='%(message)s',
+        datefmt='[%x]',
+        handlers=[RichHandler()]
+    )
+    log = getLogger('rich')
     bot = Bot(
         command_prefix=['ej ', 'Ej '],
         description='Private bot.',
@@ -33,25 +31,23 @@ if __name__ == '__main__':
 
     @bot.event
     async def on_ready():
-        log('Bot', 'Logged in as {0} (ID: {0.id})'.format(bot.user))
+        log.info('Logged in as {0} (ID: {0.id})'.format(bot.user))
 
-        for cog in [f'CatBot.cogs.{cog}' for cog in [
-            'basic'
-        ]]:
-            p = 'Cogs'
+        for cog in [f'CatBot.cogs.{cog}' for cog in ['basic']]:
             try:
                 bot.load_extension(cog)
-                log(p, f'Loaded: {cog}')
             except ExtensionNotFound:
-                log(p, f'Not found: {cog}')
+                log.warning(f'Not found: {cog}')
             except ExtensionAlreadyLoaded:
-                log(p, f'Already loaded: {cog}')
+                log.warning(f'Already loaded: {cog}')
             except NoEntryPointError:
-                log(p, f'Extension "{cog}" do not have "setup()" function')
+                log.warning(f'Extension "{cog}" do not have "setup()" function')
             except Exception as e:
-                log(p, f'{e.__class__.__name__}: {e}')
+                log.warning(f'{e.__class__.__name__}: {e}')
+            else:
+                log.info(f'Loaded: {cog}')
 
-        log('Bot', 'Everything done!')
+        log.info('Everything done!')
 
 
     bot.run(Settings().bot_token)
