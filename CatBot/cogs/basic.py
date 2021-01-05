@@ -138,7 +138,7 @@ class Basic(Cog):
         for text in sorted([
             *'dokurwić, dokurwiać, kurwieć, kurwić się, kurwować, nakurwić się, nakurwiać, odkurwić, odkurwiać,'
              ' okurwiać, okurwić, podkurwić, podkurwiać, pokurwić, pokurwiać, pokurwieć, podokurwiać, ponakurwiać,'
-             ' poodkurwiać, popodkurwiać, poprzekurwiać, poprzykurwiać,porozkurwiać, poskurwiać, powkurwiać,'
+             ' poodkurwiać, popodkurwiać, poprzekurwiać, poprzykurwiać, porozkurwiać, poskurwiać, powkurwiać,'
              ' powykurwiać, pozakurwiać, przekurwić, przekurwiać, przykurwić, rozkurwić, rozkurwiać, skurwieć,'
              ' skurwić, skurwiać, ukurwiać, wkurwić, wkurwiać, wykurwić, zakurwić, zakurwiać,'
              ' kurewstwo, kurwiarz, kurwiątko, kurwica, kurwidołek, kurwie macierze syn kurwik, kurwiszcze, kurwiszon,'
