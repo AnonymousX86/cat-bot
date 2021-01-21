@@ -30,6 +30,13 @@ def missing_perms_em() -> Embed:
     )
 
 
+def missing_user_em() -> Embed:
+    return Embed(
+        title=':x: Nie podałeś(aś) użytkownika',
+        color=Color.blurple()
+    )
+
+
 def info_em() -> Embed:
     return Embed(
         title=':information_source: Informacje',

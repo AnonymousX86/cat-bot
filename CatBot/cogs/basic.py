@@ -196,6 +196,24 @@ class Basic(Cog):
             await ctx.send(f'*{line}*')
             await sleep(3)
 
+    @command(
+        name='order',
+        brief='Odznacza kogoś orderem Sashy Grey'
+    )
+    async def order(self, ctx: Context, user: Member):
+        if not user:
+            await ctx.send(embed=missing_user_em())
+        elif 641331138622783508 not in map(lambda r: r.id, ctx.author.roles):
+            await ctx.send(embed=missing_perms_em())
+        else:
+            try:
+                await user.add_roles(ctx.guild.get_role(799377826859843634))
+            except HTTPException:
+                pass
+            await ctx.send(embed=done_em(
+                f'{user.mention} otrzymał(a) **order Sashy Grey** za **przeruchanie przeruchanego mema**.'
+            ))
+
 
 def setup(bot):
     bot.add_cog(Basic(bot))
