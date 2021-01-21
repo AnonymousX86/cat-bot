@@ -26,6 +26,7 @@ def done_em(description: str = '') -> Embed:
 def missing_perms_em() -> Embed:
     return Embed(
         title=':x: Nie możesz tego zrobić.',
+        description='Prawdopodobnie nie posiadasz odpowiednich uprawnień.',
         color=Color.blurple()
     )
 
