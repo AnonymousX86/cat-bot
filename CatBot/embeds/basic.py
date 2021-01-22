@@ -148,7 +148,7 @@ def spotify_em(track: Dict, yt: str, member: Member) -> Embed:
         name='YouTube',
         value=yt
     ).set_image(
-        url=track['album']['images'][0]['url']
+        url=track['album']['images'][1]['url']
     ).set_author(
         name=f'{member.display_name} udostępnił(a):',
         icon_url=member.avatar_url
