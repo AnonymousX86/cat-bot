@@ -87,7 +87,7 @@ def skryba_em() -> Embed:
 
 def spotify_em(track: Dict, member: Member) -> Embed:
     name = track['name']
-    artists = map(lambda x: x['name'], track['artists'])
+    artists = list(map(lambda x: x['name'], track['artists']))
     return Embed(
         color=Color.green()
     ).add_field(
@@ -95,7 +95,7 @@ def spotify_em(track: Dict, member: Member) -> Embed:
         value=name,
         inline=False
     ).add_field(
-        name='Wykonawca(y)',
+        name='Wykonawca' if len(artists) == 1 else 'Wykonawcy',
         value=', '.join(artists),
         inline=False
     ).add_field(
