@@ -18,7 +18,7 @@ if __name__ == '__main__':
     )
     log = getLogger('rich')
     bot = Bot(
-        command_prefix=['ej ', 'Ej '],
+        command_prefix=['ej ', 'Ej ', '<@753541564306948098> '],
         description='Private bot.',
         owner_id=309270832683679745,
         intents=Intents(
