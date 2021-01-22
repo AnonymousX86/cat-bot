@@ -51,16 +51,6 @@ class Basic(Cog):
                 pass
 
     @command(
-        name='minecraft',
-        bref='Informacje na temat serwera Minecraft',
-        aliases=['mc']
-    )
-    async def minecraft(self, ctx: Context):
-        msg = await ctx.send(embed=please_wait_em())
-        await ctx.send(embed=mc_embed())
-        await msg.delete()
-
-    @command(
         name='archiwa',
         brief='Dostępne pliki powiązane z naszym Discordem',
         aliases=['archives', 'arch']
