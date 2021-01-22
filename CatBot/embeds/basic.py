@@ -85,21 +85,25 @@ def skryba_em() -> Embed:
     )
 
 
-def spotify_em(track: Dict, yt: str, member: Member) -> Embed:
+def spotify_em(track: Dict, member: Member) -> Embed:
     name = track['name']
     artists = map(lambda x: x['name'], track['artists'])
     return Embed(
-        title=name,
-        description=', '.join(artists),
         color=Color.green()
     ).add_field(
-        name='Spotify',
-        value=track['external_urls']['spotify']
+        name='Tytuł',
+        value=name,
+        inline=False
     ).add_field(
-        name='YouTube',
-        value=yt
-    ).set_image(
-        url=track['album']['images'][1]['url']
+        name='Wykonawca(y)',
+        value=', '.join(artists),
+        inline=False
+    ).add_field(
+        name='Spotify',
+        value=track['external_urls']['spotify'],
+        inline=False
+    ).set_thumbnail(
+        url=track['album']['images'][-1]['url']
     ).set_author(
         name=f'{member.display_name} udostępnił(a):',
         icon_url=member.avatar_url

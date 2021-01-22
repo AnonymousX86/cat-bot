@@ -2,7 +2,7 @@
 from asyncio import sleep
 from typing import Optional
 
-from discord import Message, HTTPException, Forbidden
+from discord import Message, HTTPException, Forbidden, NotFound
 from discord.ext.commands import Cog, command, Context
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -43,11 +43,11 @@ class Basic(Cog):
                 mode='dict',
                 max_results=1
             ).result()['search_result'][0]['link']
-            await message.channel.send(embed=spotify_em(result, yt, message.author))
+            await message.channel.send(embed=spotify_em(result, message.author))
             await message.channel.send(yt)
             try:
                 await message.delete()
-            except Forbidden or HTTPException:
+            except Forbidden or HTTPException or NotFound:
                 pass
 
     @command(
