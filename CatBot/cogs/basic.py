@@ -200,6 +200,7 @@ class Basic(Cog):
                 await user.add_roles(ctx.guild.get_role(799377826859843634))
             except HTTPException:
                 pass
+            # noinspection SpellCheckingInspection
             await ctx.send(embed=done_em(
                 f'{user.mention} otrzymał(a) **order Sashy Grey** za **przeruchanie przeruchanego mema**.'
             ))
