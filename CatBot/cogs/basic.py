@@ -197,7 +197,7 @@ class Basic(Cog):
             await ctx.send(embed=missing_perms_em())
         else:
             try:
-                await user.add_roles(ctx.guild.get_role(799377826859843634))
+                await user.add_roles(ctx.guild.get_role(799377826859843634), reason='Przeruchanie przeruchanego mema.')
             except HTTPException:
                 pass
             # noinspection SpellCheckingInspection
