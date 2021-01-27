@@ -187,6 +187,7 @@ class Basic(Cog):
             await ctx.send(f'*{line}*')
             await sleep(3)
 
+    # noinspection SpellCheckingInspection
     @command(
         name='order',
         brief='Odznacza kogoś orderem Sashy Grey'
@@ -201,7 +202,6 @@ class Basic(Cog):
                 await user.add_roles(ctx.guild.get_role(799377826859843634), reason='Przeruchanie przeruchanego mema.')
             except HTTPException:
                 pass
-            # noinspection SpellCheckingInspection
             await ctx.send(embed=done_em(
                 f'{user.mention} otrzymał(a) **order Sashy Grey** za **przeruchanie przeruchanego mema**.'
             ))
