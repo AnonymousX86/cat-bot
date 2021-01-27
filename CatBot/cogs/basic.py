@@ -39,6 +39,7 @@ class Basic(Cog):
                     )
                 )
                 result = sp.track(message.content.split('/')[-1])
+                # noinspection PyTypeChecker
                 yt = SearchVideos(
                     '{} {}'.format(result['name'], ' '.join(map(lambda x: x['name'], result['artists']))),
                     mode='dict',
