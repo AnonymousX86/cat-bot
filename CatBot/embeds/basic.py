@@ -4,7 +4,7 @@ from typing import Dict
 
 from discord import Embed, Color, Member
 
-from CatBot.data import archives, server_status
+from CatBot.data import archives
 from settings import Settings
 
 
