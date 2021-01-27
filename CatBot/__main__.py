@@ -10,6 +10,7 @@ from settings import Settings
 
 if __name__ == '__main__':
     async_apply()
+    # noinspection PyArgumentList
     basicConfig(
         level='INFO',
         format='%(message)s',
