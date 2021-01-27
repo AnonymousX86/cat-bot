@@ -45,7 +45,7 @@ class Basic(Cog):
                     max_results=1
                 ).result()['search_result'][0]['link']
                 await message.channel.send(embed=spotify_em(result, message.author))
-                await message.channel.send(yt)
+                await message.channel.send(f'**YouTube**\n{yt}')
                 try:
                     await message.delete()
                 except Forbidden or HTTPException or NotFound:
