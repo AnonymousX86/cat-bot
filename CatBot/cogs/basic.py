@@ -30,25 +30,26 @@ class Basic(Cog):
 
     @Cog.listener('on_message')
     async def spotify_to_youtube(self, message: Message):
-        if message.content.startswith('https://open.spotify.com/track/'):
-            sp = Spotify(
-                auth_manager=SpotifyClientCredentials(
-                    client_id='11fb31af174d46218d05049e75d0a8a8',
-                    client_secret=Settings().spotify_secret
+        if message.channel.id not in [782312754220105738]:
+            if message.content.startswith('https://open.spotify.com/track/'):
+                sp = Spotify(
+                    auth_manager=SpotifyClientCredentials(
+                        client_id='11fb31af174d46218d05049e75d0a8a8',
+                        client_secret=Settings().spotify_secret
+                    )
                 )
-            )
-            result = sp.track(message.content.split('/')[-1])
-            yt = SearchVideos(
-                '{} {}'.format(result['name'], ' '.join(map(lambda x: x['name'], result['artists']))),
-                mode='dict',
-                max_results=1
-            ).result()['search_result'][0]['link']
-            await message.channel.send(embed=spotify_em(result, message.author))
-            await message.channel.send(yt)
-            try:
-                await message.delete()
-            except Forbidden or HTTPException or NotFound:
-                pass
+                result = sp.track(message.content.split('/')[-1])
+                yt = SearchVideos(
+                    '{} {}'.format(result['name'], ' '.join(map(lambda x: x['name'], result['artists']))),
+                    mode='dict',
+                    max_results=1
+                ).result()['search_result'][0]['link']
+                await message.channel.send(embed=spotify_em(result, message.author))
+                await message.channel.send(yt)
+                try:
+                    await message.delete()
+                except Forbidden or HTTPException or NotFound:
+                    pass
 
     @command(
         name='archiwa',
