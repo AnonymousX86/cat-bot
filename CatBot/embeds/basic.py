@@ -92,12 +92,10 @@ def spotify_em(track: Dict, member: Member) -> Embed:
         color=Color.green()
     ).add_field(
         name='Tytuł',
-        value=name,
-        inline=False
+        value=name
     ).add_field(
         name='Wykonawca' if len(artists) == 1 else 'Wykonawcy',
-        value=', '.join(artists),
-        inline=False
+        value=', '.join(artists)
     ).add_field(
         name='Spotify',
         value=track['external_urls']['spotify'],
