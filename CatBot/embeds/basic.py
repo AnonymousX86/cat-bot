@@ -38,6 +38,14 @@ def missing_user_em() -> Embed:
     )
 
 
+def custom_error_em(description: str = 'Nieznany błąd.') -> Embed:
+    return Embed(
+        title=':x: Błąd!',
+        description=description,
+        color=Color.blurple()
+    )
+
+
 def info_em() -> Embed:
     return Embed(
         title=':information_source: Informacje',
