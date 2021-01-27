@@ -3,13 +3,11 @@ from logging import basicConfig, getLogger
 
 from discord import Intents
 from discord.ext.commands import Bot, ExtensionNotFound, ExtensionAlreadyLoaded, NoEntryPointError
-from nest_asyncio import apply as async_apply
 from rich.logging import RichHandler
 
 from settings import Settings
 
 if __name__ == '__main__':
-    async_apply()
     # noinspection PyArgumentList
     basicConfig(
         level='INFO',
