@@ -48,5 +48,7 @@ if __name__ == '__main__':
 
         log.info('Everything done!')
 
+        bot.log = log
+
 
     bot.run(Settings().bot_token)
