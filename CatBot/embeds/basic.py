@@ -4,7 +4,6 @@ from typing import Dict
 
 from discord import Embed, Color, Member
 
-from CatBot.data import archives
 from settings import Settings
 
 
@@ -54,19 +53,6 @@ def info_em() -> Embed:
         name='Wersja',
         value=f'{Settings().bot_version}'
     )
-
-
-def archives_embed() -> Embed:
-    em = Embed(
-        title=':inbox_tray: Archiwa',
-        color=Color.blurple()
-    )
-    for a in archives():
-        em.add_field(
-            name=f'{a.name}',
-            value=f'[Pobierz]({a.link}) - {a.size}'
-        )
-    return em
 
 
 def ip_em() -> Embed:
