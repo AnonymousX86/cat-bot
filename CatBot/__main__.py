@@ -40,7 +40,7 @@ if __name__ == '__main__':
     async def on_ready():
         log.info('Logged in as {0} (ID: {0.id})'.format(bot.user))
 
-        for cog in [f'CatBot.cogs.{cog}' for cog in ['basic']]:
+        for cog in [f'CatBot.cogs.{cog}' for cog in ['basic', 'responses']]:
             try:
                 bot.load_extension(cog)
             except ExtensionNotFound:
