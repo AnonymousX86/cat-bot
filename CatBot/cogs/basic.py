@@ -11,6 +11,19 @@ from youtubesearchpython import SearchVideos
 from CatBot.embeds.basic import *
 
 
+async def add_basic_roles(ctx: Context, member: Member) -> bool:
+    for role in map(lambda x: ctx.guild.get_role(x), [718576689302470795, 720650395977777294]):
+        try:
+            await member.add_roles(role, reason='Automatyzacja ról.')
+        except Forbidden:
+            await ctx.send(f'Nie mogę dać roli `{role}` użytkownikowi {member.display_name}')
+        except HTTPException:
+            pass
+        else:
+            return True
+        return False
+
+
 class Basic(Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -38,15 +51,26 @@ class Basic(Cog):
                         client_secret=Settings().spotify_secret
                     )
                 )
+                if not sp:
+                    return await message.channel.send('Can\'t connect to Spotify!')
+
                 result = sp.track(message.content.split('/')[-1])
+                if not result:
+                    return await self.bot.write_and_log('Spotify link is wrong!')
+
+                query = '{} {}'.format(result['name'], ' '.join(map(lambda x: x['name'], result['artists'])))
                 # noinspection PyTypeChecker
                 yt = SearchVideos(
-                    '{} {}'.format(result['name'], ' '.join(map(lambda x: x['name'], result['artists']))),
+                    query,
                     mode='dict',
                     max_results=1
                 ).result()['search_result'][0]['link']
+                if not yt:
+                    return await self.bot.write_and_log(f'YouTube video "{query}" not found!')
+
                 await message.channel.send(embed=spotify_em(result, message.author))
                 await message.channel.send(f'>>> **YouTube**\n{yt}')
+                self.bot.log.info('Spotify song found on YouTube successfully!')
                 try:
                     await message.delete()
                 except Forbidden or HTTPException or NotFound:
@@ -79,20 +103,13 @@ class Basic(Cog):
         else:
             msg = await ctx.send(embed=please_wait_em())
             added = 0
+            self.bot.log.info(f'Started updating roles by {str(ctx.author)}')
             for member in ctx.guild.members:
                 if not member.bot:
-                    for role in map(lambda x: ctx.guild.get_role(x), [718576689302470795, 720650395977777294]):
-                        try:
-                            await member.add_roles(role, reason='Automatyzacja ról.')
-                        except Forbidden:
-                            await ctx.send(
-                                f'Nie mogę dać roli `{role}` użytkownikowi {member.display_name}'
-                            )
-                        except HTTPException:
-                            pass
-                        else:
-                            added += 1
+                    if await add_basic_roles(ctx, member):
+                        added += 1
             await ctx.send(embed=done_em(f'Zaktualizowana ilość ról: {added}.'))
+            self.bot.log.info(f'Updated {added} roles')
             await msg.delete()
 
     @command(
@@ -199,8 +216,12 @@ class Basic(Cog):
         elif 641331138622783508 not in map(lambda r: r.id, ctx.author.roles):
             await ctx.send(embed=missing_perms_em())
         else:
+            role = ctx.guild.get_role(799377826859843634)
+            if not role:
+                return await self.bot.write_and_log('', ctx.channel)
             try:
-                await user.add_roles(ctx.guild.get_role(799377826859843634), reason='Przeruchanie przeruchanego mema.')
+                await user.add_roles(role, reason='Przeruchanie przeruchanego mema.')
+                self.bot.log.info(f'Added ')
             except HTTPException:
                 pass
             await ctx.send(embed=done_em(

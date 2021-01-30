@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from logging import basicConfig, getLogger
 
-from discord import Intents
+from discord import Intents, TextChannel, Message
 from discord.ext.commands import Bot, ExtensionNotFound, ExtensionAlreadyLoaded, NoEntryPointError
 from rich.logging import RichHandler
 
+from CatBot.embeds.basic import custom_error_em
 from settings import Settings
 
 if __name__ == '__main__':
@@ -27,6 +28,13 @@ if __name__ == '__main__':
         )
     )
 
+    async def write_and_log(error: str, channel: TextChannel, type_: str = 'warning') -> Message:
+        if type_ == 'warning':
+            f = log.warning
+        else:
+            f = log.info
+        f(error)
+        return await channel.send(embed=custom_error_em(error))
 
     @bot.event
     async def on_ready():
@@ -49,6 +57,7 @@ if __name__ == '__main__':
         log.info('Everything done!')
 
         bot.log = log
+        bot.write_and_log = write_and_log
 
 
     bot.run(Settings().bot_token)
