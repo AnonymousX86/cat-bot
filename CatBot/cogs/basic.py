@@ -36,10 +36,10 @@ class Basic(Cog):
         await ctx.send(embed=info_em())
 
     @Cog.listener('on_message')
-    async def plus_adder(self, message: Message = None):
-        if message.channel.id in [773548753428152390]:
-            await message.add_reaction('👍')
-            await message.add_reaction('👎')
+    async def plus_adder(self, message: Message):
+        if message.channel.id in [400984666972094465]:
+            for emoji in ['👍', '👎']:
+                await message.add_reaction(emoji)
 
     @Cog.listener('on_message')
     async def spotify_to_youtube(self, message: Message):
