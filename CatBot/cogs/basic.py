@@ -28,7 +28,8 @@ class Basic(Cog):
 
     @command(
         name='info',
-        breif='Podstawowe informacje na temat bota'
+        breif='Podstawowe informacje na temat bota',
+        description='Pokazuje podstawowe informacje na temat bota. (Na co to komu?)'
     )
     async def info(self, ctx: Context):
         await ctx.send(embed=info_em())
@@ -98,7 +99,8 @@ class Basic(Cog):
     # noinspection SpellCheckingInspection
     @command(
         name='order',
-        brief='Odznacza kogoś orderem Sashy Grey'
+        brief='Odznacza kogoś orderem Sashy Grey',
+        description='Daje komuś rangę "order Sashy Grey" żeby pokazać, jak bardzo rucha przeruchane memy.'
     )
     async def order(self, ctx: Context, user: Member):
         if not user:
