@@ -6,7 +6,7 @@ from discord.ext.commands import Bot, ExtensionNotFound, ExtensionAlreadyLoaded,
 from rich.logging import RichHandler
 
 from CatBot.embeds.basic import custom_error_em
-from settings import Settings
+from CatBot.settings import Settings
 
 if __name__ == '__main__':
     # noinspection PyArgumentList
@@ -16,6 +16,7 @@ if __name__ == '__main__':
         datefmt='[%x]',
         handlers=[RichHandler()]
     )
+    getLogger('sqlalchemy.engine').setLevel('WARNING')
     log = getLogger('rich')
     bot = Bot(
         command_prefix=['ej ', 'Ej ', '<@753541564306948098> '],
