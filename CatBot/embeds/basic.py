@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime as d
 from socket import gethostname, gethostbyname
-from typing import Dict
+from typing import Dict, List
 
-from discord import Embed, Color, Member
+from discord import Embed, Color, Member, User
 
-from settings import Settings
+from CatBot.utils.database import Flex
+from CatBot.settings import Settings
 
 
 def please_wait_em() -> Embed:
@@ -109,3 +111,62 @@ def spotify_em(track: Dict, member: Member) -> Embed:
         name=f'{member.display_name} udostępnił(a):',
         icon_url=member.avatar_url
     )
+
+
+def user_flexes_em(user: User, flexes: List[Flex]) -> Embed:
+    em = Embed(
+        title=f':muscle: Flexy: {user.display_name}',
+        description='Ostatnie 10 flexów.',
+        timestamp=d.utcnow(),
+        color=Color.blurple()
+    ).set_thumbnail(
+        url=user.avatar_url
+    )
+    if not len(flexes):
+        em.add_field(
+            name='Brak',
+            value=f'{user.display_name} nie ma (jeszcze) flexów.'
+        )
+    for i, flex in enumerate(flexes):
+        em.add_field(
+            name=f'`{i + 1}.`  {str(flex.flex_date)}',
+            value=flex.reason.capitalize(),
+            inline=False
+        )
+    return em
+
+
+def flextop_em(users: list, counts: list, days: int) -> Embed:
+    em = Embed(
+        title=':dart: Topowe flexy',
+        description=f'Lista najbardziej flexujących się osób z ostatnich {days} dni.',
+        timestamp=d.utcnow(),
+        color=Color.blurple()
+    )
+    le = len(users)
+    if not le:
+        em.add_field(
+            name='\u200b',
+            value=':x: Brak flexów!'
+        )
+    else:
+        f = (users[::-1], counts[::-1])
+        if le > 0:
+            em.add_field(
+                name=':first_place: Pierwsze miejsce',
+                value='{0[0]} \u2015 **{1[0]}**'.format(*f),
+                inline=False
+            )
+        if le > 1:
+            em.add_field(
+                name=':second_place: Pierwsze miejsce',
+                value='{0[1]} \u2015 **{1[1]}**'.format(*f),
+                inline=False
+            )
+        if le > 2:
+            em.add_field(
+                name=':third_place: Pierwsze miejsce',
+                value='{0[2]} \u2015 **{1[2]}**'.format(*f),
+                inline=False
+            )
+    return em
