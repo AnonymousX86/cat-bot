@@ -10,6 +10,7 @@ from settings import Settings
 def please_wait_em() -> Embed:
     return Embed(
         title=':hourglass_flowing_sand: Daj mi chwilę...',
+        timestamp=d.utcnow(),
         color=Color.blurple()
     )
 
@@ -18,6 +19,7 @@ def done_em(description: str = '') -> Embed:
     return Embed(
         title=':white_check_mark: Gotowe',
         description=description,
+        timestamp=d.utcnow(),
         color=Color.blurple()
     )
 
@@ -26,6 +28,7 @@ def missing_perms_em() -> Embed:
     return Embed(
         title=':x: Nie możesz tego zrobić',
         description='Prawdopodobnie nie posiadasz odpowiednich uprawnień.',
+        timestamp=d.utcnow(),
         color=Color.blurple()
     )
 
@@ -33,6 +36,7 @@ def missing_perms_em() -> Embed:
 def missing_user_em() -> Embed:
     return Embed(
         title=':x: Nie podałeś(aś) użytkownika',
+        timestamp=d.utcnow(),
         color=Color.blurple()
     )
 
@@ -41,6 +45,7 @@ def custom_error_em(description: str = 'Nieznany błąd.') -> Embed:
     return Embed(
         title=':x: Błąd!',
         description=description,
+        timestamp=d.utcnow(),
         color=Color.blurple()
     )
 
@@ -48,6 +53,7 @@ def custom_error_em(description: str = 'Nieznany błąd.') -> Embed:
 def info_em() -> Embed:
     return Embed(
         title=':information_source: Informacje',
+        timestamp=d.utcnow(),
         color=Color.blurple()
     ).add_field(
         name='Wersja',
@@ -58,6 +64,7 @@ def info_em() -> Embed:
 def ip_em() -> Embed:
     return Embed(
         title=f':information_source: {gethostbyname(gethostname())}',
+        timestamp=d.utcnow(),
         color=Color.blurple()
     )
 
@@ -75,6 +82,7 @@ def skryba_em() -> Embed:
                     ' czerpiesz tę radość? A ja odpowiadam, że to proste, to umiłowanie życia, to właśnie ono sprawia,'
                     ' że dzisiaj na przykład buduję maszyny, a jutro... kto wie, dlaczego by nie, oddam się pracy'
                     ' społecznej i będę ot, choćby sadzić... znaczy... marchew.*',
+        timestamp=d.utcnow(),
         color=Color.blurple()
     )
 
@@ -83,6 +91,7 @@ def spotify_em(track: Dict, member: Member) -> Embed:
     name = track['name']
     artists = list(map(lambda x: x['name'], track['artists']))
     return Embed(
+        timestamp=d.utcnow(),
         color=Color.green()
     ).add_field(
         name='Tytuł',
