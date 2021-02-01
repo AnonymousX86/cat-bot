@@ -16,25 +16,25 @@ class Settings:
         return '0.1.0-alpha'
 
     @property
-    def reddit_client_id(self):
+    def reddit_client_id(self) -> str:
         return getenv('REDDIT_CLIENT_ID')
 
     @property
-    def reddit_client_secret(self):
+    def reddit_client_secret(self) -> str:
         return getenv('REDDIT_CLIENT_SECRET')
 
     @property
-    def reddit_user_agent(self):
+    def reddit_user_agent(self) -> str:
         return getenv('REDDIT_USER_AGENT').format(self.bot_version)
 
     @property
-    def rapidapi_key(self):
+    def rapidapi_key(self) -> str:
         return getenv('RAPIDAPI_KEY')
 
     @property
-    def spotify_secret(self):
+    def spotify_secret(self) -> str:
         return getenv('SPOTIFY_SECRET')
 
     @property
-    def database_url(self):
+    def database_url(self) -> str:
         return getenv('DATABASE_URL')
