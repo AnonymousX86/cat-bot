@@ -34,19 +34,6 @@ class SuccessEmbed(BaseEmbed):
         self.colour = Color.green()
 
 
-def please_wait_em() -> Embed:
-    return BaseEmbed(
-        title=':hourglass_flowing_sand: Daj mi chwilę...'
-    )
-
-
-def done_em(description: str = '') -> Embed:
-    return SuccessEmbed(
-        title=':white_check_mark: Gotowe',
-        description=description
-    )
-
-
 def missing_perms_em() -> Embed:
     return ErrorEmbed(
         title=':x: Nie możesz tego zrobić',
@@ -64,6 +51,19 @@ def custom_error_em(description: str = 'Nieznany błąd.') -> Embed:
     return ErrorEmbed(
         title=':x: Coś poszło nie tak!',
         description=description
+    )
+
+
+def done_em(description: str = '') -> Embed:
+    return SuccessEmbed(
+        title=':white_check_mark: Gotowe',
+        description=description
+    )
+
+
+def please_wait_em() -> Embed:
+    return BaseEmbed(
+        title=':hourglass_flowing_sand: Daj mi chwilę...'
     )
 
 
