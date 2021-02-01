@@ -22,6 +22,18 @@ class BaseEmbed(Embed):
             self.colour = Color.blurple()
 
 
+class ErrorEmbed(BaseEmbed):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.colour = Color.red()
+
+
+class SuccessEmbed(BaseEmbed):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.colour = Color.green()
+
+
 def please_wait_em() -> Embed:
     return BaseEmbed(
         title=':hourglass_flowing_sand: Daj mi chwilę...'
@@ -29,28 +41,28 @@ def please_wait_em() -> Embed:
 
 
 def done_em(description: str = '') -> Embed:
-    return BaseEmbed(
+    return SuccessEmbed(
         title=':white_check_mark: Gotowe',
         description=description
     )
 
 
 def missing_perms_em() -> Embed:
-    return BaseEmbed(
+    return ErrorEmbed(
         title=':x: Nie możesz tego zrobić',
         description='Prawdopodobnie nie posiadasz odpowiednich uprawnień.'
     )
 
 
 def missing_user_em() -> Embed:
-    return BaseEmbed(
+    return ErrorEmbed(
         title=':x: Nie podałeś(aś) użytkownika'
     )
 
 
 def custom_error_em(description: str = 'Nieznany błąd.') -> Embed:
-    return BaseEmbed(
-        title=':x: Błąd!',
+    return ErrorEmbed(
+        title=':x: Coś poszło nie tak!',
         description=description
     )
 
@@ -89,7 +101,9 @@ def skryba_em() -> Embed:
 def spotify_em(track: Dict, member: Member) -> Embed:
     name = track['name']
     artists = list(map(lambda x: x['name'], track['artists']))
-    return BaseEmbed().add_field(
+    return BaseEmbed(
+        color=Color.dark_green()
+    ).add_field(
         name='Tytuł',
         value=name
     ).add_field(
