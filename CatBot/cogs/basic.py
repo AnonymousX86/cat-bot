@@ -119,7 +119,7 @@ class Basic(Cog):
                 return await self.bot.write_and_log('', ctx.channel)
             try:
                 await user.add_roles(role, reason='Przeruchanie przeruchanego mema.')
-                self.bot.log.info(f'An order was awarder to {str(user)}')
+                self.bot.log.info(f'An order was awarded to {str(user)}')
             except HTTPException:
                 pass
             await ctx.send(embed=done_em(
