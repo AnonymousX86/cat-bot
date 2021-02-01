@@ -5,77 +5,73 @@ from typing import Dict, List
 
 from discord import Embed, Color, Member, User
 
-from CatBot.utils.database import Flex
 from CatBot.settings import Settings
+from CatBot.utils.database import Flex
+
+
+class BaseEmbed(Embed):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        try:
+            self.timestamp = kwargs['timestamp']
+        except KeyError:
+            self.timestamp = d.utcnow()
+        try:
+            self.colour = kwargs['color']
+        except KeyError:
+            self.colour = Color.blurple()
 
 
 def please_wait_em() -> Embed:
-    return Embed(
-        title=':hourglass_flowing_sand: Daj mi chwilę...',
-        timestamp=d.utcnow(),
-        color=Color.blurple()
+    return BaseEmbed(
+        title=':hourglass_flowing_sand: Daj mi chwilę...'
     )
 
 
 def done_em(description: str = '') -> Embed:
-    return Embed(
+    return BaseEmbed(
         title=':white_check_mark: Gotowe',
-        description=description,
-        timestamp=d.utcnow(),
-        color=Color.blurple()
+        description=description
     )
 
 
 def missing_perms_em() -> Embed:
-    return Embed(
+    return BaseEmbed(
         title=':x: Nie możesz tego zrobić',
-        description='Prawdopodobnie nie posiadasz odpowiednich uprawnień.',
-        timestamp=d.utcnow(),
-        color=Color.blurple()
+        description='Prawdopodobnie nie posiadasz odpowiednich uprawnień.'
     )
 
 
 def missing_user_em() -> Embed:
-    return Embed(
-        title=':x: Nie podałeś(aś) użytkownika',
-        timestamp=d.utcnow(),
-        color=Color.blurple()
+    return BaseEmbed(
+        title=':x: Nie podałeś(aś) użytkownika'
     )
 
 
 def custom_error_em(description: str = 'Nieznany błąd.') -> Embed:
-    return Embed(
+    return BaseEmbed(
         title=':x: Błąd!',
-        description=description,
-        timestamp=d.utcnow(),
-        color=Color.blurple()
+        description=description
     )
 
 
 def info_em() -> Embed:
-    return Embed(
-        title=':information_source: Informacje',
-        timestamp=d.utcnow(),
-        color=Color.blurple()
-    ).add_field(
-        name='Wersja',
-        value=Settings().bot_version
+    return BaseEmbed(
+        title=':information_source: Informacje'
     ).add_field(
         name='Środowisko',
-        value=Settings().bot_stage
+        value=f'`{Settings().bot_stage}`'
     )
 
 
 def ip_em() -> Embed:
-    return Embed(
-        title=f':information_source: {gethostbyname(gethostname())}',
-        timestamp=d.utcnow(),
-        color=Color.blurple()
+    return BaseEmbed(
+        title=f':information_source: {gethostbyname(gethostname())}'
     )
 
 
 def skryba_em() -> Embed:
-    return Embed(
+    return BaseEmbed(
         title=':scroll: Skryba kiedyś powiedział...',
         description='*Moim zdaniem to nie ma tak, że dobrze albo że nie dobrze. Gdybym miał powiedzieć, co cenię w'
                     ' życiu najbardziej, powiedziałbym, że ludzi. Ekhm... Ludzi, którzy podali mi pomocną dłoń, kiedy'
@@ -86,19 +82,14 @@ def skryba_em() -> Embed:
                     ' życie to taniec, życie to miłość. Wielu ludzi pyta mnie o to samo, ale jak ty to robisz?, skąd'
                     ' czerpiesz tę radość? A ja odpowiadam, że to proste, to umiłowanie życia, to właśnie ono sprawia,'
                     ' że dzisiaj na przykład buduję maszyny, a jutro... kto wie, dlaczego by nie, oddam się pracy'
-                    ' społecznej i będę ot, choćby sadzić... znaczy... marchew.*',
-        timestamp=d.utcnow(),
-        color=Color.blurple()
+                    ' społecznej i będę ot, choćby sadzić... znaczy... marchew.*'
     )
 
 
 def spotify_em(track: Dict, member: Member) -> Embed:
     name = track['name']
     artists = list(map(lambda x: x['name'], track['artists']))
-    return Embed(
-        timestamp=d.utcnow(),
-        color=Color.green()
-    ).add_field(
+    return BaseEmbed().add_field(
         name='Tytuł',
         value=name
     ).add_field(
@@ -117,11 +108,9 @@ def spotify_em(track: Dict, member: Member) -> Embed:
 
 
 def user_flexes_em(user: User, flexes: List[Flex]) -> Embed:
-    em = Embed(
+    em = BaseEmbed(
         title=f':muscle: Flexy: {user.display_name}',
-        description='Ostatnie 10 flexów.',
-        timestamp=d.utcnow(),
-        color=Color.blurple()
+        description='Ostatnie 10 flexów.'
     ).set_thumbnail(
         url=user.avatar_url
     )
@@ -140,7 +129,7 @@ def user_flexes_em(user: User, flexes: List[Flex]) -> Embed:
 
 
 def flextop_em(users: list, counts: list, days: int) -> Embed:
-    em = Embed(
+    em = BaseEmbed(
         title=':dart: Topowe flexy',
         description=f'Lista najbardziej flexujących się osób z ostatnich {days} dni.',
         timestamp=d.utcnow(),
