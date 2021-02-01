@@ -12,10 +12,6 @@ class Settings:
         return getenv('BOT_TOKEN')
 
     @property
-    def bot_version(self) -> str:
-        return '0.1.0-alpha'
-
-    @property
     def bot_stage(self) -> str:
         return getenv('STAGE')
 
@@ -29,7 +25,7 @@ class Settings:
 
     @property
     def reddit_user_agent(self) -> str:
-        return getenv('REDDIT_USER_AGENT').format(self.bot_version)
+        return getenv('REDDIT_USER_AGENT')
 
     @property
     def rapidapi_key(self) -> str:
