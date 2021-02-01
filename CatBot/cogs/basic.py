@@ -52,11 +52,15 @@ class Basic(Cog):
                     )
                 )
                 if not sp:
-                    return await message.channel.send('Can\'t connect to Spotify!')
+                    await message.channel.send(embed=custom_error_em('Nie mogę się połączyć ze Spotify!'))
+                    await self.bot.log.warning('Can\'t connect to Spotify!')
+                    return
 
                 result = sp.track(message.content.split('/')[-1])
                 if not result:
-                    return await self.bot.write_and_log('Spotify link is wrong!')
+                    await message.channel.send(embed=custom_error_em('Błędny link Spotify!'))
+                    await self.bot.log.info('Spotify link is wrong!')
+                    return
 
                 query = '{} {}'.format(result['name'], ' '.join(map(lambda x: x['name'], result['artists'])))
                 # noinspection PyTypeChecker
@@ -66,11 +70,12 @@ class Basic(Cog):
                     max_results=1
                 ).result()['search_result'][0]['link']
                 if not yt:
-                    return await self.bot.write_and_log(f'YouTube video "{query}" not found!')
+                    await message.channel.send(embed=custom_error_em('Wyszukiwanie na YouTube - zawiodło.'))
+                    await self.bot.log.info(f'YouTube video "{query}" not found')
 
                 await message.channel.send(embed=spotify_em(result, message.author))
                 await message.channel.send(f'>>> **YouTube**\n{yt}')
-                self.bot.log.info('Spotify song found on YouTube successfully!')
+                self.bot.log.info(f'Spotify song "{result["name"]}" found on YouTube successfully')
                 try:
                     await message.delete()
                 except Forbidden or HTTPException or NotFound:

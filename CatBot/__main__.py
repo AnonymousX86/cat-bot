@@ -29,14 +29,6 @@ if __name__ == '__main__':
         )
     )
 
-    async def write_and_log(error: str, channel: TextChannel, type_: str = 'warning') -> Message:
-        if type_ == 'warning':
-            f = log.warning
-        else:
-            f = log.info
-        f(error)
-        return await channel.send(embed=custom_error_em(error))
-
     @bot.event
     async def on_ready():
         log.info('Logged in as {0} (ID: {0.id})'.format(bot.user))
@@ -58,7 +50,6 @@ if __name__ == '__main__':
         log.info('Everything done!')
 
         bot.log = log
-        bot.write_and_log = write_and_log
 
 
     bot.run(Settings().bot_token)
