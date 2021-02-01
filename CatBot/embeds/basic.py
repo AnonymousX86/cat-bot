@@ -63,7 +63,8 @@ def done_em(description: str = '') -> Embed:
 
 def please_wait_em() -> Embed:
     return BaseEmbed(
-        title=':hourglass_flowing_sand: Daj mi chwilę...'
+        title=':hourglass_flowing_sand: Daj mi chwilę...',
+        color=Color.gold()
     )
 
 
