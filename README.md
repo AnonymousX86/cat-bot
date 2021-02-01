@@ -1,3 +1,3 @@
 # Cat Bot
 
-Discord bot.
+Private Discord bot for Polish server.
