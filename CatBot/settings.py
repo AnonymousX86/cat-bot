@@ -9,7 +9,7 @@ load_dotenv()
 class Settings:
     @property
     def bot_token(self) -> str:
-        return getenv("BOT_TOKEN")
+        return getenv('BOT_TOKEN')
 
     @property
     def bot_version(self) -> str:
@@ -34,3 +34,7 @@ class Settings:
     @property
     def spotify_secret(self):
         return getenv('SPOTIFY_SECRET')
+
+    @property
+    def database_url(self):
+        return getenv('DATABASE_URL')
