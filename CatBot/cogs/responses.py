@@ -6,6 +6,7 @@ from discord import Forbidden
 from discord.ext.commands import Cog, command, Context
 
 from CatBot.embeds.basic import *
+from CatBot.embeds.responses import skryba_em, ip_em
 
 
 class Responses(Cog):
@@ -46,19 +47,19 @@ class Responses(Cog):
         await sleep(3)
         # noinspection SpellCheckingInspection
         for text in sorted(
-            'dokurwić, dokurwiać, kurwieć, kurwić się, kurwować, nakurwić się, nakurwiać, odkurwić, odkurwiać,'
-            ' okurwiać, okurwić, podkurwić, podkurwiać, pokurwić, pokurwiać, pokurwieć, podokurwiać, ponakurwiać,'
-            ' poodkurwiać, popodkurwiać, poprzekurwiać, poprzykurwiać, porozkurwiać, poskurwiać, powkurwiać,'
-            ' powykurwiać, pozakurwiać, przekurwić, przekurwiać, przykurwić, rozkurwić, rozkurwiać, skurwieć,'
-            ' skurwić, skurwiać, ukurwiać, wkurwić, wkurwiać, wykurwić, zakurwić, zakurwiać,'
-            ' kurewstwo, kurwiarz, kurwiątko, kurwica, kurwidołek, kurwie macierze syn kurwik, kurwiszcze, kurwiszon,'
-            ' skurwiel, skurwysyn, podkurw, pokurw, rozkurw, wkurw, zakurw, kurewski, kurwi, kurwowaty, kurwujący,'
-            ' podkurwiony, przekurwiony, przykurwiony, rozkurwiony, skurwiały, wkurwiający, wkurwiony,'
-            ' zakurwiony, kurewsko, wykurwiście, na pełnej kurwie, od kurwy, w kurwę, kurde, kurna, kuźwa,'
-            ' kurna chata, kurna Olek, kurwa mać, kurwa twoja mać była, do kurwy nędzy, o kurwa, dziwka, kurtyzana,'
-            ' nierządnica, prostytutka, tirówka, cichodajka, dupodajka, jawnogrzesznica, ladacznica, lafirynda,'
-            ' latawica, ruchawica, suka, szmata, wszetecznica, wywłoka, zdzira,  łajdak, sprzedawczyk, nikczemnik,'
-            ' palant, dupek'.split(', ')
+                'dokurwić, dokurwiać, kurwieć, kurwić się, kurwować, nakurwić się, nakurwiać, odkurwić, odkurwiać,'
+                ' okurwiać, okurwić, podkurwić, podkurwiać, pokurwić, pokurwiać, pokurwieć, podokurwiać, ponakurwiać,'
+                ' poodkurwiać, popodkurwiać, poprzekurwiać, poprzykurwiać, porozkurwiać, poskurwiać, powkurwiać,'
+                ' powykurwiać, pozakurwiać, przekurwić, przekurwiać, przykurwić, rozkurwić, rozkurwiać, skurwieć,'
+                ' skurwić, skurwiać, ukurwiać, wkurwić, wkurwiać, wykurwić, zakurwić, zakurwiać,'
+                ' kurewstwo, kurwiarz, kurwiątko, kurwica, kurwidołek, kurwie macierze syn kurwik, kurwiszcze,'
+                ' kurwiszon, skurwiel, skurwysyn, podkurw, pokurw, rozkurw, wkurw, zakurw, kurewski, kurwi, kurwowaty,'
+                ' kurwujący, podkurwiony, przekurwiony, przykurwiony, rozkurwiony, skurwiały, wkurwiający, wkurwiony,'
+                ' zakurwiony, kurewsko, wykurwiście, na pełnej kurwie, od kurwy, w kurwę, kurde, kurna, kuźwa,'
+                ' kurna chata, kurna Olek, kurwa mać, kurwa twoja mać była, do kurwy nędzy, o kurwa, dziwka, kurtyzana,'
+                ' nierządnica, prostytutka, tirówka, cichodajka, dupodajka, jawnogrzesznica, ladacznica, lafirynda,'
+                ' latawica, ruchawica, suka, szmata, wszetecznica, wywłoka, zdzira,  łajdak, sprzedawczyk, nikczemnik,'
+                ' palant, dupek'.split(', ')
         ):
             await ctx.send(text)
             await sleep(0.5)

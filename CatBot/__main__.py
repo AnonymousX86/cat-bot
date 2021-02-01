@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 from logging import basicConfig, getLogger
 
-from discord import Intents, TextChannel, Message
+from discord import Intents
 from discord.ext.commands import Bot, ExtensionNotFound, ExtensionAlreadyLoaded, NoEntryPointError
 from rich.logging import RichHandler
 
-from CatBot.embeds.basic import custom_error_em
 from CatBot.settings import Settings
 
 if __name__ == '__main__':
@@ -29,11 +28,12 @@ if __name__ == '__main__':
         )
     )
 
+
     @bot.event
     async def on_ready():
         log.info('Logged in as {0} (ID: {0.id})'.format(bot.user))
 
-        for cog in [f'CatBot.cogs.{cog}' for cog in ['basic', 'responses']]:
+        for cog in [f'CatBot.cogs.{cog}' for cog in ['basic', 'flexing', 'responses']]:
             try:
                 bot.load_extension(cog)
             except ExtensionNotFound:

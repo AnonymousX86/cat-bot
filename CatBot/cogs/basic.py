@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from discord import Message, HTTPException, Forbidden, NotFound
 from discord.ext.commands import Cog, command, Context
 from spotipy import Spotify
@@ -7,7 +6,6 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from youtubesearchpython import SearchVideos
 
 from CatBot.embeds.basic import *
-from CatBot.utils.database import add_flex, get_flexes, get_top_flexes
 
 
 async def add_basic_roles(ctx: Context, member: Member) -> bool:
@@ -29,7 +27,7 @@ class Basic(Cog):
 
     @command(
         name='info',
-        breif='Podstawowe informacje na temat bota',
+        brief='Podstawowe informacje na temat bota',
         description='Pokazuje podstawowe informacje na temat bota. (Na co to komu?)'
     )
     async def info(self, ctx: Context):
@@ -127,51 +125,6 @@ class Basic(Cog):
             await ctx.send(embed=done_em(
                 f'{user.mention} otrzymał(a) **order Sashy Grey** za **przeruchanie przeruchanego mema**.'
             ))
-
-    @command(
-        name='flex',
-        brief='Dodaje komuś flex',
-        description='Liczenie flexów w celu jakże użytecznych statystyk, kto jest największym flexiarzem.',
-        usage='<użytkownik> <powód>'
-    )
-    async def flex(self, ctx: Context, user: User, *, reason: str):
-        if not user:
-            return await ctx.send(embed=missing_user_em())
-        elif not reason:
-            return await ctx.send(embed=custom_error_em('Musisz podać powód!'))
-        else:
-            if not add_flex(user.id, reason):
-                return await ctx.send(embed=custom_error_em('Nie mogę dodać flexa tej osobie.'))
-            else:
-                return await ctx.send(embed=done_em(f'{user.mention} dostał(a) flexa za `{reason}`!'))
-
-    @command(
-        name='flexy',
-        brief='Sprawdza czyjeś flexy',
-        description='Pokazuje czyjeś flexy, albo (bez argumentu) Twoje.',
-        usage='[użytkownik]'
-    )
-    async def flexy(self, ctx: Context, user: User = None):
-        if not user:
-            user = ctx.author
-        flexes = get_flexes(user.id)
-        await ctx.send(embed=user_flexes_em(user, flexes))
-
-    @command(
-        name='flextop',
-        brief='Najlepsi flexerzy',
-        description='Wysyła listę osób, które najwięcej się flexują.',
-        help='[ beta ] Dodatkowy argument pokazuje tylko ostatnie X dni.',
-        usage='[dni]'
-    )
-    async def flextop(self, ctx: Context, days: int = 30):
-        min_ = 2
-        if days < min_:
-            return await ctx.send(embed=custom_error_em(f'Podaj co najmniej {min_}!'))
-        flexes = get_top_flexes(days)
-        users = [i for i in map(lambda x: ctx.guild.get_member(int(x[0])).mention, flexes)]
-        counts = [i for i in map(lambda x: x[1], flexes)]
-        await ctx.send(embed=flextop_em(users, counts, days))
 
 
 def setup(bot):
