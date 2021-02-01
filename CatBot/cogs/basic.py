@@ -108,13 +108,15 @@ class Basic(Cog):
             await ctx.send(embed=missing_user_em())
         elif 641331138622783508 not in map(lambda r: r.id, ctx.author.roles):
             await ctx.send(embed=missing_perms_em())
+        elif 799377826859843634 in map(lambda r: r.id, user.roles):
+            await ctx.send(embed=custom_error_em('Ta osoba już posiada order, ale dodałem jeszcze raz.'))
         else:
             role = ctx.guild.get_role(799377826859843634)
             if not role:
                 return await self.bot.write_and_log('', ctx.channel)
             try:
                 await user.add_roles(role, reason='Przeruchanie przeruchanego mema.')
-                self.bot.log.info(f'Added ')
+                self.bot.log.info(f'An order was awarder to {str(user)}')
             except HTTPException:
                 pass
             await ctx.send(embed=done_em(
