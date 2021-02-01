@@ -16,6 +16,10 @@ class Settings:
         return '0.1.0-alpha'
 
     @property
+    def bot_stage(self) -> str:
+        return getenv('STAGE')
+
+    @property
     def reddit_client_id(self) -> str:
         return getenv('REDDIT_CLIENT_ID')
 

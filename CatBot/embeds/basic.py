@@ -59,7 +59,10 @@ def info_em() -> Embed:
         color=Color.blurple()
     ).add_field(
         name='Wersja',
-        value=f'{Settings().bot_version}'
+        value=Settings().bot_version
+    ).add_field(
+        name='Środowisko',
+        value=Settings().bot_stage
     )
 
 
