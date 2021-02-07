@@ -49,6 +49,7 @@ def get_top_flexes(last_x_days: int = 30) -> Optional[List[Flex]]:
         return list(session.query(
             Flex.user_id, func.count(Flex.user_id))
                     .group_by(Flex.user_id)
+                    .order_by(func.count(Flex.user_id).desc())
                     .filter(Flex.flex_date >= flex_date_filter)
                     .limit(3))
     finally:
