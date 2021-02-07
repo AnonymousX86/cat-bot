@@ -23,6 +23,10 @@ class Flexing(Cog):
             return await ctx.send(embed=missing_user_em())
         elif not reason:
             return await ctx.send(embed=custom_error_em('Musisz podać powód!'))
+        elif ctx.author.id == user.id:
+            return await ctx.send(embed=custom_error_em(
+                'Ziomek, dostajesz flexa za flexa dając flexa i flexując siebie... Serio?!'
+            ))
         else:
             if not add_flex(user.id, reason):
                 return await ctx.send(embed=custom_error_em('Nie mogę dodać flexa tej osobie.'))
