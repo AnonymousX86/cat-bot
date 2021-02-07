@@ -45,6 +45,9 @@ def info_em() -> Embed:
     return BaseEmbed(
         title=':information_source: Informacje'
     ).add_field(
+        name='Wersja',
+        value=f'`{Settings().bot_version}`'
+    ).add_field(
         name='Środowisko',
         value=f'`{Settings().bot_stage}`'
     )

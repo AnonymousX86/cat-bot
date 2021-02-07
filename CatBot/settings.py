@@ -8,6 +8,10 @@ load_dotenv()
 
 class Settings:
     @property
+    def bot_version(self) -> str:
+        return '2021.2.2'
+
+    @property
     def bot_token(self) -> str:
         return getenv('BOT_TOKEN')
 
