@@ -69,7 +69,7 @@ def spotify_em(track: Dict, member: Member) -> Embed:
         value=track['external_urls']['spotify'],
         inline=False
     ).set_thumbnail(
-        url=track['album']['images'][-1]['url']
+        url=track['album']['images'][0]['url']
     ).set_author(
         name=f'{member.display_name} udostępnił(a):',
         icon_url=member.avatar_url
