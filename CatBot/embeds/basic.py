@@ -4,7 +4,7 @@ from typing import Dict
 from discord import Embed, Color, Member
 
 from CatBot.embeds.custom_classes import ErrorEmbed, SuccessEmbed, BaseEmbed
-from CatBot.settings import Settings
+from CatBot.settings.bot import bot_version, bot_stage
 
 
 def missing_perms_em() -> Embed:
@@ -46,10 +46,10 @@ def info_em() -> Embed:
         title=':information_source: Informacje'
     ).add_field(
         name='Wersja',
-        value=f'`{Settings().bot_version}`'
+        value=f'`{bot_version()}`'
     ).add_field(
         name='Środowisko',
-        value=f'`{Settings().bot_stage}`'
+        value=f'`{bot_stage()}`'
     )
 
 

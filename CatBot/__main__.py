@@ -5,7 +5,7 @@ from discord import Intents
 from discord.ext.commands import Bot, ExtensionNotFound, ExtensionAlreadyLoaded, NoEntryPointError
 from rich.logging import RichHandler
 
-from CatBot.settings import Settings
+from CatBot.settings.bot import bot_version, bot_token
 
 if __name__ == '__main__':
     # noinspection PyArgumentList
@@ -32,7 +32,7 @@ if __name__ == '__main__':
     @bot.event
     async def on_ready():
         log.info('Logged in as "{0}" (ID: {0.id})'.format(bot.user))
-        log.info(f'Loaded bot version: "{Settings().bot_version}"')
+        log.info(f'Loaded bot version: "{bot_version()}"')
 
         for cog in [f'CatBot.cogs.{cog}' for cog in ['basic', 'flexing', 'responses']]:
             try:
@@ -53,4 +53,4 @@ if __name__ == '__main__':
         bot.log = log
 
 
-    bot.run(Settings().bot_token)
+    bot.run(bot_token())
