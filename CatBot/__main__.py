@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
     @bot.event
     async def on_ready():
-        log.info('Logged in as {0} (ID: {0.id})'.format(bot.user))
+        log.info('Logged in as "{0}" (ID: {0.id})'.format(bot.user))
         log.info(f'Loaded bot version: "{Settings().bot_version}"')
 
         for cog in [f'CatBot.cogs.{cog}' for cog in ['basic', 'flexing', 'responses']]:
