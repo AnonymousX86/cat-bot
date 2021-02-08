@@ -42,9 +42,9 @@ if __name__ == '__main__':
             except ExtensionAlreadyLoaded:
                 log.warning(f'Already loaded: {cog}')
             except NoEntryPointError:
-                log.warning(f'Extension "{cog}" do not have "setup()" function')
+                log.critical(f'Extension "{cog}" do not have "setup()" function')
             except Exception as e:
-                log.warning(f'{e.__class__.__name__}: {e}')
+                log.critical(f'{e.__class__.__name__}: {e}')
             else:
                 log.info(f'Loaded: {cog}')
 
