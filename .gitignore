@@ -5,3 +5,4 @@ __pycache__
 /logs
 *.cmd
 /src
+Dockerfile
