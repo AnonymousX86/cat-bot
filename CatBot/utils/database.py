@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from CatBot.settings.database import database_url
+from CatBot.settings import database_url
 
 _engine = create_engine(database_url())
 _Session = sessionmaker()

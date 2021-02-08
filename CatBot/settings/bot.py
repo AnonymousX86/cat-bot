@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from . import *
+from os import environ as env
 
 
 def bot_token() -> str:
@@ -7,7 +7,7 @@ def bot_token() -> str:
 
 
 def bot_version() -> str:
-    return env.get('2021.2.2')
+    return '2021.2.2'
 
 
 def bot_stage() -> str:

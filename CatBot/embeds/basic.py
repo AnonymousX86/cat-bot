@@ -4,7 +4,7 @@ from typing import Dict
 from discord import Embed, Color, Member
 
 from CatBot.embeds.custom_classes import ErrorEmbed, SuccessEmbed, BaseEmbed
-from CatBot.settings.bot import bot_version, bot_stage
+from CatBot.settings import bot_version, bot_stage
 
 
 def missing_perms_em() -> Embed:

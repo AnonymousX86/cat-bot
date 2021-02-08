@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from . import *
+from os import environ as env
 from .bot import bot_version
 
 

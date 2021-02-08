@@ -5,7 +5,7 @@ from discord import Intents
 from discord.ext.commands import Bot, ExtensionNotFound, ExtensionAlreadyLoaded, NoEntryPointError
 from rich.logging import RichHandler
 
-from CatBot.settings.bot import bot_version, bot_token
+from CatBot.settings import bot_version, bot_token
 
 if __name__ == '__main__':
     # noinspection PyArgumentList
