@@ -13,7 +13,7 @@ if __name__ == '__main__':
         level='INFO',
         format='%(message)s',
         datefmt='[%x]',
-        handlers=[RichHandler()]
+        handlers=[RichHandler(rich_tracebacks=True)]
     )
     getLogger('sqlalchemy.engine').setLevel('WARNING')
     log = getLogger('rich')
