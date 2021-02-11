@@ -6,6 +6,7 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from youtubesearchpython import SearchVideos
 
 from CatBot.embeds.basic import *
+from CatBot.settings import spotify_secret
 
 
 async def add_basic_roles(ctx: Context, member: Member) -> bool:
@@ -46,7 +47,7 @@ class Basic(Cog):
                 sp = Spotify(
                     auth_manager=SpotifyClientCredentials(
                         client_id='11fb31af174d46218d05049e75d0a8a8',
-                        client_secret=Settings().spotify_secret
+                        client_secret=spotify_secret()
                     )
                 )
                 if not sp:
