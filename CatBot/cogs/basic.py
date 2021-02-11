@@ -55,7 +55,7 @@ class Basic(Cog):
                     await self.bot.log.warning('Can\'t connect to Spotify!')
                     return
 
-                result = sp.track(message.content.split('/')[-1])
+                result = sp.track(message.content.split('?')[0].split('&')[0].split('/')[-1])
                 if not result:
                     await message.channel.send(embed=custom_error_em('Błędny link Spotify!'))
                     await self.bot.log.info('Spotify link is wrong!')
