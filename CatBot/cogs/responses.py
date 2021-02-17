@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from asyncio import sleep
-from typing import Optional
 
 from discord import Forbidden
 from discord.ext.commands import Cog, command, Context
