@@ -75,7 +75,7 @@ class Responses(Cog):
         name='delet',
         brief='Delet dis now!!1!'
     )
-    async def delet(self, ctx: Context, member: Optional[Member]):
+    async def delet(self, ctx: Context, member: Member = None):
         if member:
             await ctx.send(f'{member.mention} usuń to.')
         await ctx.send(
