@@ -18,9 +18,9 @@ class Responses(Cog):
         biref='Każe komuś... Spierdalać',
         usage='[użytkownik]'
     )
-    async def spierdalaj(self, ctx: Context, user: Optional[Member]):
-        if user:
-            await ctx.send(f'Dokładnie, spierdalaj {user.mention}.')
+    async def spierdalaj(self, ctx: Context, member: Member = None):
+        if member:
+            await ctx.send(f'Dokładnie, spierdalaj {member.mention}.')
         else:
             await ctx.send('Sam spierdalaj.')
 
