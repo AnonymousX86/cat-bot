@@ -2,7 +2,7 @@
 from asyncio import sleep
 
 from discord import Forbidden
-from discord.ext.commands import Cog, command, Context
+from discord.ext.commands import Cog, command, Context, cooldown, BucketType
 
 from CatBot.embeds.basic import *
 from CatBot.embeds.responses import skryba_em, ip_em
@@ -37,6 +37,7 @@ class Responses(Cog):
     async def kurwo(self, ctx: Context):
         await ctx.send('Ej chuju.')
 
+    @cooldown(1, 7200, BucketType.guild)
     @command(
         name='kurwa',
         brief='Synonimy i wyrazy podobne'
