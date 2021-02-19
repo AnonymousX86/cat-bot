@@ -40,7 +40,8 @@ class Responses(Cog):
     @cooldown(1, 7200, BucketType.guild)
     @command(
         name='kurwa',
-        brief='Synonimy i wyrazy podobne'
+        brief='Synonimy i wyrazy podobne',
+        description='Użycie tej komendy grozi wyciszeniem lub banem.'
     )
     async def kurwa(self, ctx: Context):
         await ctx.send('No dobra...')
