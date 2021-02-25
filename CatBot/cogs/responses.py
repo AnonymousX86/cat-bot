@@ -112,17 +112,6 @@ class Responses(Cog):
         brief='IP bota'
     )
     async def ip(self, ctx: Context):
-
-    @command(
-        name='bonk',
-        brief='Ktoś dostaje bonka',
-        usage='<użytkownik>'
-    )
-    async def bonk(self, ctx: Context, member: Member = None):
-        if not member:
-            await ctx.send(embed=missing_user_em())
-        else:
-            await ctx.send(f'**\\*BONK!\\*** *{member.display_name}* go to horny jail.')
         await ctx.message.reply(embed=ip_em())
 
 

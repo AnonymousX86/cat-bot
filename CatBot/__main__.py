@@ -34,7 +34,7 @@ if __name__ == '__main__':
         log.info('Logged in as "{0}" (ID: {0.id})'.format(bot.user))
         log.info(f'Loaded bot version: "{bot_version()}"')
 
-        for cog in [f'CatBot.cogs.{cog}' for cog in ['basic', 'flexing', 'responses']]:
+        for cog in [f'CatBot.cogs.{cog}' for cog in ['basic', 'bonks', 'flexing', 'responses']]:
             try:
                 bot.load_extension(cog)
             except ExtensionNotFound:

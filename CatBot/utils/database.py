@@ -2,7 +2,7 @@
 from datetime import date, datetime, timedelta
 from typing import Optional, List
 
-from sqlalchemy import create_engine, Column, BigInteger, String, Date, Text, func
+from sqlalchemy import create_engine, Column, BigInteger, String, Date, Text, func, desc
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -35,7 +35,7 @@ def get_flex(user_id: int) -> Optional[Flex]:
 def get_flexes(user_id: int) -> Optional[List[Flex]]:
     session = _Session()
     try:
-        return list(session.query(Flex).filter_by(user_id=str(user_id)).limit(10))
+        return list(session.query(Flex).filter_by(user_id=str(user_id)).order_by(desc(Flex.flex_date)).limit(10))
     finally:
         session.close()
 
@@ -67,6 +67,38 @@ def add_flex(user_id: int, reason: str) -> Optional[Flex]:
         session.add(new_flex)
         session.commit()
         return new_flex
+    except IntegrityError:
+        session.rollback()
+        return None
+    finally:
+        session.close()
+
+
+class Bonk(Base):
+    __tablename__ = 'bonks'
+    bonk_id = Column(BigInteger, primary_key=True)
+    user_id = Column(String(18))
+    bonk_date = Column(Date)
+
+
+def get_bonks(user_id: int) -> int:
+    session = _Session()
+    try:
+        return session.query(Bonk).filter_by(user_id=str(user_id)).count()
+    finally:
+        session.close()
+
+
+def add_bonk(user_id: int) -> Optional[Bonk]:
+    session = _Session()
+    new_bonk = Bonk(
+        user_id=str(user_id),
+        bonk_date=date.today()
+    )
+    try:
+        session.add(new_bonk)
+        session.commit()
+        return new_bonk
     except IntegrityError:
         session.rollback()
         return None
