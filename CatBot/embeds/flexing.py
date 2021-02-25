@@ -22,7 +22,7 @@ def user_flexes_em(user: User, flexes: List[Flex]) -> Embed:
         )
     for i, flex in enumerate(flexes):
         em.add_field(
-            name=f'`{"0" if i < 10 else ""}{i + 1}.`  {str(flex.flex_date)}',
+            name=f'`{"0" if i < 9 else ""}{i + 1}.`  {str(flex.flex_date)}',
             value=flex.reason.capitalize(),
             inline=False
         )
