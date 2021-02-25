@@ -19,23 +19,23 @@ class Responses(Cog):
     )
     async def spierdalaj(self, ctx: Context, member: Member = None):
         if member:
-            await ctx.send(f'Dokładnie, spierdalaj {member.mention}.')
+            await ctx.message.reply(f'Dokładnie, spierdalaj {member.mention}.')
         else:
-            await ctx.send('Sam spierdalaj.')
+            await ctx.message.reply('Sam spierdalaj.')
 
     @command(
         name='ziomek',
         brief='Że kto?'
     )
     async def ziomek(self, ctx: Context):
-        await ctx.send('Ty przecież kolegów nie masz.')
+        await ctx.message.reply('Ty przecież kolegów nie masz.')
 
     @command(
         name='kurwo',
         brief='Chyba Ty'
     )
     async def kurwo(self, ctx: Context):
-        await ctx.send('Ej chuju.')
+        await ctx.message.reply('Ej chuju.')
 
     @cooldown(1, 7200, BucketType.guild)
     @command(
@@ -44,7 +44,7 @@ class Responses(Cog):
         description='Użycie tej komendy grozi wyciszeniem lub banem.'
     )
     async def kurwa(self, ctx: Context):
-        await ctx.send('No dobra...')
+        await ctx.message.reply('No dobra...')
         await sleep(3)
         # noinspection SpellCheckingInspection
         for text in sorted(
@@ -70,7 +70,7 @@ class Responses(Cog):
         brief='Monolog skryby'
     )
     async def skryba(self, ctx: Context):
-        await ctx.send(embed=skryba_em())
+        await ctx.message.reply(embed=skryba_em())
 
     @command(
         name='delet',
@@ -112,7 +112,6 @@ class Responses(Cog):
         brief='IP bota'
     )
     async def ip(self, ctx: Context):
-        await ctx.send(embed=ip_em())
 
     @command(
         name='bonk',
@@ -124,6 +123,7 @@ class Responses(Cog):
             await ctx.send(embed=missing_user_em())
         else:
             await ctx.send(f'**\\*BONK!\\*** *{member.display_name}* go to horny jail.')
+        await ctx.message.reply(embed=ip_em())
 
 
 def setup(bot):

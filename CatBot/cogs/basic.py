@@ -32,7 +32,8 @@ class Basic(Cog):
         description='Pokazuje podstawowe informacje na temat bota. (Na co to komu?)'
     )
     async def info(self, ctx: Context):
-        await ctx.send(embed=info_em())
+        await ctx.message.reply(embed=info_em())
+        # await ctx.send(embed=info_em())
 
     @Cog.listener('on_message')
     async def plus_adder(self, message: Message):
@@ -88,18 +89,17 @@ class Basic(Cog):
     )
     async def autorole(self, ctx: Context):
         if ctx.author.id != 309270832683679745:
-            await ctx.send(embed=missing_perms_em())
+            await ctx.message.reply(embed=missing_perms_em())
         else:
-            msg = await ctx.send(embed=please_wait_em())
+            msg = await ctx.message.reply(embed=please_wait_em())
             added = 0
             self.bot.log.info(f'Started updating roles by {str(ctx.author)}')
             for member in ctx.guild.members:
                 if not member.bot:
                     if await add_basic_roles(ctx, member):
                         added += 1
-            await ctx.send(embed=done_em(f'Zaktualizowana ilość ról: {added}.'))
+            await msg.edit(embed=done_em(f'Zaktualizowana ilość ról: {added}.'))
             self.bot.log.info(f'Updated {added} roles')
-            await msg.delete()
 
     # noinspection SpellCheckingInspection
     @command(
@@ -109,21 +109,21 @@ class Basic(Cog):
     )
     async def order(self, ctx: Context, user: Member):
         if not user:
-            await ctx.send(embed=missing_user_em())
+            await ctx.message.reply(embed=missing_user_em())
         elif 641331138622783508 not in map(lambda r: r.id, ctx.author.roles):
-            await ctx.send(embed=missing_perms_em())
+            await ctx.message.reply(embed=missing_perms_em())
         elif 799377826859843634 in map(lambda r: r.id, user.roles):
-            await ctx.send(embed=custom_error_em('Ta osoba już posiada order, ale dodałem jeszcze raz.'))
+            await ctx.message.reply(embed=custom_error_em('Ta osoba już posiada order, ale dodałem jeszcze raz.'))
         else:
             role = ctx.guild.get_role(799377826859843634)
             if not role:
-                return await self.bot.write_and_log('', ctx.channel)
+                return await ctx.message.reply(embed=custom_error_em('Nie znalazłem takiej roli.'))
             try:
                 await user.add_roles(role, reason='Przeruchanie przeruchanego mema.')
                 self.bot.log.info(f'An order was awarded to {str(user)}')
             except HTTPException:
                 pass
-            await ctx.send(embed=done_em(
+            await ctx.message.reply(embed=done_em(
                 f'{user.mention} otrzymał(a) **order Sashy Grey** za **przeruchanie przeruchanego mema**.'
             ))
 

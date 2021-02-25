@@ -20,23 +20,23 @@ class Flexing(Cog):
     )
     async def flex(self, ctx: Context, user: User, *, reason: str):
         if not user:
-            return await ctx.send(embed=missing_user_em())
+            return await ctx.message.reply(embed=missing_user_em())
         elif not reason:
-            return await ctx.send(embed=custom_error_em('Musisz podać powód!'))
+            return await ctx.message.reply(embed=custom_error_em('Musisz podać powód!'))
         elif ctx.author.id == user.id:
-            return await ctx.send(embed=custom_error_em(
+            return await ctx.message.reply(embed=custom_error_em(
                 'Ziomek, dostajesz flexa za flexa dając flexa i flexując siebie... Serio?!'
             ))
         else:
             if not add_flex(user.id, reason):
-                return await ctx.send(embed=custom_error_em('Nie mogę dodać flexa tej osobie.'))
+                return await ctx.message.reply(embed=custom_error_em('Nie mogę dodać flexa tej osobie.'))
             else:
-                return await ctx.send(embed=done_em(f'{user.mention} dostał(a) flexa za `{reason}`!'))
+                return await ctx.message.reply(embed=done_em(f'{user.mention} dostał(a) flexa za `{reason}`!'))
 
     @flex.error
     async def flex_error(self, ctx: Context, error: Exception):
         if isinstance(error, CommandOnCooldown):
-            await ctx.send(embed=custom_error_em('Nie bądź taki szybki, poczekaj minutę.'))
+            await ctx.message.reply(embed=custom_error_em('Nie bądź taki szybki, poczekaj minutę.'))
         else:
             raise error
 
@@ -50,7 +50,7 @@ class Flexing(Cog):
         if not user:
             user = ctx.author
         flexes = get_flexes(user.id)
-        await ctx.send(embed=user_flexes_em(user, flexes))
+        await ctx.message.reply(embed=user_flexes_em(user, flexes))
 
     @command(
         name='flextop',
@@ -62,11 +62,11 @@ class Flexing(Cog):
     async def flextop(self, ctx: Context, days: int = 30):
         min_ = 2
         if days < min_:
-            return await ctx.send(embed=custom_error_em(f'Podaj co najmniej {min_}!'))
+            return await ctx.message.reply(embed=custom_error_em(f'Podaj co najmniej {min_}!'))
         flexes = get_top_flexes(days)
         users = [i for i in map(lambda x: ctx.guild.get_member(int(x[0])).mention, flexes)]
         counts = [i for i in map(lambda x: x[1], flexes)]
-        await ctx.send(embed=flextop_em(users, counts, days))
+        await ctx.message.reply(embed=flextop_em(users, counts, days))
 
 
 def setup(bot):
