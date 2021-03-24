@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from discord import Message, HTTPException, Forbidden, NotFound
+from discord import Message, HTTPException, Forbidden, NotFound, Guild, TextChannel
 from discord.ext.commands import Cog, command, Context
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -9,13 +9,14 @@ from CatBot.embeds.basic import *
 from CatBot.settings import spotify_secret
 
 
-async def add_basic_roles(ctx: Context, member: Member) -> bool:
+async def add_basic_roles(guild: Guild, member: Member, channel: TextChannel = None) -> bool:
     result = False
-    for role in map(lambda x: ctx.guild.get_role(x), [718576689302470795, 720650395977777294]):
+    for role in map(lambda x: guild.get_role(x), [718576689302470795, 720650395977777294]):
         try:
             await member.add_roles(role, reason='Automatyzacja ról.')
         except Forbidden:
-            await ctx.send(f'Nie mogę dać roli `{role}` użytkownikowi {member.display_name}')
+            if channel:
+                await channel.send(f'Nie mogę dać roli `{role}` użytkownikowi {member.display_name}')
         except HTTPException:
             pass
         else:
@@ -35,6 +36,10 @@ class Basic(Cog):
     async def info(self, ctx: Context):
         await ctx.message.reply(embed=info_em())
         # await ctx.send(embed=info_em())
+
+    @Cog.listener('on_member_join')
+    async def autorole_updater(self, member: Member):
+        await add_basic_roles(member.guild, member)
 
     @Cog.listener('on_message')
     async def plus_adder(self, message: Message):
@@ -97,7 +102,7 @@ class Basic(Cog):
             self.bot.log.info(f'Started updating roles by {str(ctx.author)}')
             for member in ctx.guild.members:
                 if not member.bot:
-                    if await add_basic_roles(ctx, member):
+                    if await add_basic_roles(ctx.guild, member, ctx.channel):
                         added += 1
             await msg.edit(embed=done_em(f'Zaktualizowana ilość użytkowników: {added}.'))
             self.bot.log.info(f'Updated {added} roles')
