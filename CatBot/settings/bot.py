@@ -7,7 +7,7 @@ def bot_token() -> str:
 
 
 def bot_version() -> str:
-    return '2021.2.3'
+    return '2021.3.1'
 
 
 def bot_stage() -> str:
