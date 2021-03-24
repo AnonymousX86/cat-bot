@@ -10,6 +10,7 @@ from CatBot.settings import spotify_secret
 
 
 async def add_basic_roles(ctx: Context, member: Member) -> bool:
+    result = False
     for role in map(lambda x: ctx.guild.get_role(x), [718576689302470795, 720650395977777294]):
         try:
             await member.add_roles(role, reason='Automatyzacja ról.')
@@ -18,8 +19,8 @@ async def add_basic_roles(ctx: Context, member: Member) -> bool:
         except HTTPException:
             pass
         else:
-            return True
-        return False
+            result = True
+    return result
 
 
 class Basic(Cog):
@@ -98,7 +99,7 @@ class Basic(Cog):
                 if not member.bot:
                     if await add_basic_roles(ctx, member):
                         added += 1
-            await msg.edit(embed=done_em(f'Zaktualizowana ilość ról: {added}.'))
+            await msg.edit(embed=done_em(f'Zaktualizowana ilość użytkowników: {added}.'))
             self.bot.log.info(f'Updated {added} roles')
 
     # noinspection SpellCheckingInspection
