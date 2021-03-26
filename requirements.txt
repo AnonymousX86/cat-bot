@@ -5,3 +5,4 @@ rich>=9.9.0
 SQLAlchemy>=1.3.22
 youtube-search-python
 psycopg2
+wavelink
