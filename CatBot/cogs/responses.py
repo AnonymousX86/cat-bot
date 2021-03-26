@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from asyncio import sleep
+from random import choice
 
 from discord import Forbidden
 from discord.ext.commands import Cog, command, Context, cooldown, BucketType
@@ -113,6 +114,25 @@ class Responses(Cog):
     )
     async def ip(self, ctx: Context):
         await ctx.message.reply(embed=ip_em())
+
+    @command(
+        name='obelga',
+        brief='Wymyśla pojazd na kimś',
+        description='Losuje osobę z kanału ProtonVPN i dodaje obelgę. Na kanale muszą być przynajmniej 3 osoby.',
+        aliases=['pojazd', 'samochód']
+    )
+    async def obelga(self, ctx: Context):
+        ch = ctx.guild.get_channel(385122529343176709)
+        if len(ch.members) < 3:
+            return await ctx.send(embed=custom_error_em(f'Za mało użytkowników na `{ch}`.'))
+        await ctx.send(choice([
+            '{}, a Twój stary to Twoja stara.',
+            '{} Twoje auto nie ma okien.',
+            '{} udław się kokosem.',
+            '{} wsadź se szyszkę w dupę.',
+            '{} wyjmij mikrofon z dupy.',
+            '{} jak Ci walnę w zęby, to będziesz je mył wsadzając sobie szczoteczkę do dupy.'
+        ]).format(choice(list(map(lambda u: u.mention, filter(lambda u: not u.bot, ch.members))))))
 
 
 def setup(bot):

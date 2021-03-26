@@ -24,6 +24,7 @@ if __name__ == '__main__':
         intents=Intents(
             guilds=True,
             members=True,
+            presences=True,
             guild_messages=True
         )
     )
