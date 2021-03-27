@@ -120,8 +120,7 @@ class Basic(Cog):
         elif 799377826859843634 in map(lambda r: r.id, user.roles):
             await ctx.message.reply(embed=custom_error_em('Ta osoba już posiada order, ale dodałem jeszcze raz.'))
         else:
-            role = ctx.guild.get_role(799377826859843634)
-            if not role:
+            if not (role := ctx.guild.get_role(799377826859843634)):
                 return await ctx.message.reply(embed=custom_error_em('Nie znalazłem takiej roli.'))
             try:
                 await user.add_roles(role, reason='Przeruchanie przeruchanego mema.')
