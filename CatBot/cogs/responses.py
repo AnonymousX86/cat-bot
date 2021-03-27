@@ -131,7 +131,8 @@ class Responses(Cog):
             '{} udław się kokosem.',
             '{} wsadź se szyszkę w dupę.',
             '{} wyjmij mikrofon z dupy.',
-            '{} jak Ci walnę w zęby, to będziesz je mył wsadzając sobie szczoteczkę do dupy.'
+            '{} jak Ci walnę w zęby, to będziesz je mył wsadzając sobie szczoteczkę do dupy.',
+            '{} Twój pies sra mordą.'
         ]).format(choice(list(map(lambda u: u.mention, filter(lambda u: not u.bot, ch.members))))))
 
 
