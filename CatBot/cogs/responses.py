@@ -20,7 +20,7 @@ class Responses(Cog):
     )
     async def spierdalaj(self, ctx: Context, member: Member = None):
         if member:
-            await ctx.message.reply(f'Dokładnie, spierdalaj {member.mention}.')
+            await ctx.send(f'Dokładnie, spierdalaj {member.mention}.')
         else:
             await ctx.message.reply('Sam spierdalaj.')
 
@@ -71,7 +71,7 @@ class Responses(Cog):
         brief='Monolog skryby'
     )
     async def skryba(self, ctx: Context):
-        await ctx.message.reply(embed=skryba_em())
+        await ctx.send(embed=skryba_em())
 
     @command(
         name='delet',

@@ -35,7 +35,6 @@ class Basic(Cog):
     )
     async def info(self, ctx: Context):
         await ctx.message.reply(embed=info_em())
-        # await ctx.send(embed=info_em())
 
     @Cog.listener('on_member_join')
     async def autorole_updater(self, member: Member):
