@@ -104,7 +104,7 @@ class Basic(Cog):
                     if await add_basic_roles(ctx.guild, member, ctx.channel):
                         added += 1
             await msg.edit(embed=done_em(f'Zaktualizowana ilość użytkowników: {added}.'))
-            self.bot.log.info(f'Updated {added} roles')
+            self.bot.log.info(f'Updated {added} users')
 
     # noinspection SpellCheckingInspection
     @command(
