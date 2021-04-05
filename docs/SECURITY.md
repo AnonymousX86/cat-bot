@@ -10,3 +10,4 @@
 ## Reporting a Vulnerability
 
 Please write on Discord to `Anonymous_x86#7296`.
+
