@@ -20,7 +20,8 @@ class Flexing(Cog):
                     ' jest największym flexiarzem.',
         usage='<użytkownik> <powód>'
     )
-    async def flex(self, ctx: Context, user: User, *, reason: str):
+    async def flex(self, ctx: Context, user: User = None, *,
+                   reason: str = None):
         if not user:
             return await ctx.message.reply(embed=missing_user_em())
         elif not reason:
