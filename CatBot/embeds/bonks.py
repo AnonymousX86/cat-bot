@@ -15,6 +15,7 @@ def bonks_em(count: int, member: Member) -> Embed:
     return BaseEmbed(
         title=':moyai: Horny\'o\'meter',
         description=f'{member.mention} ' + (
-            'jest czysty(a).' if count == 0 else f'ma **{count}** bonk{"a" if count == 1 else "ów"}.'
+            'jest czysty(a).' if count == 0 else
+            f'ma **{count}** bonk{"a" if count == 1 else "ów"}.'
         )
     )

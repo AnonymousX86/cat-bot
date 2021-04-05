@@ -49,19 +49,24 @@ class Responses(Cog):
         await sleep(3)
         # noinspection SpellCheckingInspection
         for text in sorted(
-                'dokurwić, dokurwiać, kurwieć, kurwić się, kurwować, nakurwić się, nakurwiać, odkurwić, odkurwiać,'
-                ' okurwiać, okurwić, podkurwić, podkurwiać, pokurwić, pokurwiać, pokurwieć, podokurwiać, ponakurwiać,'
-                ' poodkurwiać, popodkurwiać, poprzekurwiać, poprzykurwiać, porozkurwiać, poskurwiać, powkurwiać,'
-                ' powykurwiać, pozakurwiać, przekurwić, przekurwiać, przykurwić, rozkurwić, rozkurwiać, skurwieć,'
-                ' skurwić, skurwiać, ukurwiać, wkurwić, wkurwiać, wykurwić, zakurwić, zakurwiać,'
-                ' kurewstwo, kurwiarz, kurwiątko, kurwica, kurwidołek, kurwie macierze syn kurwik, kurwiszcze,'
-                ' kurwiszon, skurwiel, skurwysyn, podkurw, pokurw, rozkurw, wkurw, zakurw, kurewski, kurwi, kurwowaty,'
-                ' kurwujący, podkurwiony, przekurwiony, przykurwiony, rozkurwiony, skurwiały, wkurwiający, wkurwiony,'
-                ' zakurwiony, kurewsko, wykurwiście, na pełnej kurwie, od kurwy, w kurwę, kurde, kurna, kuźwa,'
-                ' kurna chata, kurna Olek, kurwa mać, kurwa twoja mać była, do kurwy nędzy, o kurwa, dziwka, kurtyzana,'
-                ' nierządnica, prostytutka, tirówka, cichodajka, dupodajka, jawnogrzesznica, ladacznica, lafirynda,'
-                ' latawica, ruchawica, suka, szmata, wszetecznica, wywłoka, zdzira,  łajdak, sprzedawczyk, nikczemnik,'
-                ' palant, dupek'.split(', ')
+                'dokurwić, dokurwiać, kurwieć, kurwić się, kurwować, nakurwić'
+                ' się, nakurwiać, odkurwić, odkurwiać, okurwiać, okurwić,'
+                ' poodkurwiać, popodkurwiać, poprzekurwiać, poprzykurwiać,'
+                ' porozkurwiać, poskurwiać, powkurwiać, powykurwiać,'
+                ' pozakurwiać, przekurwić, przekurwiać, przykurwić, rozkurwić,'
+                ' rozkurwiać, skurwieć, skurwić, skurwiać, ukurwiać, wkurwić,'
+                ' wkurwiać, wykurwić, zakurwić, zakurwiać, kurewstwo, kurwiarz,'
+                ' kurwiątko, kurwica, kurwidołek, kurwie macierze syn kurwik,'
+                ' kurwiszcze, kurwiszon, skurwiel, skurwysyn, podkurw, pokurw,'
+                ' rozkurw, wkurw, zakurw, kurewski, kurwi, kurwowaty,'
+                ' kurwujący, podkurwiony, przekurwiony, przykurwiony,'
+                ' rozkurwiony, skurwiały, wkurwiający, wkurwiony, zakurwiony,'
+                ' kurna chata, kurna Olek, kurwa mać, kurwa twoja mać była,'
+                ' do kurwy nędzy, o kurwa, dziwka, kurtyzana, nierządnica,'
+                ' prostytutka, tirówka, cichodajka, dupodajka, jawnogrzesznica,'
+                ' ladacznica, lafirynda, latawica, ruchawica, suka, szmata,'
+                ' wszetecznica, wywłoka, zdzira,  łajdak, sprzedawczyk,'
+                ' nikczemnik, palant, dupek'.split(', ')
         ):
             await ctx.send(text)
             await sleep(0.5)
@@ -81,7 +86,8 @@ class Responses(Cog):
         if member:
             await ctx.send(f'{member.mention} usuń to.')
         await ctx.send(
-            'https://media.discordapp.net/attachments/662715159961272320/776709279507808276/trigger-cut.gif'
+            'https://media.discordapp.net/attachments/662715159961272320/'
+            '776709279507808276/trigger-cut.gif'
         )
         try:
             await ctx.message.delete()
@@ -118,22 +124,26 @@ class Responses(Cog):
     @command(
         name='obelga',
         brief='Wymyśla pojazd na kimś',
-        description='Losuje osobę z kanału ProtonVPN i dodaje obelgę. Na kanale muszą być przynajmniej 3 osoby.',
+        description='Losuje osobę z kanału ProtonVPN i dodaje obelgę. Na'
+                    ' kanale muszą być przynajmniej 3 osoby.',
         aliases=['pojazd', 'samochód']
     )
     async def obelga(self, ctx: Context):
         ch = ctx.guild.get_channel(385122529343176709)
         if len(ch.members) < 3:
-            return await ctx.send(embed=custom_error_em(f'Za mało użytkowników na `{ch}`.'))
+            return await ctx.send(
+                embed=custom_error_em(f'Za mało użytkowników na `{ch}`.'))
         await ctx.send(choice([
             '{}, a Twój stary to Twoja stara.',
             '{} Twoje auto nie ma okien.',
             '{} udław się kokosem.',
             '{} wsadź se szyszkę w dupę.',
             '{} wyjmij mikrofon z dupy.',
-            '{} jak Ci walnę w zęby, to będziesz je mył wsadzając sobie szczoteczkę do dupy.',
+            '{} jak Ci walnę w zęby, to będziesz je mył wsadzając sobie'
+            ' szczoteczkę do dupy.',
             '{} Twój pies sra mordą.'
-        ]).format(choice(list(map(lambda u: u.mention, filter(lambda u: not u.bot, ch.members))))))
+        ]).format(choice(list(map(lambda u: u.mention,
+                                  filter(lambda u: not u.bot, ch.members))))))
 
 
 def setup(bot):

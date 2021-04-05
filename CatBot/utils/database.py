@@ -2,7 +2,8 @@
 from datetime import date, datetime, timedelta
 from typing import Optional, List
 
-from sqlalchemy import create_engine, Column, BigInteger, String, Date, Text, func, desc
+from sqlalchemy import create_engine, Column, BigInteger, String, Date, Text, \
+    func, desc
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -35,7 +36,8 @@ def get_flex(user_id: int) -> Optional[Flex]:
 def get_flexes(user_id: int) -> Optional[List[Flex]]:
     session = _Session()
     try:
-        return list(session.query(Flex).filter_by(user_id=str(user_id)).order_by(desc(Flex.flex_date)).limit(10))
+        return list(session.query(Flex).filter_by(user_id=str(user_id))
+                    .order_by(desc(Flex.flex_date)).limit(10))
     finally:
         session.close()
 

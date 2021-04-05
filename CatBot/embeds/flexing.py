@@ -32,7 +32,8 @@ def user_flexes_em(user: User, flexes: List[Flex]) -> Embed:
 def flextop_em(users: list, counts: list, days: int) -> Embed:
     em = BaseEmbed(
         title=':dart: Topowe flexy',
-        description=f'Lista najbardziej flexujących się osób z ostatnich {days} dni.',
+        description=f'Lista najbardziej flexujących się osób z ostatnich'
+                    f' {days} dni.',
         timestamp=datetime.utcnow(),
         color=Color.blurple()
     )

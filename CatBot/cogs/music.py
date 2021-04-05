@@ -16,6 +16,7 @@ class Music(Cog):
 
     async def start_nodes(self):
         await self.bot.wait_until_ready()
+        # noinspection SpellCheckingInspection
         await self.bot.wavelink.initiate_node(
             host='127.0.0.1',
             port='2333',
@@ -32,7 +33,8 @@ class Music(Cog):
         try:
             channel = ctx.author.voice.channel
         except AttributeError:
-            return await ctx.message.reply(embed=custom_error_em('Dołącz się gdzieś'))
+            return await ctx.message.reply(
+                embed=custom_error_em('Dołącz się gdzieś'))
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.connect(channel.id)
@@ -42,7 +44,8 @@ class Music(Cog):
     )
     async def play(self, ctx: Context, *, query: str = None):
         if not query:
-            return await ctx.message.reply(embed=custom_error_em('Co mam włączyć?'))
+            return await ctx.message.reply(
+                embed=custom_error_em('Co mam włączyć?'))
 
         tracks = await self.bot.wavelink.get_tracks(f'ytsearch:{query}')
         if not tracks:
@@ -52,7 +55,8 @@ class Music(Cog):
         if not player.is_connected:
             await ctx.invoke(self.connect_)
 
-        await ctx.message.reply(embed=done_em(f'Dodano {str(tracks[0])} do kolejki'))
+        await ctx.message.reply(
+            embed=done_em(f'Dodano {str(tracks[0])} do kolejki'))
         await player.play(tracks[0])
 
 

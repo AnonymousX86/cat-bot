@@ -2,7 +2,8 @@
 from logging import basicConfig, getLogger
 
 from discord import Intents
-from discord.ext.commands import Bot, ExtensionNotFound, ExtensionAlreadyLoaded, NoEntryPointError
+from discord.ext.commands import Bot, ExtensionNotFound, \
+    ExtensionAlreadyLoaded, NoEntryPointError
 from rich.logging import RichHandler
 
 from CatBot.settings import bot_version, bot_token
@@ -35,7 +36,9 @@ if __name__ == '__main__':
         log.info('Logged in as "{0}" (ID: {0.id})'.format(bot.user))
         log.info(f'Loaded bot version: "{bot_version()}"')
 
-        for cog in [f'CatBot.cogs.{cog}' for cog in ['basic', 'bonks', 'flexing', 'responses']]:
+        for cog in [f'CatBot.cogs.{cog}' for cog in [
+            'basic', 'bonks', 'flexing', 'responses'
+        ]]:
             try:
                 bot.load_extension(cog)
             except ExtensionNotFound:
@@ -43,7 +46,8 @@ if __name__ == '__main__':
             except ExtensionAlreadyLoaded:
                 log.warning(f'Already loaded: {cog}')
             except NoEntryPointError:
-                log.critical(f'Extension "{cog}" do not have "setup()" function')
+                log.critical(
+                    f'Extension "{cog}" do not have "setup()" function')
             except Exception as e:
                 log.critical(f'{e.__class__.__name__}: {e}')
             else:
