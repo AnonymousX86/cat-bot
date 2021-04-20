@@ -8,7 +8,7 @@ from CatBot.embeds.flexing import user_flexes_em, flextop_em
 from CatBot.utils.database import add_flex, get_flexes, get_top_flexes
 
 
-class Flexing(Cog):
+class Flexing(Cog, name='Flexowanie'):
     def __init__(self, bot):
         self.bot = bot
 

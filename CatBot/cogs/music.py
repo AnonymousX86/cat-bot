@@ -5,7 +5,7 @@ from wavelink import Client
 from CatBot.embeds.basic import custom_error_em, done_em
 
 
-class Music(Cog):
+class Music(Cog, name='Muzyka'):
     def __init__(self, bot):
         self.bot = bot
 

@@ -6,7 +6,7 @@ from CatBot.embeds.basic import custom_error_em, done_em
 from CatBot.utils.database import get_counters, add_counter
 
 
-class Counters(Cog):
+class Counters(Cog, name='Zliczanie'):
     def __init__(self, bot):
         self.bot = bot
 

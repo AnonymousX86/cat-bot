@@ -9,7 +9,7 @@ from CatBot.embeds.basic import *
 from CatBot.embeds.responses import skryba_em, ip_em
 
 
-class Responses(Cog):
+class Responses(Cog, name='Proste odpowiedzi'):
     def __init__(self, bot):
         self.bot = bot
 

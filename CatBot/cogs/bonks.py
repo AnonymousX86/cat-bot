@@ -7,7 +7,7 @@ from CatBot.embeds.bonks import bonks_em, bonk_em
 from CatBot.utils.database import add_bonk, get_bonks
 
 
-class Bonks(Cog):
+class Bonks(Cog, name='Bonkowanie'):
     def __init__(self, bot):
         self.bot = bot
 

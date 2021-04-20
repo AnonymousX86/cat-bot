@@ -29,7 +29,7 @@ async def add_basic_roles(guild: Guild, member: Member,
     return result
 
 
-class Basic(Cog):
+class Basic(Cog, name='Podstawowe'):
     def __init__(self, bot):
         self.bot = bot
 
