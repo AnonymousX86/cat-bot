@@ -20,6 +20,10 @@ class Bonks(Cog):
     async def bonk(self, ctx: Context, member: Member = None):
         if not member:
             return await ctx.message.reply(embed=missing_user_em())
+        elif member.id == ctx.author.id:
+            return await ctx.message.reply(embed=custom_error_em(
+                'Nie możesz sam siebie zbonkować'
+            ))
         if not add_bonk(member.id):
             return await ctx.message.reply(embed=custom_error_em(
                 '**\\*BONK!\\***, ale... Coś poszło nie tak. Anon ratuj!'
