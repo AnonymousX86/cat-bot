@@ -37,7 +37,7 @@ if __name__ == '__main__':
         log.info(f'Loaded bot version: "{bot_version()}"')
 
         for cog in [f'CatBot.cogs.{cog}' for cog in [
-            'basic', 'bonks', 'flexing', 'responses'
+            'basic', 'bonks', 'counters', 'flexing', 'responses'
         ]]:
             try:
                 bot.load_extension(cog)

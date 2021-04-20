@@ -76,6 +76,38 @@ def add_flex(user_id: int, reason: str) -> Optional[Flex]:
         session.close()
 
 
+class Counter(Base):
+    __tablename__ = 'counters'
+    counter_id = Column(BigInteger, primary_key=True)
+    user_id = Column(String(18))
+    counter_date = Column(Date)
+
+
+def get_counters(user_id: int) -> int:
+    session = _Session()
+    try:
+        return session.query(Counter).filter_by(user_id=str(user_id)).count()
+    finally:
+        session.close()
+
+
+def add_counter(user_id: int) -> Optional[Counter]:
+    session = _Session()
+    new_counter = Counter(
+        user_id=str(user_id),
+        counter_date=date.today()
+    )
+    try:
+        session.add(new_counter)
+        session.commit()
+        return new_counter
+    except IntegrityError:
+        session.rollback()
+        return None
+    finally:
+        session.close()
+
+
 class Bonk(Base):
     __tablename__ = 'bonks'
     bonk_id = Column(BigInteger, primary_key=True)
