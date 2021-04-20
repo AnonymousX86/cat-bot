@@ -22,6 +22,7 @@ if __name__ == '__main__':
         command_prefix=['ej ', 'Ej ', '<@753541564306948098> '],
         description='Prywatny bot Kociej Rzeszy.',
         owner_id=309270832683679745,
+        help_command=None,
         intents=Intents(
             guilds=True,
             members=True,

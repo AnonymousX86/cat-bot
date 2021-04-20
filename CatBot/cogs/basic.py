@@ -34,6 +34,54 @@ class Basic(Cog, name='Podstawowe'):
         self.bot = bot
 
     @command(
+        name='help',
+        brief='Pokazuje to okno',
+        description='Możesz wyświetlić pomoc dla kategorii lub komendy.'
+    )
+    async def help(self, ctx: Context, arg: str = None):
+        if not arg:
+            em = done_em('Wszystkie dostępne komendy.')
+            for cog in self.bot.cogs:
+                em.add_field(
+                    name=cog,
+                    value='\n'.join(
+                        f'`{x.name}` - {x.brief or "Brak opisu"}'
+                        for x in self.bot.cogs[cog].get_commands()
+                    ),
+                    inline=False
+                )
+            await ctx.send(embed=em)
+        elif cog := self.bot.get_cog(arg.capitalize()):
+            await ctx.send(embed=SuccessEmbed(
+                title=cog.qualified_name,
+                description=cog.description
+            ).add_field(
+                name='Dostępne komendy',
+                value='\n'.join(f'- `{x.name}`' for x in cog.get_commands())
+            ))
+        elif cmd := self.bot.get_command(arg):
+            await ctx.send(embed=SuccessEmbed(
+                title=cmd.name,
+                description=cmd.description
+            ).add_field(
+                name='Aliasy',
+                value=', '.join(f'`{x}`' for x in cmd.aliases) or 'Brak',
+                inline=False
+            ).add_field(
+                name='Używanie',
+                value=f'```\n{ctx.prefix}{cmd.name} {cmd.usage or ""}\n```',
+                inline=False
+            ).add_field(
+                name='Pomoc',
+                value=cmd.help or 'Brak',
+                inline=False
+            ))
+        else:
+            await ctx.send(embed=custom_error_em(
+                'Nie znalazłem takiej komendy ani kategorii'
+            ))
+
+    @command(
         name='info',
         brief='Podstawowe informacje na temat bota',
         description='Pokazuje podstawowe informacje na temat bota.'
