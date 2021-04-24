@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from discord import User
-from discord.ext.commands import Cog, command, Context, cooldown, BucketType, \
-    CommandOnCooldown
+from discord.ext.commands import Cog, command, Context
 
 from CatBot.embeds.basic import missing_user_em, custom_error_em, done_em
 from CatBot.embeds.flexing import user_flexes_em, flextop_em
@@ -12,7 +11,6 @@ class Flexing(Cog, name='Flexowanie'):
     def __init__(self, bot):
         self.bot = bot
 
-    @cooldown(1, 60, BucketType.user)
     @command(
         name='flex',
         brief='Dodaje komuś flex',
@@ -39,14 +37,6 @@ class Flexing(Cog, name='Flexowanie'):
             else:
                 return await ctx.message.reply(embed=done_em(
                     f'{user.mention} dostał(a) flexa za `{reason}`!'))
-
-    @flex.error
-    async def flex_error(self, ctx: Context, error: Exception):
-        if isinstance(error, CommandOnCooldown):
-            await ctx.message.reply(
-                embed=custom_error_em('Nie bądź taki szybki, poczekaj minutę.'))
-        else:
-            raise error
 
     @command(
         name='flexy',

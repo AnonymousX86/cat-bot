@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from discord import Member
-from discord.ext.commands import Cog, command, Context, cooldown, BucketType
+from discord.ext.commands import Cog, command, Context
 
 from CatBot.embeds.basic import custom_error_em, done_em
 from CatBot.utils.database import get_counters, add_counter
@@ -10,7 +10,6 @@ class Counters(Cog, name='Zliczanie'):
     def __init__(self, bot):
         self.bot = bot
 
-    @cooldown(3, 60, BucketType.guild)
     @command(
         name='liczenie',
         description='Zlicza kiedy...\n'
