@@ -73,7 +73,7 @@ class Basic(Cog, name='Podstawowe'):
                 inline=False
             ).add_field(
                 name='Pomoc',
-                value=cmd.help or 'Brak',
+                value=f'```\n{cmd.help}\n```' if cmd.help else "Brak",
                 inline=False
             ))
         else:
