@@ -7,6 +7,7 @@ from discord.ext.commands import Bot, ExtensionNotFound, \
 from rich.logging import RichHandler
 
 from CatBot.settings import bot_version, bot_token
+from CatBot.utils.riot_api import download_champion_json
 
 if __name__ == '__main__':
     # noinspection PyArgumentList
@@ -38,7 +39,7 @@ if __name__ == '__main__':
         log.info(f'Loaded bot version: "{bot_version()}"')
 
         for cog in [f'CatBot.cogs.{cog}' for cog in [
-            'basic', 'bonks', 'counters', 'flexing', 'responses'
+            'basic', 'bonks', 'counters', 'flexing', 'lol', 'responses'
         ]]:
             try:
                 bot.load_extension(cog)
@@ -53,6 +54,14 @@ if __name__ == '__main__':
                 log.critical(f'{e.__class__.__name__}: {e}')
             else:
                 log.info(f'Loaded: {cog}')
+
+        log.info('Downloading `champion.json`')
+        try:
+            with open('assets/champion.json', 'x') as _:
+                pass
+        except FileExistsError:
+            pass
+        download_champion_json()
 
         log.info('Everything done!')
 

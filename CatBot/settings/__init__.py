@@ -6,6 +6,7 @@ from .bot import *
 from .database import *
 from .rapid_api import *
 from .reddit import *
+from .riot_api import *
 from .spotify import *
 
 if __name__ == '__main__':
