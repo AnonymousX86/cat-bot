@@ -3,7 +3,8 @@ from discord import Member
 from discord.ext.commands import Cog, command, Context
 
 from CatBot.embeds.basic import custom_error_em, done_em
-from CatBot.utils.database import get_counters, add_counter
+from CatBot.utils.database import get_counters, add_counter, add_interrupt, \
+    get_interrupts
 
 
 class Counters(Cog, name='Zliczanie'):
@@ -67,6 +68,40 @@ class Counters(Cog, name='Zliczanie'):
                 ))
         else:
             await ctx.send(embed=custom_error_em('Błędny argument.'))
+
+    @command(
+        name='w_zdanie',
+        biref='Zlicza wtrącanie się w zdanie',
+        aliases=['w-zdanie', 'przerywanie', 'przerwanie'],
+        usage='[użytkownik] [opcja]',
+        help='Bez podania użytkownika, podaje Twoje liczniki.\n'
+             'Dostępne opcje:\n'
+             ' - pokazywanie: brak znaku,\n'
+             ' - dodawanie: `+`, `plus`, `dodaj`.'
+    )
+    async def w_zdanie(self, ctx: Context, member: Member = None,
+                       option: str = None):
+        if not member:
+            member = ctx.author
+
+        if not option:
+            n = get_interrupts(member.id)
+            await ctx.send(embed=done_em(
+                f'{member.mention} przerwał(a) zdanie'
+                f' {n} raz{"y" if n != 1 else ""}.'
+            ))
+        elif option.lower() not in ['+', 'plus', 'dodaj']:
+            await ctx.send(embed=custom_error_em('Błędny argument'))
+        elif not add_interrupt(member.id):
+            await ctx.send(embed=custom_error_em(
+                'Wystąpił błąd w zapytaniu do bazy danych.'
+            ))
+        else:
+            n = get_interrupts(member.id)
+            await ctx.send(embed=done_em(
+                f'{member.mention} znowu przerwał(a) zdanie, czyli zrobił(a)'
+                f' to łącznie {n} raz{"y" if n != 1 else ""}.'
+            ))
 
 
 def setup(bot):

@@ -108,6 +108,38 @@ def add_counter(user_id: int) -> Optional[Counter]:
         session.close()
 
 
+class Interrupt(Base):
+    __tablename__ = 'interrupts'
+    interrupt_id = Column(BigInteger, primary_key=True)
+    user_id = Column(String(18))
+    interrupt_date = Column(Date)
+
+
+def get_interrupts(user_id: int) -> int:
+    session = _Session()
+    try:
+        return session.query(Interrupt).filter_by(user_id=str(user_id)).count()
+    finally:
+        session.close()
+
+
+def add_interrupt(user_id: int) -> Optional[Interrupt]:
+    session = _Session()
+    new_interrupt = Interrupt(
+        user_id=str(user_id),
+        interrupt_date=date.today()
+    )
+    try:
+        session.add(new_interrupt)
+        session.commit()
+        return new_interrupt
+    except IntegrityError:
+        session.rollback()
+        return None
+    finally:
+        session.close()
+
+
 class Bonk(Base):
     __tablename__ = 'bonks'
     bonk_id = Column(BigInteger, primary_key=True)
