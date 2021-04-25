@@ -12,6 +12,7 @@ class Counters(Cog, name='Zliczanie'):
 
     @command(
         name='liczenie',
+        brief='Liczy nasze "counterki"',
         description='Zlicza kiedy...\n'
                     ' - Krystian: jest niecierpliwy,\n'
                     ' - Wojtek: jest leniwy,\n'
