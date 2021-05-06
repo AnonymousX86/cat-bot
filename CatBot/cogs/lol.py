@@ -3,8 +3,8 @@ from discord import File
 from discord.ext.commands import Cog, command, Context, cooldown, BucketType
 from requests import get
 
-from CatBot.embeds.basic import missing_user_em, custom_error_em, please_wait_em
-from CatBot.embeds.custom_classes import SuccessEmbed
+from CatBot.embeds.core import ErrorEmbed, PleaseWaitEmbed, DoneEmbed
+from CatBot.embeds.lol import MissingSummonerEmbed
 from CatBot.utils.riot_api import Summoner
 
 
@@ -25,7 +25,7 @@ class Lol(Cog, name='LoL'):
                 'X-Riot-Token': 'RGAPI-8c83885b-36f0-4f4a-9251-c3e03892059d'
             }
         )
-        await ctx.send(embed=SuccessEmbed(
+        await ctx.send(embed=DoneEmbed(
             title='API response',
             description=f'Code: {r.status_code}'
         ).add_field(
@@ -46,11 +46,11 @@ class Lol(Cog, name='LoL'):
     async def summoner(self, ctx: Context, name: str = None, *,
                        options: str = ''):
         if not name:
-            return await ctx.send(embed=missing_user_em())
-        msg = await ctx.send(embed=please_wait_em())
+            return await ctx.send(embed=MissingSummonerEmbed())
+        msg = await ctx.send(embed=PleaseWaitEmbed())
         player = Summoner(name)
         if player.exists:
-            em = SuccessEmbed(
+            em = DoneEmbed(
                 title=player.name
             ).add_field(
                 name='Poziom',
@@ -88,12 +88,12 @@ class Lol(Cog, name='LoL'):
             if player.maestry[0].name != 'Nieznany':
                 em.set_image(url=player.maestry[0].champion_splash)
             await msg.edit(embed=em)
-        elif str((c := player.status_code))[0] == '4':
-            await msg.edit(embed=custom_error_em(
+        elif str((c := player.status_code)).startswith('4'):
+            await msg.edit(embed=ErrorEmbed(
                 f'Gracz `{name}` nie istnieje na EUNE.'
             ))
         else:
-            await msg.edit(embed=custom_error_em(
+            await msg.edit(embed=ErrorEmbed(
                 f'Wystąpił błąd: `{c}`.'
             ))
 
@@ -106,21 +106,21 @@ class Lol(Cog, name='LoL'):
     )
     async def maestria(self, ctx: Context, name: str = None, count: int = 6):
         if not name:
-            return await ctx.send(embed=missing_user_em())
+            return await ctx.send(embed=MissingSummonerEmbed())
         elif count > 25:
             count = 25
-        msg = await ctx.send(embed=please_wait_em())
+        msg = await ctx.send(embed=PleaseWaitEmbed())
         player = Summoner(name, matches=True)
         if not player.exists:
-            em = custom_error_em(f'Gracz `{name}` nie istnieje na EUNE.')
+            em = ErrorEmbed(f'Gracz `{name}` nie istnieje na EUNE.')
         else:
             maestry = player.maestry[:count]
             if not (n := len(maestry)):
-                em = custom_error_em(
+                em = ErrorEmbed(
                     f'Gracz `{player.name}` nie posiada maestrii na EUNE.'
                 )
             else:
-                em = SuccessEmbed(
+                em = DoneEmbed(
                     title=player.name,
                     description=f'Top {n} maestrii'
                 )
@@ -143,15 +143,15 @@ class Lol(Cog, name='LoL'):
     )
     async def winrate(self, ctx: Context, name: str = None):
         if not name:
-            await ctx.send(embed=missing_user_em())
+            await ctx.send(embed=MissingSummonerEmbed())
         else:
-            msg = await ctx.send(embed=please_wait_em())
+            msg = await ctx.send(embed=PleaseWaitEmbed())
             if not (player := Summoner(name, matches=True)).exists:
-                await msg.edit(embed=custom_error_em(
+                await msg.edit(embed=ErrorEmbed(
                     f'Gracz `{name}` nie istnieje na EUNE.'
                 ))
             else:
-                em = SuccessEmbed(
+                em = DoneEmbed(
                     title=player.name,
                     description=f'Procent wygranych: **{player.winrate}%**'
                                 f' *({sum(m.win for m in player.matches)}/'

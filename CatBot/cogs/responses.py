@@ -2,11 +2,11 @@
 from asyncio import sleep
 from random import choice
 
-from discord import Forbidden
+from discord import Forbidden, Member
 from discord.ext.commands import Cog, command, Context, cooldown, BucketType
 
-from CatBot.embeds.basic import *
-from CatBot.embeds.responses import skryba_em, ip_em
+from CatBot.embeds.core import ErrorEmbed
+from CatBot.embeds.responses import MonologEmbed, IpEmbed
 
 
 class Responses(Cog, name='Proste odpowiedzi'):
@@ -76,7 +76,7 @@ class Responses(Cog, name='Proste odpowiedzi'):
         brief='Monolog skryby'
     )
     async def skryba(self, ctx: Context):
-        await ctx.send(embed=skryba_em())
+        await ctx.send(embed=MonologEmbed())
 
     @command(
         name='delet',
@@ -119,7 +119,7 @@ class Responses(Cog, name='Proste odpowiedzi'):
         brief='IP bota'
     )
     async def ip(self, ctx: Context):
-        await ctx.message.reply(embed=ip_em())
+        await ctx.send(embed=IpEmbed())
 
     @command(
         name='obelga',
@@ -131,8 +131,9 @@ class Responses(Cog, name='Proste odpowiedzi'):
     async def obelga(self, ctx: Context):
         ch = ctx.guild.get_channel(385122529343176709)
         if len(ch.members) < 3:
-            return await ctx.send(
-                embed=custom_error_em(f'Za mało użytkowników na `{ch}`.'))
+            return await ctx.send(embed=ErrorEmbed(
+                f'Za mało użytkowników na `{ch}`.'
+            ))
         await ctx.send(choice([
             '{}, a Twój stary to Twoja stara.',
             '{} Twoje auto nie ma okien.',

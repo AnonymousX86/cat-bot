@@ -2,8 +2,8 @@
 from discord import Member
 from discord.ext.commands import Cog, command, Context
 
-from CatBot.embeds.basic import missing_user_em, custom_error_em
-from CatBot.embeds.bonks import bonks_em, bonk_em
+from CatBot.embeds.bonks import BonkEmbed, BonksEmbed
+from CatBot.embeds.core import MissingMemberEmbed, ErrorEmbed
 from CatBot.utils.database import add_bonk, get_bonks
 
 
@@ -19,16 +19,16 @@ class Bonks(Cog, name='Bonkowanie'):
     )
     async def bonk(self, ctx: Context, member: Member = None):
         if not member:
-            return await ctx.message.reply(embed=missing_user_em())
+            return await ctx.send(embed=MissingMemberEmbed())
         elif member.id == ctx.author.id:
-            return await ctx.message.reply(embed=custom_error_em(
+            return await ctx.send(embed=ErrorEmbed(
                 'Nie możesz sam siebie zbonkować'
             ))
         if not add_bonk(member.id):
-            return await ctx.message.reply(embed=custom_error_em(
+            return await ctx.send(embed=ErrorEmbed(
                 '**\\*BONK!\\***, ale... Coś poszło nie tak. Anon ratuj!'
             ))
-        await ctx.message.reply(embed=bonk_em(member))
+        await ctx.send(embed=BonkEmbed(member))
 
     @command(
         name='bonki',
@@ -37,8 +37,8 @@ class Bonks(Cog, name='Bonkowanie'):
     )
     async def bonki(self, ctx: Context, member: Member = None):
         if not member:
-            return await ctx.message.reply(embed=missing_user_em())
-        await ctx.message.reply(embed=bonks_em(get_bonks(member.id), member))
+            return await ctx.send(embed=MissingMemberEmbed())
+        await ctx.send(embed=BonksEmbed(get_bonks(member.id), member))
 
 
 def setup(bot):

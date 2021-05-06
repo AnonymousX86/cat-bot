@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 from discord import Message, HTTPException, Forbidden, NotFound, Guild, \
-    TextChannel
+    TextChannel, Member
 from discord.ext.commands import Cog, command, Context
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
 from youtubesearchpython import SearchVideos
 
-from CatBot.embeds.basic import *
+from CatBot.embeds.basic import InfoEmbed, SpotifyEmbed
+from CatBot.embeds.core import ErrorEmbed, MissingPermsEmbed, PleaseWaitEmbed, \
+    DoneEmbed, MissingMemberEmbed, GreenEmbed
 from CatBot.settings import spotify_secret
 
 
@@ -40,7 +42,7 @@ class Basic(Cog, name='Podstawowe'):
     )
     async def help(self, ctx: Context, arg: str = None):
         if not arg:
-            em = done_em('Wszystkie dostępne komendy.')
+            em = GreenEmbed(title='Wszystkie dostępne komendy.')
             for cog in self.bot.cogs:
                 em.add_field(
                     name=cog,
@@ -52,7 +54,7 @@ class Basic(Cog, name='Podstawowe'):
                 )
             await ctx.send(embed=em)
         elif cog := self.bot.get_cog(arg.capitalize()):
-            await ctx.send(embed=SuccessEmbed(
+            await ctx.send(embed=GreenEmbed(
                 title=cog.qualified_name,
                 description=cog.description
             ).add_field(
@@ -60,7 +62,7 @@ class Basic(Cog, name='Podstawowe'):
                 value='\n'.join(f'- `{x.name}`' for x in cog.get_commands())
             ))
         elif cmd := self.bot.get_command(arg):
-            await ctx.send(embed=SuccessEmbed(
+            await ctx.send(embed=GreenEmbed(
                 title=cmd.name,
                 description=cmd.description
             ).add_field(
@@ -77,8 +79,8 @@ class Basic(Cog, name='Podstawowe'):
                 inline=False
             ))
         else:
-            await ctx.send(embed=custom_error_em(
-                'Nie znalazłem takiej komendy ani kategorii'
+            await ctx.send(embed=ErrorEmbed(
+                description='Nie znalazłem takiej komendy ani kategorii'
             ))
 
     @command(
@@ -88,7 +90,7 @@ class Basic(Cog, name='Podstawowe'):
                     ' (Na co to komu?)'
     )
     async def info(self, ctx: Context):
-        await ctx.message.reply(embed=info_em())
+        await ctx.send(embed=InfoEmbed())
 
     @Cog.listener('on_member_join')
     async def autorole_updater(self, member: Member):
@@ -111,8 +113,9 @@ class Basic(Cog, name='Podstawowe'):
                     )
                 )
                 if not sp:
-                    await message.channel.send(embed=custom_error_em(
-                        'Nie mogę się połączyć ze Spotify!'))
+                    await message.channel.send(embed=ErrorEmbed(
+                        'Nie mogę się połączyć ze Spotify!'
+                    ))
                     await self.bot.log.warning('Can\'t connect to Spotify!')
                     return
 
@@ -120,7 +123,7 @@ class Basic(Cog, name='Podstawowe'):
                     message.content.split('?')[0].split('&')[0].split('/')[-1])
                 if not result:
                     await message.channel.send(
-                        embed=custom_error_em('Błędny link Spotify!'))
+                        embed=ErrorEmbed(description='Błędny link Spotify!'))
                     await self.bot.log.info('Spotify link is wrong!')
                     return
 
@@ -133,13 +136,14 @@ class Basic(Cog, name='Podstawowe'):
                     max_results=1
                 ).result()['search_result'][0]['link']
                 if not yt:
-                    await message.channel.send(embed=custom_error_em(
-                        'Wyszukiwanie na YouTube - zawiodło.'))
+                    await message.channel.send(embed=ErrorEmbed(
+                        'Wyszukiwanie na YouTube - zawiodło.'
+                    ))
                     await self.bot.log.info(
                         f'YouTube video "{query}" not found')
 
                 await message.channel.send(
-                    embed=spotify_em(result, message.author))
+                    embed=SpotifyEmbed(result, message.author))
                 await message.channel.send(f'>>> **YouTube**\n{yt}')
                 self.bot.log.info(
                     f'Spotify song "{result["name"]}" found on YouTube'
@@ -158,17 +162,18 @@ class Basic(Cog, name='Podstawowe'):
     )
     async def autorole(self, ctx: Context):
         if ctx.author.id != 309270832683679745:
-            await ctx.message.reply(embed=missing_perms_em())
+            await ctx.send(embed=MissingPermsEmbed())
         else:
-            msg = await ctx.message.reply(embed=please_wait_em())
+            msg = await ctx.send(embed=PleaseWaitEmbed())
             added = 0
             self.bot.log.info(f'Started updating roles by {str(ctx.author)}')
             for member in ctx.guild.members:
                 if not member.bot:
                     if await add_basic_roles(ctx.guild, member, ctx.channel):
                         added += 1
-            await msg.edit(
-                embed=done_em(f'Zaktualizowana ilość użytkowników: {added}.'))
+            await msg.edit(embed=DoneEmbed(
+                f'Zaktualizowana ilość użytkowników: {added}.'
+            ))
             self.bot.log.info(f'Updated {added} users')
 
     # noinspection SpellCheckingInspection
@@ -180,23 +185,28 @@ class Basic(Cog, name='Podstawowe'):
     )
     async def order(self, ctx: Context, user: Member):
         if not user:
-            await ctx.message.reply(embed=missing_user_em())
+            await ctx.send(embed=MissingMemberEmbed())
         elif 641331138622783508 not in map(lambda r: r.id, ctx.author.roles):
-            await ctx.message.reply(embed=missing_perms_em())
+            await ctx.send(embed=MissingPermsEmbed())
         elif 799377826859843634 in map(lambda r: r.id, user.roles):
-            await ctx.message.reply(embed=custom_error_em(
-                'Ta osoba już posiada order, ale dodałem jeszcze raz.'))
+            await ctx.send(embed=ErrorEmbed(
+                description='Ta osoba już posiada order, ale dodałem jeszcze'
+                            ' raz.'
+            ))
         else:
             if not (role := ctx.guild.get_role(799377826859843634)):
-                return await ctx.message.reply(
-                    embed=custom_error_em('Nie znalazłem takiej roli.'))
+                return await ctx.message.reply(embed=ErrorEmbed(
+                    'Nie znalazłem takiej roli.'
+                ))
             try:
-                await user.add_roles(role,
-                                     reason='Przeruchanie przeruchanego mema.')
+                await user.add_roles(
+                    role,
+                    reason='Przeruchanie przeruchanego mema.'
+                )
                 self.bot.log.info(f'An order was awarded to {str(user)}')
             except HTTPException:
                 pass
-            await ctx.message.reply(embed=done_em(
+            await ctx.send(embed=DoneEmbed(
                 f'{user.mention} otrzymał(a) **order Sashy Grey** za'
                 f' **przeruchanie przeruchanego mema**.'
             ))

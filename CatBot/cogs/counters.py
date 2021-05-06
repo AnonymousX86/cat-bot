@@ -2,7 +2,7 @@
 from discord import Member
 from discord.ext.commands import Cog, command, Context
 
-from CatBot.embeds.basic import custom_error_em, done_em
+from CatBot.embeds.core import DoneEmbed, ErrorEmbed
 from CatBot.utils.database import get_counters, add_counter, add_interrupt, \
     get_interrupts
 
@@ -50,24 +50,28 @@ class Counters(Cog, name='Zliczanie'):
 
         if not option:
             c = get_counters(member.id)
-            await ctx.send(embed=done_em(
+            await ctx.send(embed=DoneEmbed(
                 f'{member.mention} {members[str(member.id)]}'
                 f' {c} raz{"" if c == 1 else "y"}.'
             ))
         elif option.lower() in ['+', 'plus', 'dodaj']:
-            if not add_counter(member.id):
-                await ctx.send(embed=custom_error_em(
+            if member.id not in members.keys():
+                await ctx.send(embed=ErrorEmbed(
+                    f'{member.mention} nie ma counterów.'
+                ))
+            elif not add_counter(member.id):
+                await ctx.send(embed=ErrorEmbed(
                     f'Nie mogę dodać countera {member.mention}'
                 ))
             else:
                 c = get_counters(member.id)
-                await ctx.send(embed=done_em(
+                await ctx.send(embed=DoneEmbed(
                     f'{member.mention} dostał countera,'
                     f' więc {members[str(member.id)]}'
                     f' {c} raz{"" if c == 1 else "y"}.'
                 ))
         else:
-            await ctx.send(embed=custom_error_em('Błędny argument.'))
+            await ctx.send(embed=ErrorEmbed('Błędny argument.'))
 
     @command(
         name='w_zdanie',
@@ -86,19 +90,19 @@ class Counters(Cog, name='Zliczanie'):
 
         if not option:
             n = get_interrupts(member.id)
-            await ctx.send(embed=done_em(
+            await ctx.send(embed=DoneEmbed(
                 f'{member.mention} przerwał(a) zdanie'
                 f' {n} raz{"y" if n != 1 else ""}.'
             ))
         elif option.lower() not in ['+', 'plus', 'dodaj']:
-            await ctx.send(embed=custom_error_em('Błędny argument'))
+            await ctx.send(embed=ErrorEmbed('Błędny argument'))
         elif not add_interrupt(member.id):
-            await ctx.send(embed=custom_error_em(
+            await ctx.send(embed=ErrorEmbed(
                 'Wystąpił błąd w zapytaniu do bazy danych.'
             ))
         else:
             n = get_interrupts(member.id)
-            await ctx.send(embed=done_em(
+            await ctx.send(embed=DoneEmbed(
                 f'{member.mention} znowu przerwał(a) zdanie, czyli zrobił(a)'
                 f' to łącznie {n} raz{"y" if n != 1 else ""}.'
             ))

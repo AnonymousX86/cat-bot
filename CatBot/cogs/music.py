@@ -2,7 +2,7 @@
 from discord.ext.commands import Cog, command, Context
 from wavelink import Client
 
-from CatBot.embeds.basic import custom_error_em, done_em
+from CatBot.embeds.core import ErrorEmbed, DoneEmbed
 
 
 class Music(Cog, name='Muzyka'):
@@ -34,7 +34,7 @@ class Music(Cog, name='Muzyka'):
             channel = ctx.author.voice.channel
         except AttributeError:
             return await ctx.message.reply(
-                embed=custom_error_em('Dołącz się gdzieś'))
+                embed=ErrorEmbed('Dołącz się gdzieś'))
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         await player.connect(channel.id)
@@ -45,18 +45,18 @@ class Music(Cog, name='Muzyka'):
     async def play(self, ctx: Context, *, query: str = None):
         if not query:
             return await ctx.message.reply(
-                embed=custom_error_em('Co mam włączyć?'))
+                embed=ErrorEmbed('Co mam włączyć?'))
 
         tracks = await self.bot.wavelink.get_tracks(f'ytsearch:{query}')
         if not tracks:
-            return await ctx.message.reply(embed=custom_error_em('Nic nie ma'))
+            return await ctx.message.reply(embed=ErrorEmbed('Nic nie ma'))
 
         player = self.bot.wavelink.get_player(ctx.guild.id)
         if not player.is_connected:
             await ctx.invoke(self.connect_)
 
         await ctx.message.reply(
-            embed=done_em(f'Dodano {str(tracks[0])} do kolejki'))
+            embed=DoneEmbed(f'Dodano {str(tracks[0])} do kolejki'))
         await player.play(tracks[0])
 
 
