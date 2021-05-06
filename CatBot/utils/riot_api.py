@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from json import load as json_load
-from os import sep
+from os import sep, mkdir
 from typing import List
 
 from requests import get
@@ -24,6 +24,10 @@ def download_champion_json():
         allow_redirects=True
     )
     file_path = f'assets{sep}champion.json'
+    try:
+        mkdir('assets')
+    except OSError:
+        pass
     try:
         with open(file_path, 'x'):
             pass
