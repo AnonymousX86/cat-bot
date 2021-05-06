@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from json import load as json_load
+from os import sep
 from typing import List
 
 from requests import get
@@ -22,7 +23,13 @@ def download_champion_json():
         '11.8.1/data/en_US/champion.json',
         allow_redirects=True
     )
-    with open('assets/champion.json', 'wb') as f:
+    file_path = f'assets{sep}champion.json'
+    try:
+        with open(file_path, 'x'):
+            pass
+    except FileExistsError:
+        pass
+    with open(file_path, 'wb') as f:
         f.write(r.content)
 
 
