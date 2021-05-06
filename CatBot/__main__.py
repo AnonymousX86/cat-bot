@@ -59,11 +59,6 @@ if __name__ == '__main__':
                 log.info(f'Loaded: {cog}')
 
         log.info('Downloading `champion.json`')
-        try:
-            with open('assets/champion.json', 'x') as _:
-                pass
-        except FileExistsError:
-            pass
         download_champion_json()
 
         log.info('Everything done!')
