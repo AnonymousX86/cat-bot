@@ -12,7 +12,7 @@ class FlexAddedEmbed(DoneEmbed):
     def __init__(self, member: Member, reason: str, **kwargs):
         super().__init__(**kwargs)
         self.title = ':muscle: Flex'
-        self.description = f'{member.mention} dostał(a) flexa za:\n> {reason}'
+        self.description = f'{member.mention} dostał(a) flexa za:\n\n> {reason}'
         self.set_thumbnail(url=member.avatar_url)
 
 
