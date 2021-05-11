@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
-from typing import List, Optional
+from typing import List
 
-from discord import Embed, Color, User, Member
+from discord import User, Member
 
-from CatBot.embeds.core import BaseEmbed, DoneEmbed
+from CatBot.embeds.core import DoneEmbed
 from CatBot.utils.database import Flex
 
 
