@@ -66,7 +66,7 @@ class Counters(Cog, name='Zliczanie'):
             else:
                 c = get_counters(member.id)
                 await ctx.send(embed=DoneEmbed(
-                    f'{member.mention} dostał countera,'
+                    f'{member.mention} dostał(a) countera,'
                     f' więc {members[str(member.id)]}'
                     f' {c} raz{"" if c == 1 else "y"}.'
                 ))
