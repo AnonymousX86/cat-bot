@@ -55,7 +55,7 @@ class Counters(Cog, name='Zliczanie'):
                 f' {c} raz{"" if c == 1 else "y"}.'
             ))
         elif option.lower() in ['+', 'plus', 'dodaj']:
-            if member.id not in members.keys():
+            if str(member.id) not in members.keys():
                 await ctx.send(embed=ErrorEmbed(
                     f'{member.mention} nie ma counterów.'
                 ))
