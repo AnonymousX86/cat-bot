@@ -16,21 +16,37 @@ from CatBot.settings import spotify_secret, bot_guilds
 
 async def add_basic_roles(guild: Guild, member: Member,
                           channel: TextChannel = None) -> bool:
-    result = False
-    for role in map(lambda x: guild.get_role(x),
-                    [718576689302470795, 720650395977777294]):
+    success = False
+    if not member.bot:
+        for role in map(lambda x: guild.get_role(x), [
+            628315428384538644,  # Człowieki
+            718576689302470795,  # --Gry--
+            720650395977777294   # --Inne--
+        ]):
+            try:
+                await member.add_roles(role, reason='Automatyzacja ról.')
+            except Forbidden:
+                if channel:
+                    await channel.send(
+                        f'Nie mogę dać roli `{role}` użytkownikowi'
+                        f' {member.display_name}')
+            except HTTPException:
+                pass
+            else:
+                success = True
+    else:
+        bot_role = guild.get_role(628315593631727617)
         try:
-            await member.add_roles(role, reason='Automatyzacja ról.')
+            await member.add_roles(bot_role, reason='Automatyzacja ról.')
         except Forbidden:
             if channel:
                 await channel.send(
-                    f'Nie mogę dać roli `{role}` użytkownikowi'
-                    f' {member.display_name}')
+                    f'Nie mogę dać roli botowi {member.display_name}')
         except HTTPException:
             pass
         else:
-            result = True
-    return result
+            success = True
+    return success
 
 
 class Basic(Cog, name='Podstawowe'):
