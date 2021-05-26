@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 from discord import Message, HTTPException, Forbidden, NotFound, Guild, \
     TextChannel, Member
-from discord.ext.commands import Cog, command, Context
+from discord.ext.commands import Cog
+from discord_slash import cog_ext, SlashContext
+from discord_slash.utils.manage_commands import create_option
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
 from youtubesearchpython import SearchVideos
 
 from CatBot.embeds.basic import InfoEmbed, SpotifyEmbed
 from CatBot.embeds.core import ErrorEmbed, MissingPermsEmbed, PleaseWaitEmbed, \
-    DoneEmbed, MissingMemberEmbed, GreenEmbed
-from CatBot.settings import spotify_secret
+    DoneEmbed
+from CatBot.settings import spotify_secret, bot_guilds
 
 
 async def add_basic_roles(guild: Guild, member: Member,
@@ -35,61 +37,13 @@ class Basic(Cog, name='Podstawowe'):
     def __init__(self, bot):
         self.bot = bot
 
-    @command(
-        name='help',
-        brief='Pokazuje to okno',
-        description='Możesz wyświetlić pomoc dla kategorii lub komendy.'
-    )
-    async def help(self, ctx: Context, arg: str = None):
-        if not arg:
-            em = GreenEmbed(title='Wszystkie dostępne komendy.')
-            for cog in self.bot.cogs:
-                em.add_field(
-                    name=cog,
-                    value='\n'.join(
-                        f'`{x.name}` - {x.brief or "Brak opisu"}'
-                        for x in self.bot.cogs[cog].get_commands()
-                    ),
-                    inline=False
-                )
-            await ctx.send(embed=em)
-        elif cog := self.bot.get_cog(arg.capitalize()):
-            await ctx.send(embed=GreenEmbed(
-                title=cog.qualified_name,
-                description=cog.description
-            ).add_field(
-                name='Dostępne komendy',
-                value='\n'.join(f'- `{x.name}`' for x in cog.get_commands())
-            ))
-        elif cmd := self.bot.get_command(arg):
-            await ctx.send(embed=GreenEmbed(
-                title=cmd.name,
-                description=cmd.description
-            ).add_field(
-                name='Aliasy',
-                value=', '.join(f'`{x}`' for x in cmd.aliases) or 'Brak',
-                inline=False
-            ).add_field(
-                name='Używanie',
-                value=f'```\n{ctx.prefix}{cmd.name} {cmd.usage or ""}\n```',
-                inline=False
-            ).add_field(
-                name='Pomoc',
-                value=f'```\n{cmd.help}\n```' if cmd.help else "Brak",
-                inline=False
-            ))
-        else:
-            await ctx.send(embed=ErrorEmbed(
-                description='Nie znalazłem takiej komendy ani kategorii'
-            ))
-
-    @command(
+    @cog_ext.cog_slash(
         name='info',
-        brief='Podstawowe informacje na temat bota',
         description='Pokazuje podstawowe informacje na temat bota.'
-                    ' (Na co to komu?)'
+                    ' (Na co to komu?)',
+        guild_ids=bot_guilds()
     )
-    async def info(self, ctx: Context):
+    async def info(self, ctx: SlashContext):
         await ctx.send(embed=InfoEmbed())
 
     @Cog.listener('on_member_join')
@@ -154,13 +108,12 @@ class Basic(Cog, name='Podstawowe'):
                 except Forbidden or HTTPException or NotFound:
                     pass
 
-    @command(
+    @cog_ext.cog_slash(
         name='autorole',
-        biref='Aktualizacja ról',
-        description='Dostępne tylko dla Anona.',
-        hidden=True
+        description='Aktualizacja ról, dostępne tylko dla Anona.',
+        guild_ids=bot_guilds()
     )
-    async def autorole(self, ctx: Context):
+    async def autorole(self, ctx: SlashContext):
         if ctx.author.id != 309270832683679745:
             await ctx.send(embed=MissingPermsEmbed())
         else:
@@ -176,19 +129,24 @@ class Basic(Cog, name='Podstawowe'):
             ))
             self.bot.log.info(f'Updated {added} users')
 
-    # noinspection SpellCheckingInspection
-    @command(
+    @cog_ext.cog_slash(
         name='order',
-        brief='Odznacza kogoś orderem Sashy Grey',
         description='Daje komuś rangę "order Sashy Grey" żeby pokazać, jak'
-                    ' bardzo rucha przeruchane memy.'
+                    ' bardzo rucha przeruchane memy.',
+        guild_ids=bot_guilds(),
+        options=[
+            create_option(
+                name='uzytkownik',
+                description='Wybierz kogoś z serwera.',
+                option_type=6,
+                required=True
+            )
+        ]
     )
-    async def order(self, ctx: Context, user: Member):
-        if not user:
-            await ctx.send(embed=MissingMemberEmbed())
-        elif 641331138622783508 not in map(lambda r: r.id, ctx.author.roles):
+    async def order(self, ctx: SlashContext, uzytkownik: Member):
+        if 641331138622783508 not in map(lambda r: r.id, ctx.author.roles):
             await ctx.send(embed=MissingPermsEmbed())
-        elif 799377826859843634 in map(lambda r: r.id, user.roles):
+        elif 799377826859843634 in map(lambda r: r.id, uzytkownik.roles):
             await ctx.send(embed=ErrorEmbed(
                 description='Ta osoba już posiada order, ale dodałem jeszcze'
                             ' raz.'
@@ -199,15 +157,15 @@ class Basic(Cog, name='Podstawowe'):
                     'Nie znalazłem takiej roli.'
                 ))
             try:
-                await user.add_roles(
+                await uzytkownik.add_roles(
                     role,
                     reason='Przeruchanie przeruchanego mema.'
                 )
-                self.bot.log.info(f'An order was awarded to {str(user)}')
+                self.bot.log.info(f'An order was awarded to {str(uzytkownik)}')
             except HTTPException:
                 pass
             await ctx.send(embed=DoneEmbed(
-                f'{user.mention} otrzymał(a) **order Sashy Grey** za'
+                f'{uzytkownik.mention} otrzymał(a) **order Sashy Grey** za'
                 f' **przeruchanie przeruchanego mema**.'
             ))
 

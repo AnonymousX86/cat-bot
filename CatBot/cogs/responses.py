@@ -2,104 +2,44 @@
 from asyncio import sleep
 from random import choice
 
-from discord import Forbidden, Member
-from discord.ext.commands import Cog, command, Context, cooldown, BucketType
+from discord.ext.commands import Cog
+from discord_slash import cog_ext, SlashContext
 
 from CatBot.embeds.core import ErrorEmbed
 from CatBot.embeds.responses import MonologEmbed, IpEmbed
+from CatBot.settings import bot_guilds, dev_guild
 
 
 class Responses(Cog, name='Proste odpowiedzi'):
     def __init__(self, bot):
         self.bot = bot
 
-    @command(
-        name='spierdalaj',
-        biref='Każe komuś... Spierdalać',
-        usage='[użytkownik]'
-    )
-    async def spierdalaj(self, ctx: Context, member: Member = None):
-        if member:
-            await ctx.send(f'Dokładnie, spierdalaj {member.mention}.')
-        else:
-            await ctx.message.reply('Sam spierdalaj.')
-
-    @command(
-        name='ziomek',
-        brief='Że kto?'
-    )
-    async def ziomek(self, ctx: Context):
-        await ctx.message.reply('Ty przecież kolegów nie masz.')
-
-    @command(
-        name='kurwo',
-        brief='Chyba Ty'
-    )
-    async def kurwo(self, ctx: Context):
-        await ctx.message.reply('Ej chuju.')
-
-    @cooldown(1, 7200, BucketType.guild)
-    @command(
-        name='kurwa',
-        brief='Synonimy i wyrazy podobne',
-        description='Użycie tej komendy grozi wyciszeniem lub banem.'
-    )
-    async def kurwa(self, ctx: Context):
-        await ctx.message.reply('No dobra...')
-        await sleep(3)
-        # noinspection SpellCheckingInspection
-        for text in sorted(
-                'dokurwić, dokurwiać, kurwieć, kurwić się, kurwować, nakurwić'
-                ' się, nakurwiać, odkurwić, odkurwiać, okurwiać, okurwić,'
-                ' poodkurwiać, popodkurwiać, poprzekurwiać, poprzykurwiać,'
-                ' porozkurwiać, poskurwiać, powkurwiać, powykurwiać,'
-                ' pozakurwiać, przekurwić, przekurwiać, przykurwić, rozkurwić,'
-                ' rozkurwiać, skurwieć, skurwić, skurwiać, ukurwiać, wkurwić,'
-                ' wkurwiać, wykurwić, zakurwić, zakurwiać, kurewstwo, kurwiarz,'
-                ' kurwiątko, kurwica, kurwidołek, kurwie macierze syn kurwik,'
-                ' kurwiszcze, kurwiszon, skurwiel, skurwysyn, podkurw, pokurw,'
-                ' rozkurw, wkurw, zakurw, kurewski, kurwi, kurwowaty,'
-                ' kurwujący, podkurwiony, przekurwiony, przykurwiony,'
-                ' rozkurwiony, skurwiały, wkurwiający, wkurwiony, zakurwiony,'
-                ' kurna chata, kurna Olek, kurwa mać, kurwa twoja mać była,'
-                ' do kurwy nędzy, o kurwa, dziwka, kurtyzana, nierządnica,'
-                ' prostytutka, tirówka, cichodajka, dupodajka, jawnogrzesznica,'
-                ' ladacznica, lafirynda, latawica, ruchawica, suka, szmata,'
-                ' wszetecznica, wywłoka, zdzira,  łajdak, sprzedawczyk,'
-                ' nikczemnik, palant, dupek'.split(', ')
-        ):
-            await ctx.send(text)
-            await sleep(0.5)
-
-    @command(
+    @cog_ext.cog_slash(
         name='skryba',
-        brief='Monolog skryby'
+        description='Monolog skryby.',
+        guild_ids=bot_guilds()
     )
-    async def skryba(self, ctx: Context):
+    async def skryba(self, ctx: SlashContext):
         await ctx.send(embed=MonologEmbed())
 
-    @command(
+    @cog_ext.cog_slash(
         name='delet',
-        brief='Delet dis now!!1!'
+        description='Delet dis now!!1!',
+        guild_ids=bot_guilds()
     )
-    async def delet(self, ctx: Context, member: Member = None):
-        if member:
-            await ctx.send(f'{member.mention} usuń to.')
+    async def delet(self, ctx: SlashContext):
         await ctx.send(
             'https://media.discordapp.net/attachments/662715159961272320/'
             '776709279507808276/trigger-cut.gif'
         )
-        try:
-            await ctx.message.delete()
-        except Forbidden:
-            pass
 
-    @command(
+    @cog_ext.cog_slash(
         name='2137',
-        biref='Śpiewa barkę',
-        aliases=['janpawel', 'janpaweł', 'JanPawel', 'JanPaweł']
+        description='Toż to papieżowa liczba.',
+        guild_ids=bot_guilds()
     )
-    async def cmd_2137(self, ctx: Context):
+    async def cmd_2137(self, ctx: SlashContext):
+        first = True
         for line in [
             'Pan kiedyś stanął nad brzegiem,',
             'Szukał ludzi gotowych pójść za Nim;',
@@ -111,24 +51,28 @@ class Responses(Cog, name='Proste odpowiedzi'):
             'Swoją barkę pozostawiam na brzegu,',
             'Razem z Tobą nowy zacznę dziś łów.'
         ]:
-            await ctx.send(f'*{line}*')
+            if not first:
+                await ctx.channel.send(f'*{line}*')
+            else:
+                await ctx.send(f'*{line}*')
+                first = False
             await sleep(3)
 
-    @command(
+    @cog_ext.cog_slash(
         name='ip',
-        brief='IP bota'
+        description='IP bota.',
+        guild_ids=dev_guild()
     )
-    async def ip(self, ctx: Context):
+    async def ip(self, ctx: SlashContext):
         await ctx.send(embed=IpEmbed())
 
-    @command(
+    @cog_ext.cog_slash(
         name='obelga',
-        brief='Wymyśla pojazd na kimś',
         description='Losuje osobę z kanału ProtonVPN i dodaje obelgę. Na'
                     ' kanale muszą być przynajmniej 3 osoby.',
-        aliases=['pojazd', 'samochód']
+        guild_ids=bot_guilds()
     )
-    async def obelga(self, ctx: Context):
+    async def obelga(self, ctx: SlashContext):
         ch = ctx.guild.get_channel(385122529343176709)
         if len(ch.members) < 3:
             return await ctx.send(embed=ErrorEmbed(
