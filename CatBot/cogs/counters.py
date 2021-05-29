@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 from discord import Member
-from discord.ext.commands import Cog, command, Context
+from discord.ext.commands import Cog
+from discord_slash import cog_ext, SlashContext
+from discord_slash.utils.manage_commands import create_option, create_choice
 
 from CatBot.embeds.core import DoneEmbed, ErrorEmbed
+from CatBot.settings import bot_guilds
 from CatBot.utils.database import get_counters, add_counter, add_interrupt, \
     get_interrupts
 
@@ -11,30 +14,30 @@ class Counters(Cog, name='Zliczanie'):
     def __init__(self, bot):
         self.bot = bot
 
-    @command(
-        name='liczenie',
-        brief='Liczy nasze "counterki"',
-        description='Zlicza kiedy...\n'
-                    ' - Krystian: jest niecierpliwy,\n'
-                    ' - Wojtek: jest leniwy,\n'
-                    ' - Marta: narzeka,\n'
-                    ' - Anon: informatykuje,\n'
-                    ' - Kuba: nie ogarnia,\n'
-                    ' - Arras: zmienia zdanie,\n'
-                    ' - Agata: wkurza się,\n'
-                    ' - Kira: wydaje podejrzane dźwięki,\n'
-                    ' - Bezu: psuje metę.',
-        aliases=['licz'],
-        usage='[użytkownik] [opcja]',
-        help='Bez podania użytkownika, podaje Twoje liczniki.\n'
-             'Dostępne opcje:\n'
-             ' - pokazywanie: brak znaku,\n'
-             ' - dodawanie: `+`, `plus`, `dodaj`.'
+    @cog_ext.cog_slash(
+        name='licz',
+        description='Liczy nasze "counterki"',
+        guild_ids=bot_guilds(),
+        options=[
+            create_option(
+                name='uzytkownik',
+                description='Wybierz kogoś z serwera. Jeżeli nie - bot wybierze'
+                            ' Ciebie.',
+                option_type=6,
+                required=False
+            ),
+            create_option(
+                name='opcja',
+                description='Dostępne: "+", "plus" lub "dodaj".',
+                option_type=3,
+                required=False
+            )
+        ]
     )
-    async def liczenie(self, ctx: Context, member: Member = None,
-                       option: str = None):
-        if not member:
-            member = ctx.author
+    async def licz(self, ctx: SlashContext, uzytkownik: Member = None,
+                   opcja: str = None):
+        if not uzytkownik:
+            uzytkownik = ctx.author
 
         members = {
             '220560592555999232': 'był niecierpliwy',  # Krystian
@@ -48,63 +51,83 @@ class Counters(Cog, name='Zliczanie'):
             '157854884668899329': 'psuł metę'  # Bezu
         }
 
-        if not option:
-            c = get_counters(member.id)
+        if not opcja:
+            c = get_counters(uzytkownik.id)
             await ctx.send(embed=DoneEmbed(
-                f'{member.mention} {members[str(member.id)]}'
+                f'{uzytkownik.mention} {members[str(uzytkownik.id)]}'
                 f' {c} raz{"" if c == 1 else "y"}.'
             ))
-        elif option.lower() in ['+', 'plus', 'dodaj']:
-            if str(member.id) not in members.keys():
+        elif opcja.lower() in ['+', 'plus', 'dodaj']:
+            if str(uzytkownik.id) not in members.keys():
                 await ctx.send(embed=ErrorEmbed(
-                    f'{member.mention} nie ma counterów.'
+                    f'{uzytkownik.mention} nie ma counterów.'
                 ))
-            elif not add_counter(member.id):
+            elif not add_counter(uzytkownik.id):
                 await ctx.send(embed=ErrorEmbed(
-                    f'Nie mogę dodać countera {member.mention}'
+                    f'Nie mogę dodać countera {uzytkownik.mention}'
                 ))
             else:
-                c = get_counters(member.id)
+                c = get_counters(uzytkownik.id)
                 await ctx.send(embed=DoneEmbed(
-                    f'{member.mention} dostał(a) countera,'
-                    f' więc {members[str(member.id)]}'
+                    f'{uzytkownik.mention} dostał(a) countera,'
+                    f' więc {members[str(uzytkownik.id)]}'
                     f' {c} raz{"" if c == 1 else "y"}.'
                 ))
         else:
             await ctx.send(embed=ErrorEmbed('Błędny argument.'))
 
-    @command(
+    @cog_ext.cog_slash(
         name='w_zdanie',
-        biref='Zlicza wtrącanie się w zdanie',
-        aliases=['w-zdanie', 'przerywanie', 'przerwanie'],
-        usage='[użytkownik] [opcja]',
-        help='Bez podania użytkownika, podaje Twoje liczniki.\n'
-             'Dostępne opcje:\n'
-             ' - pokazywanie: brak znaku,\n'
-             ' - dodawanie: `+`, `plus`, `dodaj`.'
+        description='Zlicza wtrącanie się w zdanie',
+        guild_ids=bot_guilds(),
+        options=[
+            create_option(
+                name='uzytkownik',
+                description='Wybierz kogoś z serwera. Jeżeli nie - bot wybierze'
+                            ' Ciebie.',
+                option_type=6,
+                required=False
+            ),
+            create_option(
+                name='opcja',
+                description='Możesz zobaczyć wartość lub dodać licznik.',
+                option_type=3,
+                required=False,
+                choices=[
+                    create_choice(
+                        name='Zobacz wartość',
+                        value=''
+                    ),
+                    create_choice(
+                        name='Dodaj +1',
+                        value='+'
+                    )
+                ]
+            )
+        ]
     )
-    async def w_zdanie(self, ctx: Context, member: Member = None,
-                       option: str = None):
-        if not member:
-            member = ctx.author
+    async def w_zdanie(self, ctx: SlashContext, uzytkownik: Member = None,
+                       opcja: str = None):
+        if not uzytkownik:
+            uzytkownik = ctx.author
 
-        if not option:
-            n = get_interrupts(member.id)
+        if not opcja:
+            n = get_interrupts(uzytkownik.id)
             await ctx.send(embed=DoneEmbed(
-                f'{member.mention} przerwał(a) zdanie'
+                f'{uzytkownik.mention} przerwał(a) zdanie'
                 f' {n} raz{"y" if n != 1 else ""}.'
             ))
-        elif option.lower() not in ['+', 'plus', 'dodaj']:
+        elif opcja.lower() != '+':
             await ctx.send(embed=ErrorEmbed('Błędny argument'))
-        elif not add_interrupt(member.id):
+        elif not add_interrupt(uzytkownik.id):
             await ctx.send(embed=ErrorEmbed(
                 'Wystąpił błąd w zapytaniu do bazy danych.'
             ))
         else:
-            n = get_interrupts(member.id)
+            n = get_interrupts(uzytkownik.id)
             await ctx.send(embed=DoneEmbed(
-                f'{member.mention} znowu przerwał(a) zdanie, czyli zrobił(a)'
-                f' to łącznie {n} raz{"y" if n != 1 else ""}.'
+                f'{uzytkownik.mention} znowu przerwał(a) zdanie, czyli'
+                f' zrobił(a) to łącznie {n} raz{"y" if n != 1 else ""}.'
             ))
 
 

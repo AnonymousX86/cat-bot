@@ -47,15 +47,6 @@ class MissingPermsEmbed(ErrorEmbed):
                                ' posiadasz odpowiednich uprawnień.'
 
 
-class MissingMemberEmbed(ErrorEmbed):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        try:
-            self.description = kwargs['description']
-        except KeyError:
-            self.description = 'Nie podałeś(aś) użytkownika.'
-
-
 class GreenEmbed(BaseEmbed):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
