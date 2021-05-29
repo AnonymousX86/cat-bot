@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from logging import basicConfig, getLogger
 
-from discord import Intents, Embed, Color
+from discord import Intents, Embed, Color, Status, Game, ActivityType, Activity
 from discord.ext.commands import Bot, ExtensionNotFound, \
     ExtensionAlreadyLoaded, NoEntryPointError, Context, CommandNotFound, \
     MissingPermissions, BotMissingPermissions, UserNotFound, \
@@ -42,6 +42,15 @@ if __name__ == '__main__':
     async def on_ready():
         log.info('Logged in as "{0}" (ID: {0.id})'.format(bot.user))
         log.info(f'Loaded bot version: "{bot_version()}"')
+
+        await bot.change_presence(
+            status=Status.online,
+            activity=Activity(
+                type=ActivityType.listening,
+                name='komend pod /'
+            )
+        )
+        log.info('Updated presence')
 
         for cog in [f'CatBot.cogs.{cog}' for cog in [
             'basic', 'bonks', 'counters', 'flexing', 'responses'
