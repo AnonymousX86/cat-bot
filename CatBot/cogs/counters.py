@@ -28,9 +28,19 @@ class Counters(Cog, name='Zliczanie'):
             ),
             create_option(
                 name='opcja',
-                description='Dostępne: "+", "plus" lub "dodaj".',
+                description='Sprawdzenie counterów lub dodanie kolejnego.',
                 option_type=3,
-                required=False
+                required=False,
+                choices=[
+                    create_choice(
+                        name='Zobacz ilość counterów.',
+                        value=''
+                    ),
+                    create_choice(
+                        name='Dodaj counter.',
+                        value='+'
+                    )
+                ]
             )
         ]
     )
