@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from socket import gethostbyname, gethostname
 
+from discord import Member
+
 from CatBot.embeds.core import DoneEmbed
 
 
@@ -31,3 +33,26 @@ class IpEmbed(DoneEmbed):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.title = f':information_source: {gethostbyname(gethostname())}'
+
+
+class PatEmbed(DoneEmbed):
+    def __init__(self, member: Member, author: Member, **kwargs):
+        super().__init__(**kwargs)
+        self.title = f':clap: Pac!'
+        self.description = f'{member.mention} został(a) pacnięty(a)' \
+                           f' przez {author.mention}.'
+        self.set_image(
+            url='https://cdn.discordapp.com/attachments/'
+                '687040215440949271/860261237866233856/pat.gif'
+        )
+
+
+class HugEmbed(DoneEmbed):
+    def __init__(self, member: Member, author: Member, **kwargs):
+        super().__init__(**kwargs)
+        self.title = ':people_hugging: Przytulas'
+        self.description = f'{author.mention} przytulił(a) {member.mention}.'
+        self.set_image(
+            url='https://cdn.discordapp.com/attachments/'
+                '687040215440949271/860261224285339658/hug.gif'
+        )

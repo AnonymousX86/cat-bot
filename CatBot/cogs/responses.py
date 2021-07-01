@@ -2,11 +2,13 @@
 from asyncio import sleep
 from random import choice
 
+from discord import Member
 from discord.ext.commands import Cog
 from discord_slash import cog_ext, SlashContext
+from discord_slash.utils.manage_commands import create_option
 
 from CatBot.embeds.core import ErrorEmbed
-from CatBot.embeds.responses import MonologEmbed, IpEmbed
+from CatBot.embeds.responses import MonologEmbed, IpEmbed, PatEmbed, HugEmbed
 from CatBot.settings import bot_guilds, dev_guild
 
 
@@ -91,6 +93,38 @@ class Responses(Cog, name='Proste odpowiedzi'):
             lambda u: u.mention,
             filter(lambda u: not u.bot, ch.members)
         )))))
+
+    @cog_ext.cog_slash(
+        name='pac',
+        description='Pacnij kogoś.',
+        guild_ids=bot_guilds(),
+        options=[
+            create_option(
+                name='uzytkownik',
+                description='Wybierz kogoś z serwera',
+                option_type=6,
+                required=True
+            )
+        ]
+    )
+    async def pac(self, ctx: SlashContext, uzytkownik: Member):
+        await ctx.send(embed=PatEmbed(uzytkownik, ctx.author))
+
+    @cog_ext.cog_slash(
+        name='tuli',
+        description='Przytul kogoś.',
+        guild_ids=bot_guilds(),
+        options=[
+            create_option(
+                name='uzytkownik',
+                description='Wybierz kogoś z serwera',
+                option_type=6,
+                required=True
+            )
+        ]
+    )
+    async def tuli(self, ctx: SlashContext, uzytkownik: Member):
+        await ctx.send(embed=HugEmbed(uzytkownik, ctx.author))
 
 
 def setup(bot):
