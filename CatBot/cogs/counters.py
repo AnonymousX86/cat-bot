@@ -4,7 +4,9 @@ from discord.ext.commands import Cog
 from discord_slash import cog_ext, SlashContext
 from discord_slash.utils.manage_commands import create_option, create_choice
 
-from CatBot.embeds.core import DoneEmbed, ErrorEmbed
+from CatBot.embeds.core import ErrorEmbed
+from CatBot.embeds.counters import CounterAddedEmbed, CountersEmbed, \
+    InterruptsEmbed, InterruptAddedEmbed
 from CatBot.settings import bot_guilds
 from CatBot.utils.database import get_counters, add_counter, add_interrupt, \
     get_interrupts
@@ -28,9 +30,19 @@ class Counters(Cog, name='Zliczanie'):
             ),
             create_option(
                 name='opcja',
-                description='Dostępne: "+", "plus" lub "dodaj".',
+                description='Sprawdzenie counterów lub dodanie kolejnego.',
                 option_type=3,
-                required=False
+                required=False,
+                choices=[
+                    create_choice(
+                        name='Zobacz ilość counterów.',
+                        value=''
+                    ),
+                    create_choice(
+                        name='Dodaj counter.',
+                        value='+'
+                    )
+                ]
             )
         ]
     )
@@ -44,6 +56,7 @@ class Counters(Cog, name='Zliczanie'):
             '662713379416178690': 'był leniwy',  # Wojtek
             '560826194824790056': 'narzekała',  # Marta
             '309270832683679745': 'informatykował',  # Anon
+            # TODO do zmiany (?)
             '358274776806195210': 'nie ogarniał',  # Kuba
             '247711780279681024': 'zmienił zdanie',  # Arras
             '345242327289298946': 'wkurzyła się',  # Agata
@@ -52,12 +65,14 @@ class Counters(Cog, name='Zliczanie'):
         }
 
         if not opcja:
-            c = get_counters(uzytkownik.id)
-            await ctx.send(embed=DoneEmbed(
-                f'{uzytkownik.mention} {members[str(uzytkownik.id)]}'
-                f' {c} raz{"" if c == 1 else "y"}.'
+            await ctx.send(embed=CountersEmbed(
+                uzytkownik,
+                members[str(uzytkownik.id)],
+                get_counters(uzytkownik.id)
             ))
-        elif opcja.lower() in ['+', 'plus', 'dodaj']:
+        elif opcja != '+':
+            await ctx.send(embed=ErrorEmbed('Błędny argument.'))
+        else:
             if str(uzytkownik.id) not in members.keys():
                 await ctx.send(embed=ErrorEmbed(
                     f'{uzytkownik.mention} nie ma counterów.'
@@ -67,14 +82,11 @@ class Counters(Cog, name='Zliczanie'):
                     f'Nie mogę dodać countera {uzytkownik.mention}'
                 ))
             else:
-                c = get_counters(uzytkownik.id)
-                await ctx.send(embed=DoneEmbed(
-                    f'{uzytkownik.mention} dostał(a) countera,'
-                    f' więc {members[str(uzytkownik.id)]}'
-                    f' {c} raz{"" if c == 1 else "y"}.'
+                await ctx.send(embed=CounterAddedEmbed(
+                    uzytkownik,
+                    members[str(uzytkownik.id)],
+                    get_counters(uzytkownik.id)
                 ))
-        else:
-            await ctx.send(embed=ErrorEmbed('Błędny argument.'))
 
     @cog_ext.cog_slash(
         name='w_zdanie',
@@ -112,10 +124,9 @@ class Counters(Cog, name='Zliczanie'):
             uzytkownik = ctx.author
 
         if not opcja:
-            n = get_interrupts(uzytkownik.id)
-            await ctx.send(embed=DoneEmbed(
-                f'{uzytkownik.mention} przerwał(a) zdanie'
-                f' {n} raz{"y" if n != 1 else ""}.'
+            await ctx.send(embed=InterruptsEmbed(
+                uzytkownik,
+                get_interrupts(uzytkownik.id)
             ))
         elif opcja.lower() != '+':
             await ctx.send(embed=ErrorEmbed('Błędny argument'))
@@ -124,10 +135,9 @@ class Counters(Cog, name='Zliczanie'):
                 'Wystąpił błąd w zapytaniu do bazy danych.'
             ))
         else:
-            n = get_interrupts(uzytkownik.id)
-            await ctx.send(embed=DoneEmbed(
-                f'{uzytkownik.mention} znowu przerwał(a) zdanie, czyli'
-                f' zrobił(a) to łącznie {n} raz{"y" if n != 1 else ""}.'
+            await ctx.send(embed=InterruptAddedEmbed(
+                uzytkownik,
+                get_interrupts(uzytkownik.id)
             ))
 
 
