@@ -87,8 +87,10 @@ class Responses(Cog, name='Proste odpowiedzi'):
             '{} jak Ci walnę w zęby, to będziesz je mył wsadzając sobie'
             ' szczoteczkę do dupy.',
             '{} Twój pies sra mordą.'
-        ]).format(choice(list(map(lambda u: u.mention,
-                                  filter(lambda u: not u.bot, ch.members))))))
+        ]).format(choice(list(map(
+            lambda u: u.mention,
+            filter(lambda u: not u.bot, ch.members)
+        )))))
 
 
 def setup(bot):
