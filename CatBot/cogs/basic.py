@@ -84,15 +84,18 @@ class Basic(Cog, name='Podstawowe'):
                     return
 
                 result = sp.track(
-                    message.content.split('?')[0].split('&')[0].split('/')[-1])
+                    message.content.split('?')[0].split('&')[0].split('/')[-1]
+                )
                 if not result:
                     await message.channel.send(
                         embed=ErrorEmbed(description='Błędny link Spotify!'))
                     await self.bot.log.info('Spotify link is wrong!')
                     return
 
-                query = '{} {}'.format(result['name'], ' '.join(
-                    map(lambda x: x['name'], result['artists'])))
+                query = '{} {}'.format(
+                    result['name'],
+                    ' '.join(map(lambda x: x['name'], result['artists']))
+                )
                 # noinspection PyTypeChecker
                 yt = SearchVideos(
                     query,
@@ -104,7 +107,8 @@ class Basic(Cog, name='Podstawowe'):
                         'Wyszukiwanie na YouTube - zawiodło.'
                     ))
                     await self.bot.log.info(
-                        f'YouTube video "{query}" not found')
+                        f'YouTube video "{query}" not found'
+                    )
 
                 await message.channel.send(
                     embed=SpotifyEmbed(result, message.author))
