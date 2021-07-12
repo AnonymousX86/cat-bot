@@ -67,12 +67,6 @@ class Basic(Cog, name='Podstawowe'):
         await add_basic_roles(member.guild, member)
 
     @Cog.listener('on_message')
-    async def plus_adder(self, message: Message):
-        if message.channel.id in [400984666972094465]:
-            for emoji in ['👍', '👎']:
-                await message.add_reaction(emoji)
-
-    @Cog.listener('on_message')
     async def spotify_to_youtube(self, message: Message):
         if message.channel.id not in [782312754220105738]:
             if message.content.startswith('https://open.spotify.com/track/'):
