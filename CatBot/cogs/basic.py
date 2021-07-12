@@ -29,7 +29,8 @@ async def add_basic_roles(guild: Guild, member: Member,
                 if channel:
                     await channel.send(
                         f'Nie mogę dać roli `{role}` użytkownikowi'
-                        f' {member.display_name}')
+                        f' {member.display_name}'
+                    )
             except HTTPException:
                 pass
             else:
@@ -41,7 +42,8 @@ async def add_basic_roles(guild: Guild, member: Member,
         except Forbidden:
             if channel:
                 await channel.send(
-                    f'Nie mogę dać roli botowi {member.display_name}')
+                    f'Nie mogę dać roli botowi {member.display_name}'
+                )
         except HTTPException:
             pass
         else:
