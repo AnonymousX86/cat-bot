@@ -94,6 +94,10 @@ class Basic(Cog, name='Podstawowe'):
                     await self.bot.log.info('Spotify link is wrong!')
                     return
 
+                await message.channel.send(
+                    embed=SpotifyEmbed(result, message.author)
+                )
+
                 query = '{} {}'.format(
                     result['name'],
                     ' '.join(map(lambda x: x['name'], result['artists']))
@@ -111,14 +115,13 @@ class Basic(Cog, name='Podstawowe'):
                     await self.bot.log.info(
                         f'YouTube video "{query}" not found'
                     )
+                else:
+                    await message.channel.send(f'>>> **YouTube**\n{yt}')
+                    self.bot.log.info(
+                        f'Spotify song "{result["name"]}" found on YouTube'
+                        f' successfully'
+                    )
 
-                await message.channel.send(
-                    embed=SpotifyEmbed(result, message.author))
-                await message.channel.send(f'>>> **YouTube**\n{yt}')
-                self.bot.log.info(
-                    f'Spotify song "{result["name"]}" found on YouTube'
-                    f' successfully'
-                )
                 try:
                     await message.delete()
                 except Forbidden or HTTPException or NotFound:
