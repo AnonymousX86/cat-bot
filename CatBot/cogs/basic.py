@@ -29,7 +29,8 @@ async def add_basic_roles(guild: Guild, member: Member,
                 if channel:
                     await channel.send(
                         f'Nie mogę dać roli `{role}` użytkownikowi'
-                        f' {member.display_name}')
+                        f' {member.display_name}'
+                    )
             except HTTPException:
                 pass
             else:
@@ -41,7 +42,8 @@ async def add_basic_roles(guild: Guild, member: Member,
         except Forbidden:
             if channel:
                 await channel.send(
-                    f'Nie mogę dać roli botowi {member.display_name}')
+                    f'Nie mogę dać roli botowi {member.display_name}'
+                )
         except HTTPException:
             pass
         else:
@@ -67,12 +69,6 @@ class Basic(Cog, name='Podstawowe'):
         await add_basic_roles(member.guild, member)
 
     @Cog.listener('on_message')
-    async def plus_adder(self, message: Message):
-        if message.channel.id in [400984666972094465]:
-            for emoji in ['👍', '👎']:
-                await message.add_reaction(emoji)
-
-    @Cog.listener('on_message')
     async def spotify_to_youtube(self, message: Message):
         if message.channel.id not in [782312754220105738]:
             if message.content.startswith('https://open.spotify.com/track/'):
@@ -90,15 +86,22 @@ class Basic(Cog, name='Podstawowe'):
                     return
 
                 result = sp.track(
-                    message.content.split('?')[0].split('&')[0].split('/')[-1])
+                    message.content.split('?')[0].split('&')[0].split('/')[-1]
+                )
                 if not result:
                     await message.channel.send(
                         embed=ErrorEmbed(description='Błędny link Spotify!'))
                     await self.bot.log.info('Spotify link is wrong!')
                     return
 
-                query = '{} {}'.format(result['name'], ' '.join(
-                    map(lambda x: x['name'], result['artists'])))
+                await message.channel.send(
+                    embed=SpotifyEmbed(result, message.author)
+                )
+
+                query = '{} {}'.format(
+                    result['name'],
+                    ' '.join(map(lambda x: x['name'], result['artists']))
+                )
                 # noinspection PyTypeChecker
                 yt = SearchVideos(
                     query,
@@ -110,15 +113,15 @@ class Basic(Cog, name='Podstawowe'):
                         'Wyszukiwanie na YouTube - zawiodło.'
                     ))
                     await self.bot.log.info(
-                        f'YouTube video "{query}" not found')
+                        f'YouTube video "{query}" not found'
+                    )
+                else:
+                    await message.channel.send(f'>>> **YouTube**\n{yt}')
+                    self.bot.log.info(
+                        f'Spotify song "{result["name"]}" found on YouTube'
+                        f' successfully'
+                    )
 
-                await message.channel.send(
-                    embed=SpotifyEmbed(result, message.author))
-                await message.channel.send(f'>>> **YouTube**\n{yt}')
-                self.bot.log.info(
-                    f'Spotify song "{result["name"]}" found on YouTube'
-                    f' successfully'
-                )
                 try:
                     await message.delete()
                 except Forbidden or HTTPException or NotFound:

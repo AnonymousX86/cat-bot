@@ -26,15 +26,9 @@ class SpotifyEmbed(GreenEmbed):
         name = track['name']
         artists = list(map(lambda x: x['name'], track['artists']))
         self.add_field(
-            name='Tytuł',
-            value=name
-        ).add_field(
-            name='Wykonawca' if len(artists) == 1 else 'Wykonawcy',
-            value=', '.join(artists)
-        ).add_field(
-            name='Spotify',
-            value=track['external_urls']['spotify'],
-            inline=False
+            name=name,
+            value=f'**{", ".join(artists)}**\n'
+                  f'[ [Spotify]({track["external_urls"]["spotify"]}) ]'
         ).set_thumbnail(
             url=track['album']['images'][0]['url']
         ).set_author(
