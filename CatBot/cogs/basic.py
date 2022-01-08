@@ -70,7 +70,7 @@ class Basic(Cog, name='Podstawowe'):
 
     @Cog.listener('on_message')
     async def spotify_to_youtube(self, message: Message):
-        if message.channel.id not in [782312754220105738]:
+        if message.channel.id not in [881982684321169418]:
             if message.content.startswith('https://open.spotify.com/track/'):
                 sp = Spotify(
                     auth_manager=SpotifyClientCredentials(
