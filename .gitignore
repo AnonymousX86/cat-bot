@@ -9,4 +9,5 @@ __pycache__
 Dockerfile
 .cache
 /assets
+.python-version
 CatBot/assets/champion.json
