@@ -13,7 +13,8 @@ from CatBot.embeds.core import ErrorEmbed
 from CatBot.settings import bot_version, bot_token, bot_guilds
 from CatBot.utils.riot_api import download_champion_json
 
-if __name__ == '__main__':
+
+def main():
     # noinspection PyArgumentList
     basicConfig(
         level='INFO',
@@ -36,7 +37,6 @@ if __name__ == '__main__':
         )
     )
     slash = SlashCommand(bot)
-
 
     @bot.event
     async def on_ready():
@@ -92,7 +92,6 @@ if __name__ == '__main__':
             color=Color.green()
         )])
 
-
     @bot.event
     async def on_command_error(ctx: Context, error: Exception):
         if isinstance(error, CommandNotFound):
@@ -125,7 +124,6 @@ if __name__ == '__main__':
                 title='Wystąpił nieznany błąd komendy'
             ))
 
-
     if not (t := bot_token()):
         log.critical('Brak poprwanych ustawień środowiska')
         content = None
@@ -141,3 +139,7 @@ if __name__ == '__main__':
                 log.critical('Niepełna konfiguracja')
     else:
         bot.run(bot_token())
+
+
+if __name__ == '__main__':
+    main()
