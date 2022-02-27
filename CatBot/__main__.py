@@ -126,4 +126,18 @@ if __name__ == '__main__':
             ))
 
 
-    bot.run(bot_token())
+    if not (t := bot_token()):
+        log.critical('Brak poprwanych ustawień środowiska')
+        content = None
+        try:
+            with open('.env') as f:
+                content = f.readline()
+        except FileNotFoundError:
+            log.critical("Brak pliku '.env'")
+        else:
+            if not content:
+                log.critical("Pusty plik '.env'")
+            else:
+                log.critical('Niepełna konfiguracja')
+    else:
+        bot.run(bot_token())
