@@ -125,7 +125,7 @@ def main():
             ))
 
     if not (t := bot_token()):
-        log.critical('Brak poprwanych ustawień środowiska')
+        log.critical('Brak poprawnych ustawień środowiska')
         content = None
         try:
             with open('.env') as f:
