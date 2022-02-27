@@ -1,1 +1,1 @@
-worker: python -O -m CatBot
+worker: python -OOm CatBot
