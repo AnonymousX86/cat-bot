@@ -1,12 +1,9 @@
 .idea
 .vscode
-venv
+/venv
 __pycache__
 .env
 /logs
-*.cmd
-/src
-Dockerfile
 .cache
 /assets
 .python-version
