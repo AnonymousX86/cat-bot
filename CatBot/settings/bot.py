@@ -19,5 +19,5 @@ def bot_guilds() -> List[int]:
     return [385122529343176705, 670766319372599297]
 
 
-def dev_guild() -> List[int]:
+def dev_guilds() -> List[int]:
     return [670766319372599297]

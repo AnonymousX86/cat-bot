@@ -9,7 +9,7 @@ from discord_slash.utils.manage_commands import create_option
 
 from CatBot.embeds.core import ErrorEmbed
 from CatBot.embeds.responses import MonologEmbed, IpEmbed, PatEmbed, HugEmbed
-from CatBot.settings import bot_guilds, dev_guild
+from CatBot.settings import bot_guilds, dev_guilds
 
 
 class Responses(Cog, name='Proste odpowiedzi'):
@@ -63,7 +63,7 @@ class Responses(Cog, name='Proste odpowiedzi'):
     @cog_ext.cog_slash(
         name='ip',
         description='IP bota.',
-        guild_ids=dev_guild()
+        guild_ids=dev_guilds()
     )
     async def ip(self, ctx: SlashContext):
         await ctx.send(embed=IpEmbed())
