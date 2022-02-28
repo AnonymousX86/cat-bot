@@ -12,18 +12,15 @@ class BaseEmbed(Embed):
         except KeyError:
             self.timestamp = datetime.utcnow()
         try:
-            self.colour = kwargs['color']
+            self.color = kwargs['color']
         except KeyError:
-            self.colour = Color.blurple()
+            self.color = Color.blurple()
 
 
 class RedEmbed(BaseEmbed):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        try:
-            self.colour = kwargs['colour']
-        except KeyError:
-            self.colour = Color.red()
+        self.color = Color.red()
 
 
 class ErrorEmbed(RedEmbed):
@@ -45,73 +42,57 @@ class MissingPermissionsEmbed(ErrorEmbed):
 
 
 class BotMissingPermissionsEmbed(ErrorEmbed):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.description = 'Nie możesz tego zrobić, Ja (bot) nie posiadam ' \
                            'takich uprawnień.'
 
 
 class UserNotFoundEmbed(ErrorEmbed):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.description = 'Nie mogłem znaleźć takiego użytkownika.'
 
 
 class CommandOnCooldownEmbed(ErrorEmbed):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.description = 'Musisz jeszcze chwilę poczekać aż minie' \
                            ' cooldown komendy.'
 
 
 class DisabledCommandEmbed(ErrorEmbed):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.description = 'Ta komenda jest wyłączona.'
 
 
 class GreenEmbed(BaseEmbed):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        try:
-            self.colour = kwargs['colour']
-        except KeyError:
-            self.colour = Color.green()
+        self.color = Color.green()
 
 
 class DoneEmbed(GreenEmbed):
     def __init__(self, description: str = None, **kwargs):
         super().__init__(**kwargs)
-        try:
-            self.title = kwargs['title']
-        except KeyError:
-            self.title = ':white_check_mark: Gotowe'
-        if description:
-            self.description = description
+        self.title = ':white_check_mark: Gotowe'
+        self.description = description
 
 
 class YellowEmbed(BaseEmbed):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        try:
-            self.colour = kwargs['colour']
-        except KeyError:
-            self.colour = Color.gold()
+        self.color = Color.gold()
 
 
 class PleaseWaitEmbed(YellowEmbed):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        try:
-            self.title = kwargs['title']
-        except KeyError:
-            self.title = ':hourglass_flowing_sand: Daj mi chwilę...'
+        self.title = ':hourglass_flowing_sand: Daj mi chwilę...'
 
 
 class BlueEmbed(BaseEmbed):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        try:
-            self.colour = kwargs['colour']
-        except KeyError:
-            self.colour = Color.blue()
+        self.color = Color.blue()
