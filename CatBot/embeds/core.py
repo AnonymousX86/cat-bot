@@ -37,14 +37,37 @@ class ErrorEmbed(RedEmbed):
             self.description = description
 
 
-class MissingPermsEmbed(ErrorEmbed):
+class MissingPermissionsEmbed(ErrorEmbed):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        try:
-            self.description = kwargs['description']
-        except KeyError:
-            self.description = 'Nie możesz tego zrobić. Prawdopodobnie nie' \
-                               ' posiadasz odpowiednich uprawnień.'
+        self.description = 'Nie możesz tego zrobić. Prawdopodobnie nie' \
+                           ' posiadasz odpowiednich uprawnień.'
+
+
+class BotMissingPermissionsEmbed(ErrorEmbed):
+    def __init__(self):
+        super().__init__()
+        self.description = 'Nie możesz tego zrobić, Ja (bot) nie posiadam ' \
+                           'takich uprawnień.'
+
+
+class UserNotFoundEmbed(ErrorEmbed):
+    def __init__(self):
+        super().__init__()
+        self.description = 'Nie mogłem znaleźć takiego użytkownika.'
+
+
+class CommandOnCooldownEmbed(ErrorEmbed):
+    def __init__(self):
+        super().__init__()
+        self.description = 'Musisz jeszcze chwilę poczekać aż minie' \
+                           ' cooldown komendy.'
+
+
+class DisabledCommandEmbed(ErrorEmbed):
+    def __init__(self):
+        super().__init__()
+        self.description = 'Ta komenda jest wyłączona.'
 
 
 class GreenEmbed(BaseEmbed):

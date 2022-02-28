@@ -9,7 +9,7 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from youtubesearchpython import SearchVideos
 
 from CatBot.embeds.basic import InfoEmbed, SpotifyEmbed
-from CatBot.embeds.core import ErrorEmbed, MissingPermsEmbed, PleaseWaitEmbed, \
+from CatBot.embeds.core import ErrorEmbed, MissingPermissionsEmbed, PleaseWaitEmbed, \
     DoneEmbed
 from CatBot.settings import spotify_secret, bot_guilds
 

@@ -9,7 +9,9 @@ from discord.ext.commands import Bot, ExtensionNotFound, \
 from discord_slash import SlashCommand, SlashContext
 from rich.logging import RichHandler
 
-from CatBot.embeds.core import ErrorEmbed
+from CatBot.embeds.core import ErrorEmbed, MissingPermissionsEmbed, \
+    BotMissingPermissionsEmbed, UserNotFoundEmbed, CommandOnCooldownEmbed, \
+    DisabledCommandEmbed
 from CatBot.settings import bot_version, bot_token, bot_guilds
 from CatBot.utils.riot_api import download_champion_json
 
@@ -99,25 +101,15 @@ def main():
                 f'Komenda nie została znaleziona:\n> {ctx.message.content}'
             )
         elif isinstance(error, MissingPermissions):
-            await ctx.send(embed=ErrorEmbed(
-                'Nie posiadasz odpowiednich uprawnień'
-            ))
+            await ctx.send(embed=MissingPermissionsEmbed())
         elif isinstance(error, BotMissingPermissions):
-            await ctx.send(embed=ErrorEmbed(
-                'Ja (bot) nie posiadam takich uprawnień.'
-            ))
+            await ctx.send(embed=BotMissingPermissionsEmbed())
         elif isinstance(error, UserNotFound):
-            await ctx.send(embed=ErrorEmbed(
-                'Nie mogłem znaleźć takiego użytkownika.'
-            ))
+            await ctx.send(embed=UserNotFoundEmbed())
         elif isinstance(error, CommandOnCooldown):
-            await ctx.send(embed=ErrorEmbed(
-                'Musisz jeszcze chwilę poczekać aż minie cooldown komendy.'
-            ))
+            await ctx.send(embed=CommandOnCooldownEmbed())
         elif isinstance(error, DisabledCommand):
-            await ctx.send(embed=ErrorEmbed(
-                'Ta komenda jest wyłączona.'
-            ))
+            await ctx.send(embed=DisabledCommandEmbed())
         else:
             await ctx.send(embed=ErrorEmbed(
                 f'```\n{error.__class__.__name__}: {error}\n```',
