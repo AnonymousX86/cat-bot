@@ -126,7 +126,6 @@ def main():
 
     if not (t := bot_token()):
         log.critical('Brak poprawnych ustawień środowiska')
-        content = None
         try:
             with open('.env') as f:
                 content = f.readline()
@@ -138,7 +137,7 @@ def main():
             else:
                 log.critical('Niepełna konfiguracja')
     else:
-        bot.run(bot_token())
+        bot.run(t)
 
 
 if __name__ == '__main__':
