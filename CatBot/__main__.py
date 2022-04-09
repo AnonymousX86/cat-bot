@@ -55,7 +55,7 @@ def main():
         log.info('Updated presence')
 
         for cog in [f'CatBot.cogs.{cog}' for cog in [
-            'basic', 'bonks', 'counters', 'flexing', 'responses'
+            'basic', 'bonks', 'counters', 'flexing', 'insults', 'responses'
         ]]:
             try:
                 bot.load_extension(cog)
@@ -68,6 +68,7 @@ def main():
                     f'Extension "{cog}" do not have "setup()" function')
             except Exception as e:
                 log.critical(f'{e.__class__.__name__}: {e}')
+                raise e
             else:
                 log.info(f'Loaded: {cog}')
 
