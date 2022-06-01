@@ -8,3 +8,4 @@ youtube-search-python
 psycopg2-binary
 wavelink>=0.9.9
 requests>=2.25.1
+aiohttp>=3.8.0 # not directly required, pinned by Snyk to avoid a vulnerability
