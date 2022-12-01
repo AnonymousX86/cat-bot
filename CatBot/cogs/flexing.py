@@ -1,95 +1,109 @@
 # -*- coding: utf-8 -*-
-from discord import User, Member
+from discord import Member, ApplicationContext, user_command, \
+    slash_command, Message, Option
 from discord.ext.commands import Cog
-from discord_slash import cog_ext, SlashContext
-from discord_slash.utils.manage_commands import create_option
 
-from CatBot.embeds.core import ErrorEmbed
+from CatBot.embeds.core import ErrorEmbed, PleaseWaitEmbed, BlueEmbed, \
+    DoneEmbed
 from CatBot.embeds.flexing import FlexesEmbed, FlextopEmbed, FlexAddedEmbed
-from CatBot.settings import bot_guilds
-from CatBot.utils.database import add_flex, get_flexes, get_top_flexes
+from CatBot.settings import DEFAULT_MEMBER_OPTION
+from CatBot.utils.database import get_flexes, get_top_flexes, add_flex
 
 
-class Flexing(Cog, name='Flexowanie'):
+class Flexing(Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @cog_ext.cog_slash(
-        name='flex',
-        description='Liczenie flexów w celu jakże użytecznych statystyk, kto'
-                    ' jest największym flexiarzem.',
-        guild_ids=bot_guilds(),
-        options=[
-            create_option(
-                name='uzytkownik',
-                description='Wybierz kogoś z serwera.',
-                option_type=6,
-                required=True
-            ),
-            create_option(
-                name='opis',
-                description='Opisz flexa, najlepiej w 3. formie osobowej.',
-                option_type=3,
-                required=True
-            )
-        ]
-    )
-    async def flex(self, ctx: SlashContext, uzytkownik: Member, opis: str):
-        if ctx.author.id == uzytkownik.id:
-            return await ctx.send(embed=ErrorEmbed(
-                'Ziomek, dostajesz flexa za flexa dając flexa i flexując'
-                ' siebie... Serio?!'
-            ))
-        elif not add_flex(uzytkownik.id, opis):
-            return await ctx.message.reply(
-                embed=ErrorEmbed('Nie mogę dodać flexa tej osobie.'))
-        else:
-            return await ctx.send(embed=FlexAddedEmbed(uzytkownik, opis))
-
-    @cog_ext.cog_slash(
+    @slash_command(
         name='flexy',
-        description='Pokazuje czyjeś flexy.',
-        guild_ids=bot_guilds(),
-        options=[
-            create_option(
-                name='uzytkownik',
-                description='Wybierz kogoś z serwera. Jeżeli nie - bot wybierze'
-                            ' Ciebie.',
-                option_type=6,
-                required=False
-            )
-        ]
+        description='Sprawdź ile kto ma flexów'
     )
-    async def flexy(self, ctx: SlashContext, uzytkownik: User = None):
-        if not uzytkownik:
-            uzytkownik = ctx.author
-        flexes = get_flexes(uzytkownik.id)
-        await ctx.send(embed=FlexesEmbed(uzytkownik, flexes))
+    async def flex_check(
+            self,
+            ctx: ApplicationContext,
+            member: DEFAULT_MEMBER_OPTION
+    ):
+        if not member:
+            member = ctx.user
+        await ctx.send_response(embed=PleaseWaitEmbed())
+        await ctx.edit(embed=FlexesEmbed(member, get_flexes(member.id)))
 
-    @cog_ext.cog_slash(
-        name='flextop',
-        description='Lista osób, które najwięcej się flexują.',
-        guild_ids=bot_guilds(),
-        options=[
-            create_option(
-                name='dni',
-                description='Uwzględnij statystyki tylko z X ostanich dni.',
-                option_type=4,
-                required=False
-            )
-        ]
+    @user_command(
+        name='Flexował Się'
     )
-    async def flextop(self, ctx: SlashContext, dni: int = 30):
-        min_ = 2
-        if dni < min_:
-            return await ctx.send(embed=ErrorEmbed(
-                f'Podaj co najmniej {min_}!'
+    async def flex_add(
+            self,
+            ctx: ApplicationContext,
+            member: Member
+    ):
+        if ctx.user.id == member.id:
+            await ctx.send_response(embed=ErrorEmbed(
+                'Ziomek, dostajesz flexa za flexa dając flexa i flexując siebie... Serio?!'
             ))
-        flexes = get_top_flexes(dni)
-        users = [i for i in
-                 map(lambda x: ctx.guild.get_member(int(x[0])).mention, flexes)]
+            return
+        await ctx.send_response(embed=BlueEmbed(
+            title=':pencil: Potrzebuję więcej inforamcji',
+            description=f'{ctx.user.mention} napisz czym **{member.display_name}**'
+                        f' się flexował. *Najlepiej w 3. formie osboowej.*'
+                        f' (Tak, po prostu tutaj, na kanale.)'
+        ))
+
+        def check(message: Message):
+            return message.author.id == ctx.user.id and \
+                   message.channel.id == ctx.channel_id
+
+        try:
+            msg: Message = await self.bot.wait_for(
+                'message',
+                check=check,
+                timeout=240.0
+            )
+        except TimeoutError:
+            await ctx.edit(ErrorEmbed(
+                'Następnym razem spróbuj pisać szybciej.'
+            ))
+            return
+        flex_description = msg.content
+        await ctx.edit(embed=PleaseWaitEmbed(
+            description=f'Dodaję:\n'
+                        f'> **{member.mention}** {flex_description}'
+        ))
+        await msg.delete()
+        if not add_flex(member.id, flex_description):
+            await ctx.edit(embed=ErrorEmbed(
+                'Nie mogę dodać flexa tej osobie.'
+            ))
+        else:
+            await ctx.edit(embed=FlexAddedEmbed(member, flex_description))
+
+    @slash_command(
+        name='flextop',
+        description='Lista osób, które najwięcej się flexują.'
+    )
+    async def flextop(
+            self,
+            ctx: ApplicationContext,
+            days: Option(
+                int,
+                'Z ilu dni mają być pokazane flexy?',
+                name='dni',
+                min_value=2,
+                default=30
+            )
+    ):
+        await ctx.send_response(embed=PleaseWaitEmbed())
+        flexes = get_top_flexes(days)
+        users = list(filter(
+            lambda x: x is not None,
+            [i for i in map(lambda x: ctx.guild.get_member(int(x[0])), flexes)]
+        ))
+        if not users:
+            await ctx.edit(embed=DoneEmbed(
+                description='Nikt (na razie) nie ma flexów!'
+            ))
+            return
         counts = [i for i in map(lambda x: x[1], flexes)]
-        await ctx.send(embed=FlextopEmbed(users, counts, dni))
+        await ctx.edit(embed=FlextopEmbed(users, counts, days))
 
 
 def setup(bot):

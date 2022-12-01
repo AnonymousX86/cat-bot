@@ -12,7 +12,7 @@ class FlexAddedEmbed(DoneEmbed):
         super().__init__(**kwargs)
         self.title = ':muscle: Flex'
         self.description = f'{member.mention} dostał(a) flexa za:\n\n> {reason}'
-        self.set_thumbnail(url=member.avatar_url)
+        self.set_thumbnail(url=member.display_avatar.url)
 
 
 class FlexesEmbed(DoneEmbed):
@@ -21,7 +21,7 @@ class FlexesEmbed(DoneEmbed):
         self.title = f':muscle: Flexy: {user.display_name}'
         self.description = 'Ostatnie 10 flexów.'
         self.set_thumbnail(
-            url=user.avatar_url
+            url=user.display_avatar.url
         )
         if not len(flexes):
             self.add_field(
@@ -39,7 +39,7 @@ class FlexesEmbed(DoneEmbed):
 
 
 class FlextopEmbed(DoneEmbed):
-    def __init__(self, users: List[User], counts: List[Flex],
+    def __init__(self, users: List[Member], counts: List[Flex],
                  days: int, **kwargs):
         super().__init__(**kwargs)
         self.title = ':dart: Topowe flexy'

@@ -1,10 +1,8 @@
-discord.py
-discord-py-slash-command
+py-cord
 python-dotenv
-spotipy
 rich
 SQLAlchemy
-youtube-search-python
 psycopg2-binary
+PyMySQL
 wavelink
 requests

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import date, datetime, timedelta
-from typing import Optional, List
+from typing import Any
 
 from sqlalchemy import create_engine, Column, BigInteger, String, Date, Text, \
     func, desc
@@ -17,6 +17,14 @@ _Session.configure(bind=_engine)
 Base = declarative_base()
 
 
+class NoRecords:
+    """
+    Used when database is working, but user has no records.
+    """
+    def __repr__(self):
+        return "<NoFlexes: database OK, but no records>"
+
+
 class Flex(Base):
     __tablename__ = 'flexes'
     flex_id = Column(BigInteger, primary_key=True)
@@ -25,15 +33,17 @@ class Flex(Base):
     reason = Column(Text)
 
 
-def get_flex(user_id: int) -> Optional[Flex]:
+def get_flex(user_id: int) -> Flex or None:
     session = _Session()
     try:
-        return session.query(Flex).filter_by(user_id=str(user_id)).one_or_none()
+        return session.query(Flex).filter_by(
+            user_id=str(user_id)
+        ).one_or_none() or NoRecords()
     finally:
         session.close()
 
 
-def get_flexes(user_id: int) -> Optional[List[Flex]]:
+def get_flexes(user_id: int) -> list[Flex]:
     session = _Session()
     try:
         return list(session.query(Flex).filter_by(user_id=str(user_id))
@@ -42,7 +52,7 @@ def get_flexes(user_id: int) -> Optional[List[Flex]]:
         session.close()
 
 
-def get_top_flexes(last_x_days: int = 30) -> Optional[List[Flex]]:
+def get_top_flexes(last_x_days: int = 30) -> list[tuple[Any, ...]]:
     session = _Session()
     if last_x_days < 1:
         last_x_days = 30
@@ -58,7 +68,7 @@ def get_top_flexes(last_x_days: int = 30) -> Optional[List[Flex]]:
         session.close()
 
 
-def add_flex(user_id: int, reason: str) -> Optional[Flex]:
+def add_flex(user_id: int, reason: str) -> Flex or None:
     session = _Session()
     new_flex = Flex(
         user_id=str(user_id),
@@ -91,7 +101,7 @@ def get_counters(user_id: int) -> int:
         session.close()
 
 
-def add_counter(user_id: int) -> Optional[Counter]:
+def add_counter(user_id: int) -> Counter or None:
     session = _Session()
     new_counter = Counter(
         user_id=str(user_id),
@@ -123,7 +133,7 @@ def get_interrupts(user_id: int) -> int:
         session.close()
 
 
-def add_interrupt(user_id: int) -> Optional[Interrupt]:
+def add_interrupt(user_id: int) -> Interrupt or None:
     session = _Session()
     new_interrupt = Interrupt(
         user_id=str(user_id),
@@ -155,7 +165,7 @@ def get_bonks(user_id: int) -> int:
         session.close()
 
 
-def add_bonk(user_id: int) -> Optional[Bonk]:
+def add_bonk(user_id: int) -> Bonk or None:
     session = _Session()
     new_bonk = Bonk(
         user_id=str(user_id),

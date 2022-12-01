@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-# noinspection PyUnresolvedReferences
 from dotenv import load_dotenv
 
 from .bot import *
+from .counters import *
 from .database import *
+from .default_options import *
 from .rapid_api import *
 from .reddit import *
 from .riot_api import *

@@ -3,4 +3,4 @@ from os import environ as env
 
 
 def database_url() -> str:
-    return env.get('DATABASE_URL').replace('postgres', 'postgresql')
+    return env.get('DATABASE_URL')

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from os import environ as env
-from typing import List
+
+from CatBot.ids.guilds import KOCIA_RZESZA, ANONYMOUS_BOTS
 
 
 def bot_token() -> str:
@@ -8,16 +9,16 @@ def bot_token() -> str:
 
 
 def bot_version() -> str:
-    return '2021.7.2'
+    return '2022.12.6'
 
 
 def bot_stage() -> str:
-    return env.get('STAGE')
+    return env.get('STAGE', 'unknown')
 
 
-def bot_guilds() -> List[int]:
-    return [385122529343176705, 670766319372599297]
+def bot_guilds() -> list[int]:
+    return [KOCIA_RZESZA, ANONYMOUS_BOTS]
 
 
-def dev_guilds() -> List[int]:
-    return [670766319372599297]
+def dev_guilds() -> list[int]:
+    return [ANONYMOUS_BOTS]

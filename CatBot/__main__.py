@@ -1,23 +1,24 @@
 # -*- coding: utf-8 -*-
 from logging import basicConfig, getLogger
 
-from discord import Intents, Embed, Color, Status, Game, ActivityType, Activity
-from discord.ext.commands import Bot, ExtensionNotFound, \
-    ExtensionAlreadyLoaded, NoEntryPointError, Context, CommandNotFound, \
-    MissingPermissions, BotMissingPermissions, UserNotFound, \
-    CommandOnCooldown, DisabledCommand
-from discord_slash import SlashCommand, SlashContext
+from discord import Bot, Intents, Status, Activity, ActivityType, \
+    ExtensionNotFound, ExtensionAlreadyLoaded, NoEntryPointError, Embed, Color, \
+    ApplicationContext, DiscordException, InteractionResponded
+from discord.ext.commands import MissingPermissions, \
+    BotMissingPermissions, UserNotFound, CommandOnCooldown, DisabledCommand
 from rich.logging import RichHandler
 
 from CatBot.embeds.core import ErrorEmbed, MissingPermissionsEmbed, \
     BotMissingPermissionsEmbed, UserNotFoundEmbed, CommandOnCooldownEmbed, \
-    DisabledCommandEmbed
+    DisabledCommandEmbed, PleaseWaitEmbed, DoneEmbed
+from CatBot.ids.owner import OWNER_ID
 from CatBot.settings import bot_version, bot_token, bot_guilds
-from CatBot.utils.riot_api import download_champion_json
+
+
+# from CatBot.utils.riot_api import download_champion_json
 
 
 def main():
-    # noinspection PyArgumentList
     basicConfig(
         level='INFO',
         format='%(message)s',
@@ -29,16 +30,28 @@ def main():
     bot = Bot(
         command_prefix='c!',
         description='Prywatny bot Kociej Rzeszy.',
-        owner_id=309270832683679745,
+        owner_id=OWNER_ID,
         help_command=None,
         intents=Intents(
             guilds=True,
+            guild_messages=True,
+            integrations=True,
             members=True,
-            presences=True,
-            guild_messages=True
+            message_content=True,
+            voice_states=True
         )
     )
-    slash = SlashCommand(bot)
+
+    async def sync_command(source: str = None):
+        log.info('Commands are syncing...{}'.format(f' ({source})' or ''))
+        await bot.sync_commands(guild_ids=bot_guilds())
+        log.info('Commands synced')
+
+    async def safe_respond(ctx: ApplicationContext, embed: Embed):
+        try:
+            await ctx.respond(embed=embed)
+        except InteractionResponded:
+            await ctx.send_followup(embed=embed)
 
     @bot.event
     async def on_ready():
@@ -55,14 +68,19 @@ def main():
         log.info('Updated presence')
 
         for cog in [f'CatBot.cogs.{cog}' for cog in [
-            'basic', 'bonks', 'counters', 'flexing', 'insults', 'responses'
+            'basic',
+            'bonks',
+            'counters',
+            'flexing',
+            'insults',
+            'responses'
         ]]:
             try:
                 bot.load_extension(cog)
             except ExtensionNotFound:
                 log.warning(f'Not found: {cog}')
             except ExtensionAlreadyLoaded:
-                log.warning(f'Already loaded: {cog}')
+                log.info(f'Skipping: {cog} (already loaded)')
             except NoEntryPointError:
                 log.critical(
                     f'Extension "{cog}" do not have "setup()" function')
@@ -72,52 +90,81 @@ def main():
             else:
                 log.info(f'Loaded: {cog}')
 
-        await slash.sync_all_commands()
-
-        log.info('Downloading `champion.json`')
-        download_champion_json()
+        await sync_command('Initial')
 
         log.info('Everything loaded!')
 
         bot.log = log
 
-    @slash.slash(
+    @bot.event
+    async def on_application_command_error(
+            ctx: ApplicationContext,
+            e: DiscordException
+    ):
+        await ctx.send_followup(embed=ErrorEmbed().add_field(
+            name=e.__class__.__name__,
+            value=f'```{e}```'
+        ))
+        raise e
+
+    @bot.slash_command(
         name='test',
-        description='Komenda testowa.',
-        guild_ids=bot_guilds()
+        description='Komenda testowa.'
     )
-    async def test(ctx: SlashContext):
-        await ctx.send(embeds=[Embed(
-            title='Testowy embed',
-            color=Color.blurple()
-        ), Embed(
-            title='Drugi embed',
-            color=Color.green()
-        )])
+    async def test(ctx: ApplicationContext):
+        await ctx.respond(
+            embeds=[Embed(
+                title='Testowy embed',
+                color=Color.blurple()
+            ), Embed(
+                title='Drugi embed',
+                color=Color.green()
+            )],
+            delete_after=10
+        )
+
+
+    @bot.slash_command(
+        name='synchornizacja',
+        description='Synchronizuj komendy, też dostepne tylko dla Anona'
+    )
+    async def cmd_sync(ctx: ApplicationContext):
+        if ctx.interaction.user.id != OWNER_ID:
+            await ctx.respond(embed=MissingPermissionsEmbed())
+            return
+        await ctx.respond(
+            embed=PleaseWaitEmbed(description='Trwa synchronizacja')
+        )
+        log.info(f'Commands are syncing... (In: "{ctx.guild.name} #{ctx.channel}")')
+        await sync_command(f'In: "{ctx.guild.name} #{ctx.channel}"')
+        await ctx.edit(
+            embed=DoneEmbed(description='Komedny zsynchronizowane.'),
+            delete_after=10
+        )
 
     @bot.event
-    async def on_command_error(ctx: Context, error: Exception):
-        if isinstance(error, CommandNotFound):
-            log.warning(
-                f'Komenda nie została znaleziona:\n> {ctx.message.content}'
-            )
-        elif isinstance(error, MissingPermissions):
-            await ctx.send(embed=MissingPermissionsEmbed())
+    async def on_application_command_error(
+            ctx: ApplicationContext,
+            error: DiscordException
+    ):
+        if isinstance(error, MissingPermissions):
+            await safe_respond(ctx, MissingPermissionsEmbed())
         elif isinstance(error, BotMissingPermissions):
-            await ctx.send(embed=BotMissingPermissionsEmbed())
+            await safe_respond(ctx, BotMissingPermissionsEmbed())
         elif isinstance(error, UserNotFound):
-            await ctx.send(embed=UserNotFoundEmbed())
+            await safe_respond(ctx, UserNotFoundEmbed())
         elif isinstance(error, CommandOnCooldown):
-            await ctx.send(embed=CommandOnCooldownEmbed())
+            await safe_respond(ctx, CommandOnCooldownEmbed())
         elif isinstance(error, DisabledCommand):
-            await ctx.send(embed=DisabledCommandEmbed())
+            await safe_respond(ctx, DisabledCommandEmbed())
         else:
-            await ctx.send(embed=ErrorEmbed(
-                f'```\n{error.__class__.__name__}: {error}\n```',
-                title='Wystąpił nieznany błąd komendy'
+            await safe_respond(ctx, ErrorEmbed(
+                title='Wystąpił nieznany błąd komendy',
+                description=f'```\n{error.__class__.__name__}: {error}\n```'
             ))
+            raise error
 
-    if not (t := bot_token()):
+    if not (token := bot_token()):
         log.critical('Brak poprawnych ustawień środowiska')
         try:
             with open('.env') as f:
@@ -130,7 +177,7 @@ def main():
             else:
                 log.critical('Niepełna konfiguracja')
     else:
-        bot.run(t)
+        bot.run(token)
 
 
 if __name__ == '__main__':

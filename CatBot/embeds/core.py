@@ -7,14 +7,8 @@ from discord import Embed, Color
 class BaseEmbed(Embed):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        try:
-            self.timestamp = kwargs['timestamp']
-        except KeyError:
-            self.timestamp = datetime.utcnow()
-        try:
-            self.color = kwargs['color']
-        except KeyError:
-            self.color = Color.blurple()
+        self.timestamp = kwargs.get('timestamp', datetime.utcnow())
+        self.color = kwargs.get('color', Color.blurple())
 
 
 class RedEmbed(BaseEmbed):
@@ -26,10 +20,7 @@ class RedEmbed(BaseEmbed):
 class ErrorEmbed(RedEmbed):
     def __init__(self, description: str = None, **kwargs):
         super().__init__(**kwargs)
-        try:
-            self.title = kwargs['title']
-        except KeyError:
-            self.title = ':x: Wystąpił błąd'
+        self.title = kwargs.get('title', ':x: Wystąpił błąd')
         if description:
             self.description = description
 

@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-from discord import Member
+from discord import Member, ApplicationContext, user_command, slash_command, \
+    Option
 from discord.ext.commands import Cog
-from discord_slash import cog_ext, SlashContext
-from discord_slash.utils.manage_commands import create_option
 
 from CatBot.embeds.bonks import BonkEmbed, BonksEmbed
-from CatBot.embeds.core import ErrorEmbed
-from CatBot.settings import bot_guilds
+from CatBot.embeds.core import ErrorEmbed, PleaseWaitEmbed
+from CatBot.settings import DEFAULT_MEMBER_OPTION
 from CatBot.utils.database import add_bonk, get_bonks
 
 
@@ -14,48 +13,36 @@ class Bonks(Cog, name='Bonkowanie'):
     def __init__(self, bot):
         self.bot = bot
 
-    @cog_ext.cog_slash(
-        name='bonk',
-        description='Daje komuś bonka. Go to horny jail!',
-        guild_ids=bot_guilds(),
-        options=[
-            create_option(
-                name='uzytkownik',
-                description='Wybierz kogoś z serwera.',
-                option_type=6,
-                required=True
-            )
-        ]
+    @user_command(
+        name='Zbonkuj'
     )
-    async def bonk(self, ctx: SlashContext, uzytkownik: Member):
-        if uzytkownik.id == ctx.author.id:
-            return await ctx.send(embed=ErrorEmbed(
+    async def bonks_add(self, ctx: ApplicationContext, member: Member):
+        if member == ctx.author:
+            return await ctx.send_response(embed=ErrorEmbed(
                 'Nie możesz sam siebie zbonkować'
             ))
-        if not add_bonk(uzytkownik.id):
-            return await ctx.send(embed=ErrorEmbed(
+        if not add_bonk(member.id):
+            return await ctx.send_response(embed=ErrorEmbed(
                 '**\\*BONK!\\***, ale... Coś poszło nie tak. Anon ratuj!'
             ))
-        await ctx.send(embed=BonkEmbed(uzytkownik))
+        await ctx.send_response(embed=PleaseWaitEmbed())
+        await ctx.edit(embed=BonkEmbed(member))
 
-    @cog_ext.cog_slash(
+    @slash_command(
         name='bonki',
-        description='Sprawdź liczbę bonków',
-        guild_ids=bot_guilds(),
-        options=[
-            create_option(
-                name='uzytkownik',
-                description='Wybierz kogoś z serwera. Jeżeli nie - bot wybierze'
-                            ' Ciebie.',
-                option_type=6,
-                required=False
-            )
-        ]
+        description='Sprawdź ile kto ma bonków'
     )
-    async def bonki(self, ctx: SlashContext, uzytkownik: Member = None):
-        if not uzytkownik:
-            uzytkownik = ctx.author
-        await ctx.send(embed=BonksEmbed(get_bonks(uzytkownik.id), uzytkownik))
+    async def bonks_check(
+            self,
+            ctx: ApplicationContext,
+            member: DEFAULT_MEMBER_OPTION
+    ):
+        if not member:
+            member = ctx.message.author
+        await ctx.send_response(embed=PleaseWaitEmbed())
+        await ctx.edit(embed=BonksEmbed(
+            get_bonks(member.id), member)
+        )
 
 
 def setup(bot):

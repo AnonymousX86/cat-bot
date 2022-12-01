@@ -1,34 +1,23 @@
 # -*- coding: utf-8
-from datetime import datetime
-from random import Random
+from discord import slash_command, ApplicationContext
+from discord.ext.commands import Cog
 
-from discord.ext.commands import Cog, Context
-from discord_slash import cog_ext
-
-from CatBot.embeds.insults import InsultEmbed
-from CatBot.settings import bot_guilds
+from CatBot.embeds.insults import BulliedEmbed
+from CatBot.utils.members import random_member
 
 
-class CustomRandom(Random):
-    def __init__(self, seed=datetime.now().strftime('%Y%m%d').encode('utf-8')):
-        super().__init__(seed)
-
-    def choice(self, seq):
-        return super().choice(seq)
-
-
-class Insults(Cog, name='Insults'):
+class Insults(Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @cog_ext.cog_slash(
+    @slash_command(
         name='kogo_obrazic',
-        description='Losuje z serwera kogo dzisiaj obrażamy.',
-        guild_ids=bot_guilds()
+        description='Losuje z serwera kogo dzisiaj obrażamy.'
     )
-    async def kogo_obrazic(self, ctx: Context):
-        await ctx.send(embed=InsultEmbed(CustomRandom().choice(
-                list(filter(lambda m: not m.bot, ctx.guild.members))
+    async def choose_bullied(self, ctx: ApplicationContext):
+        await ctx.send_response(embed=BulliedEmbed(random_member(
+            ctx.guild.members,
+            random_per_day=True
         )))
 
 
