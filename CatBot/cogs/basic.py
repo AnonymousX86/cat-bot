@@ -66,7 +66,7 @@ class Basic(Cog):
         description='Aktualizacja ról, dostępne tylko dla Anona.'
     )
     async def autorole(self, ctx: ApplicationContext):
-        if ctx.message.author.id != 309270832683679745:
+        if self.bot.is_owner(ctx.message.author):
             await ctx.send_response(embed=MissingPermissionsEmbed())
         else:
             await ctx.send_response(embed=PleaseWaitEmbed())

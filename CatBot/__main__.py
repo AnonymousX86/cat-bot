@@ -28,7 +28,6 @@ def main():
     getLogger('sqlalchemy.engine').setLevel('WARNING')
     log = getLogger('rich')
     bot = Bot(
-        command_prefix='c!',
         description='Prywatny bot Kociej Rzeszy.',
         owner_id=OWNER_ID,
         help_command=None,
@@ -129,7 +128,7 @@ def main():
         description='Synchronizuj komendy, też dostepne tylko dla Anona'
     )
     async def cmd_sync(ctx: ApplicationContext):
-        if ctx.interaction.user.id != OWNER_ID:
+        if not bot.is_owner(ctx.interaction.user):
             await ctx.respond(embed=MissingPermissionsEmbed())
             return
         await ctx.respond(
