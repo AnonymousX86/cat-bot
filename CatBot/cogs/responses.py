@@ -8,7 +8,6 @@ from discord.ext.commands import Cog
 from CatBot.embeds.core import ErrorEmbed
 from CatBot.embeds.responses import MonologEmbed, IpEmbed, PatEmbed, HugEmbed, \
     InsultEmbed
-from CatBot.ids.channels import PROTON_VPN
 from CatBot.settings import DEFAULT_MEMBER_OPTION
 from CatBot.utils.members import random_member
 
@@ -71,7 +70,8 @@ class Responses(Cog):
                     ' kanale muszą być przynajmniej 3 osoby.'
     )
     async def insult(self, ctx: ApplicationContext):
-        occupied_channels = list(filter(lambda ch: len(ch.members), ctx.guild.voice_channels))
+        occupied_channels = list(
+            filter(lambda ch: len(ch.members), ctx.guild.voice_channels))
         if not occupied_channels:
             await ctx.send_response(embed=ErrorEmbed(
                 'Żaden kanał nie jest zajęty.'

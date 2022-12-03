@@ -18,9 +18,8 @@ Base = declarative_base()
 
 
 class NoRecords:
-    """
-    Used when database is working, but user has no records.
-    """
+    """Used when database is working, but user has no records."""
+
     def __repr__(self):
         return "<NoFlexes: database OK, but no records>"
 

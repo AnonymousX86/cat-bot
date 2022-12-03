@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from discord import Member, ApplicationContext, user_command, slash_command, \
-    Option
+from discord import Member, ApplicationContext, user_command, slash_command
 from discord.ext.commands import Cog
 
 from CatBot.embeds.bonks import BonkEmbed, BonksEmbed

@@ -1,10 +1,30 @@
 # -*- coding: utf-8 -*-
 from typing import Dict
 
-from discord import Member
+from discord import Member, Role
 
-from CatBot.embeds.core import BlueEmbed, GreenEmbed
+from CatBot.embeds.core import BlueEmbed, GreenEmbed, DoneEmbed
 from CatBot.settings import bot_version, bot_stage
+
+
+class AutoroleEmbed(BlueEmbed):
+    def __init__(
+            self,
+            member: Member,
+            normal_role: Role,
+            guest_role: Role,
+            **kwargs
+    ):
+        super().__init__(**kwargs)
+        self.title = ':busts_in_silhouette: Kto to?'
+        self.description = f'Czy dać {member.mention} rolę {normal_role.mention}?\n' \
+                           f'Jeśli nie, wtedy otrzyma rolę {guest_role.mention}.'
+
+
+class RoleAddedEmbed(DoneEmbed):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.description = 'Dodano rolę.'
 
 
 class InfoEmbed(BlueEmbed):

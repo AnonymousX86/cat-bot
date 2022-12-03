@@ -50,7 +50,7 @@ class Flexing(Cog):
 
         def check(message: Message):
             return message.author.id == ctx.user.id and \
-                   message.channel.id == ctx.channel_id
+                message.channel.id == ctx.channel_id
 
         try:
             msg: Message = await self.bot.wait_for(

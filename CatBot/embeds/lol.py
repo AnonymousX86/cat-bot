@@ -6,4 +6,3 @@ class MissingSummonerEmbed(ErrorEmbed):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.description = 'Nie podałeś(aś) nazwy gracza.'
-

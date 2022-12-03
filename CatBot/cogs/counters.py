@@ -38,7 +38,6 @@ class Counters(Cog):
                 get_counters(member.id)
             ))
 
-
     @slash_command(
         name='countery',
         description='Sprawdź ile ktoś ma "counterów".'
@@ -62,7 +61,6 @@ class Counters(Cog):
             get_counters(member.id)
         ))
 
-
     @user_command(
         name='Wtrącił Się W Zdanie'
     )
@@ -81,7 +79,6 @@ class Counters(Cog):
                 member,
                 get_interrupts(member.id)
             ))
-
 
     @slash_command(
         name='w_zdanie',

@@ -3,19 +3,18 @@ from logging import basicConfig, getLogger
 
 from discord import Bot, Intents, Status, Activity, ActivityType, \
     ExtensionNotFound, ExtensionAlreadyLoaded, NoEntryPointError, Embed, Color, \
-    ApplicationContext, DiscordException, InteractionResponded
+    ApplicationContext, DiscordException, InteractionResponded, \
+    ApplicationCommandInvokeError
 from discord.ext.commands import MissingPermissions, \
     BotMissingPermissions, UserNotFound, CommandOnCooldown, DisabledCommand
 from rich.logging import RichHandler
 
-from CatBot.embeds.core import ErrorEmbed, MissingPermissionsEmbed, \
+from .embeds.core import ErrorEmbed, MissingPermissionsEmbed, \
     BotMissingPermissionsEmbed, UserNotFoundEmbed, CommandOnCooldownEmbed, \
     DisabledCommandEmbed, PleaseWaitEmbed, DoneEmbed
-from CatBot.ids.owner import OWNER_ID
-from CatBot.settings import bot_version, bot_token, bot_guilds
-
-
-# from CatBot.utils.riot_api import download_champion_json
+from .ids.owner import OWNER_ID
+from .settings import bot_version, bot_token, bot_guilds
+from .utils.log import log
 
 
 def main():
@@ -26,11 +25,11 @@ def main():
         handlers=[RichHandler(rich_tracebacks=True)]
     )
     getLogger('sqlalchemy.engine').setLevel('WARNING')
-    log = getLogger('rich')
     bot = Bot(
         description='Prywatny bot Kociej Rzeszy.',
         owner_id=OWNER_ID,
         help_command=None,
+        auto_sync_commands=False,
         intents=Intents(
             guilds=True,
             guild_messages=True,
@@ -49,7 +48,7 @@ def main():
     async def safe_respond(ctx: ApplicationContext, embed: Embed):
         try:
             await ctx.respond(embed=embed)
-        except InteractionResponded:
+        except InteractionResponded or ApplicationCommandInvokeError:
             await ctx.send_followup(embed=embed)
 
     @bot.event
@@ -93,8 +92,6 @@ def main():
 
         log.info('Everything loaded!')
 
-        bot.log = log
-
     @bot.event
     async def on_application_command_error(
             ctx: ApplicationContext,
@@ -122,19 +119,19 @@ def main():
             delete_after=10
         )
 
-
     @bot.slash_command(
         name='synchornizacja',
         description='Synchronizuj komendy, też dostepne tylko dla Anona'
     )
     async def cmd_sync(ctx: ApplicationContext):
-        if not bot.is_owner(ctx.interaction.user):
+        if not await bot.is_owner(ctx.user):
             await ctx.respond(embed=MissingPermissionsEmbed())
             return
         await ctx.respond(
             embed=PleaseWaitEmbed(description='Trwa synchronizacja')
         )
-        log.info(f'Commands are syncing... (In: "{ctx.guild.name} #{ctx.channel}")')
+        log.info(
+            f'Commands are syncing... (In: "{ctx.guild.name} #{ctx.channel}")')
         await sync_command(f'In: "{ctx.guild.name} #{ctx.channel}"')
         await ctx.edit(
             embed=DoneEmbed(description='Komedny zsynchronizowane.'),

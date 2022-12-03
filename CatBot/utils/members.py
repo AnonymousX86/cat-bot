@@ -10,7 +10,6 @@ class CustomRandom(Random):
         super().__init__(seed)
 
 
-
-def random_member(members: list[Member | User], *, random_per_day = False):
+def random_member(members: list[Member | User], *, random_per_day=False):
     func = CustomRandom().choice if random_per_day else choice
     return func(list(filter(lambda x: x.bot is False, members)))
