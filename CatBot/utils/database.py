@@ -179,3 +179,47 @@ def add_bonk(user_id: int) -> Bonk or None:
         return None
     finally:
         session.close()
+
+
+class Kebab(Base):
+    __tablename__ = 'kebabs'
+    kebab_id = Column(BigInteger, primary_key=True)
+    user_id = Column(String(18))
+    kebab_date = Column(Date)
+    kebab_description = Column(String)
+    kebab_picture_url = Column(String)
+
+
+def get_user_kebabs(user_id: int) -> list[Kebab]:
+    session = _Session()
+    try:
+        kebabs = session.query(Kebab).filter_by(user_id=str(user_id))
+        if not kebabs:
+            kebabs = []
+        return kebabs
+    finally:
+        session.close()
+
+
+def add_kebab(
+        user_id: int,
+        kebab_date: date = None,
+        kebab_description: str = None,
+        kebab_picture_url: str = None
+) -> Kebab or None:
+    session = _Session()
+    new_kebab = Kebab(
+        user_id=str(user_id),
+        kebab_date=kebab_date or date.today(),
+        kebab_description=kebab_description or '',
+        kebab_picture_url=kebab_picture_url or ''
+    )
+    try:
+        session.add(new_kebab)
+        session.commit()
+        return new_kebab
+    except IntegrityError:
+        session.rollback()
+        return None
+    finally:
+        session.close()

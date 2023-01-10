@@ -71,6 +71,7 @@ def main():
             'counters',
             'flexing',
             'insults',
+            'kebab_counter',
             'responses'
         ]]:
             try:
