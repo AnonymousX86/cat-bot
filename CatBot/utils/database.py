@@ -10,7 +10,10 @@ from sqlalchemy.orm import sessionmaker
 
 from CatBot.settings import database_url
 
-_engine = create_engine(database_url())
+_engine = create_engine(
+    database_url(),
+    pool_recycle=45
+)
 _Session = sessionmaker()
 _Session.configure(bind=_engine)
 
