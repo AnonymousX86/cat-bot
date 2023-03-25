@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 
 from discord import Bot, slash_command, ApplicationContext, Option, TextChannel, File, Message
 from discord.ext.commands import Cog
-from sqlalchemy.util import timezone
 
 from CatBot.embeds.core import PleaseWaitEmbed, DoneEmbed, ErrorEmbed
 from CatBot.embeds.kebab_counter import KebabEmbed
