@@ -6,4 +6,4 @@ psycopg2-binary
 PyMySQL
 wavelink
 requests
-aiohttp>=3.8.0 # not directly required, pinned by Snyk to avoid a vulnerability
+aiohttp>=3.9.0 # not directly required, pinned by Snyk to avoid a vulnerability
